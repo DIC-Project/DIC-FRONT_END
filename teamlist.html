@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DIC Project</title>
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="./styles/teamlist.css">
+    <link rel="stylesheet" href="./styles/addTo.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css" integrity="sha512-YWzhKL2whUzgiheMoBFwW8CKV4qpHQAEuvilg9FAn5VJUDwKZZxkJNuGM4XkWuk94WCrrwslk8yWNGmY1EduTA==" crossorigin="anonymous" referrerpolicy="no-referrer" /> 
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <h1 class="logo">LOGO</h1>
+            <p class="user-signout">Welcome user, <span class="signout">sign out</span></p>
+        </nav>
+    </header>
+    <main class="main-sec">
+        <div class="container">
+            <div class="right-pos">
+                <input type="button" class="view-btns add-view" value="Add New">
+                <select name="" id="" class="view-btns add-view">
+                    <option value="sortbyname">Sort By Name</option>
+                    <option value="sortbyid">Sort By ID</option>
+                  </select>
+                <input type="search" class="view-btns add-view" placeholder="Search team member">
+            </div>
+        </div>
+
+        <div class="data-frame">
+            <table id="dataTable" style="width:100%" class="data">
+                <tr>
+                    <th></th>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Ac. No.</th>
+                    <th>Bank Name</th>
+                    <th>IFSC code</th>
+                    <th>Branch Name</th>
+                    <th>Action</th>
+                </tr>
+                <tr>
+                    <td><input type="checkbox" name=""/></td>
+                </tr>
+            </table>
+        </div>
+        <div class="bottom-nav">
+            <div class="left-dash">
+                <i class="fas fa-long-arrow-alt-left"></i>
+                <a class="dash" href=""> Bact to Dashboard</a>
+            </div>
+            <div class="right-dash">
+                <input type="button" class="view-btns add-view" value="Submit">
+                <input type="button" class="view-btns add-view" value="Export">
+            </div>
+    </main>
+</body>
+</html>
