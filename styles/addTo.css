@@ -139,6 +139,9 @@ section{
 .data{
     border-collapse: collapse;
     margin-bottom: 25px;
+}
+
+.data th{
     background: white;
 }
 
