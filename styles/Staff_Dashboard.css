@@ -1,0 +1,268 @@
+.body{
+	position: relative;
+	width: 1440px;
+	height: 1024px;
+}
+
+.main{
+	font-family: Roboto;
+}
+
+.nav{
+	position: absolute;
+	height: 40px;
+	border-bottom: 2px solid;
+	left: 0px;
+	right: 0px;
+	width: 100%;
+
+}
+
+.logo{
+	font-style: normal;
+	font-weight: bold;
+	font-size: 24px;
+	line-height: 28px;
+
+	position: absolute;
+	width: 48px;
+	height: 28px;
+	left: 70px;
+	top: 10px;
+}
+
+.welcome{
+	position: absolute;
+	font-style: normal;
+	font-weight: 400;
+	font-size: 15px;
+	line-height: 21px;
+
+	padding: 0px;
+	top: 20px;
+	left: 85%;
+	width: 187px;
+	line-height: 21px;
+
+}
+
+.welcome #signout{
+	text-decoration: none;
+
+	color: #0075FF;
+}
+
+.welcome #signout:hover{
+	text-decoration: underline;
+}
+
+.content #searchbar{
+	position: absolute;
+	width: 260px;
+	height: 35px;
+	left: 1000px;
+	top: 60px;
+	padding: 4px 0px 4px 8px;
+	color: #4D4D4D;
+
+	border: 0px;
+	box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.2), 0 4px 8px 0 rgba(0, 0, 0, 0.19);
+	background: #EAEAEA;
+	border-radius: 10px;
+}
+
+.content #search{
+	position: absolute;
+	width: 24px;
+	height: 24px;
+	left: 1235px;
+	top: 72px;
+	color: #707070;
+}
+
+.content #search:hover{
+	cursor: pointer;
+}
+
+.content #dashboard_button{
+	position: absolute;
+	width: 110px;
+	height: 50px;
+	left: 50px;
+	top: 130px;
+	border: 0px;
+	color: #ffff;
+	cursor: pointer;
+	
+	background: #0075FF;
+	border-radius: 10px;
+}
+
+.content #dashboard_button:hover{
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.content #dashboard_button a{
+	text-decoration: none;
+}
+
+.teamlist{
+	position: absolute;
+	width: 1040px;
+	height: 450px;
+	left: 218px;
+	top: 110px;
+	background-color: #EAEAEA;
+	border-radius: 15px;
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+table{
+	padding: 30px;
+}
+
+table tr select{
+	display: none;
+}
+
+tr{
+	text-align: center;
+	font-size: 14px;
+	line-height: 20px;
+	font-style: normal;
+	font-weight: normal;
+	color: #4D4D4D;
+}
+
+th{
+	text-align: center;
+	line-height: 21px;
+	padding: 0px 20px 30px 3px ;
+	
+}
+
+td{
+	padding: 0px 20px 15px 3px;
+}
+
+td a{
+	text-decoration: none;
+	color: #0075FF;
+	font-size: 14px;
+}
+
+td a:hover{
+	text-decoration: underline;
+}
+
+#addnew_team{
+	position: absolute;
+	width: 155px;
+	height: 40px;
+	left: 1100px;
+	top: 570px;
+	background: #a9d0fc;
+	border-radius: 10px;
+	border: 0px;
+	color: #4D4D4D;
+	padding-left: 10px;
+}
+
+#addnew_team:hover{
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+	cursor: pointer;
+}
+
+
+#team_icon{
+	position: absolute;
+	top: 583px;
+	left: 1110px;
+	color: #4D4D4D;
+}
+
+
+.AddTeam_popup{
+	position: absolute;
+	font-family: Roboto;
+	left: 170px;
+	width: 1020px;
+	height: 600px;
+	border: 1px solid #0075FF;
+	background: #D0E6FF;
+	border-radius: 20px;
+}
+
+#AddTeam_popup{
+	display: none;
+}
+
+.AddTeam_popup #Popup_table{
+	padding: 50px 0px 5px 70px;
+}
+
+.AddTeam_popup tr{
+	text-align: center;
+	font-size: 14px;
+}
+
+.AddTeam_popup th{
+	padding: 0px 35px 20px 5px;
+}
+
+.AddTeam_popup td{
+	padding: 0px 35px 20px 5px;
+}
+
+.AddTeam_popup input{
+	border-radius: 5px;
+	border: 1px solid #0075FF;
+	height: 25px;
+	padding-left: 7px;
+
+} 
+
+#Popup_addteam{
+	position: absolute;
+	width: 155px;
+	height: 40px;
+	left: 750px;
+	top: 490px;
+	background: #0075FF;
+	border-radius: 10px;
+	color: #ffff;
+	border: 0px;
+}
+
+#Popup_addteam:hover{
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+	cursor: pointer;
+}
+
+#Popup_cancel{
+	position: absolute;
+	width: 155px;
+	height: 40px;
+	left: 550px;
+	top: 490px;
+	background: #0075FF;
+	border-radius: 10px;
+	color: #ffff;
+	border: 0px;
+}
+
+#Popup_cancel:hover{
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+	cursor: pointer;
+}
+
+::-ms-clear {
+  display: none;
+}
+
+::-webkit-search-decoration,
+::-webkit-search-cancel-button,
+::-webkit-search-results-button,
+::-webkit-search-results-decoration { 
+  display: none; 
+}

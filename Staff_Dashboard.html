@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" type="text/css" href="fontawesome/css/all.min.css">
+	<link rel="stylesheet" type="text/css" href="styles/Staff_Dashboard.css">
+	<title>Dashboard</title>
+</head>
+<body>
+	<div class="main">
+		<div class="nav">
+			<div class="navbar"></div>
+			<div class="logo">Logo</div>
+			<div class="welcome">Welcome User, <a href="index.html" id="signout">Signout</a></div>					
+		</div>
+		<div class="content">
+			<a href=""><button id="dashboard_button">Dashboard</button></a>
+			<input type="search" name="" placeholder="Search" id="searchbar">
+			<i class="fas fa-search" id="search"></i>
+		</div>
+		<div class="teamlist">
+			<table id="Team_table">
+				<tr>
+					<th>Team ID</th>
+					<th>Team Name</th>
+					<th>Location</th>
+					<th>Contact</th>
+					<th>Month & Year</th>
+					<th>Select Team</th>
+				</tr>
+				<tr>
+					<td>X3061</td>
+					<td>Uniform distribution Team</td>
+					<td>Kollam</td>
+					<td>989 898 XXXX</td>
+					<td>
+						<select>
+							<input type="Month" name="" value="2021-11">
+						</select>
+					</td>
+					<td><a href="">SELECT</a></td>
+				</tr>
+				<tr>
+					<td>X3061</td>
+					<td>Uniform distribution Team</td>
+					<td>Kollam</td>
+					<td>989 898 XXXX</td>
+					<td>
+						<select>
+							<input type="Month" name="" value="2021-11">
+						</select>
+					</td>
+					<td><a href="">SELECT</a></td>
+				</tr>
+				<tr>
+					<td>X3061</td>
+					<td>Uniform distribution Team</td>
+					<td>Kollam</td>
+					<td>989 898 XXXX</td>
+					<td>
+						<select>
+							<input type="Month" name="" value="2021-11">
+						</select>
+					</td>
+					<td><a href="">SELECT</a></td>
+				</tr>
+				<tr>
+					<td>X3061</td>
+					<td>Uniform distribution Team</td>
+					<td>Kollam</td>
+					<td>989 898 XXXX</td>
+					<td>
+						<select>
+							<input type="Month" name="" value="2021-11">
+						</select>
+					</td>
+					<td><a href="">SELECT</a></td>
+				</tr>
+			</table>
+		</div>
+		</div>
+		<button id="addnew_team" onclick="Show()">Add New Team</button>
+		<i class="fas fa-users" id="team_icon"></i>
+
+		<div id="AddTeam_popup" class="AddTeam_popup">
+			<table id="Popup_table">
+				<tr>
+					<th>ID</th>
+					<th>Team Name</th>
+					<th>Location</th>
+					<th>Contact</th>
+				</tr>
+				<tr>
+					<td><input type="" name=""></td>
+					<td><input type="" name=""></td>
+					<td><input type="" name=""></td>
+					<td><input type="" name=""></td>
+				</tr>
+			</table>
+			<button id="Popup_addteam">Add Team</button>
+			<button id="Popup_cancel" onclick="Hide()">Cancel</button>
+		</div>
+	</div>
+	<script>
+		function Show() {
+		  var x = document.getElementById("AddTeam_popup");
+		  if (x.style.display === "none") {
+		    x.style.display = "block";
+		  }
+		  else {
+		    x.style.display = "none";
+		  }
+		}
+
+		function Hide() {
+		  var y = document.getElementById("AddTeam_popup");
+		  if (y.style.display === "block") {
+		    y.style.display = "none";
+		  }
+		}
+	</script>
+</body>
+</html>

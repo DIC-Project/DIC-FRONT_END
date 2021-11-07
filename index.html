@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" type="text/css" href="fontawesome/css/all.min.css">
+	<link rel="stylesheet" type="text/css" href="styles/StaffLogin.css">
+	<title>Staff Login</title>
+</head>
+<body>
+	<div class="staff_login">
+		<h1>Staff Login</h1>
+		<i class="fa fa-user" id="user_icon"></i>
+		<input type="text" name="username" placeholder="Username" class="staff_username">
+		<i class="fa fa-lock" id="lock_icon"></i>
+		<input type="password" name="password" placeholder="Password" id="staff_pass" class="staff_password">
+		<i class="far fa-eye" id="togglePassword" onclick="toggle()" style="margin-left: -30px; cursor: pointer;"></i>
+		<a href="Staff_Dashboard.html"><button class="staff_button">Login</button></a>
+		<a href="AdminLogin.html"><button class="admin_login">Admin Login</button></a>
+
+	</div>
+	<script>
+		var state= false;
+		function toggle(){
+			if (state) {
+				document.getElementById("staff_pass").setAttribute("type","password");
+				document.getElementById("togglePassword").style.color='#707070';
+				state= false;
+			}
+			else{
+				document.getElementById("staff_pass").setAttribute("type","text");
+				document.getElementById("togglePassword").style.color='#5887ef';
+				state= true;
+			}
+		}
+
+	</script>	
+	
+</body>
+</html>
