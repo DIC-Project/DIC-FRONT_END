@@ -2,10 +2,11 @@
 	position: relative;
 	width: 1440px;
 	height: 1024px;
+	font-family: 'Roboto', sans-serif;
 }
 
 .main{
-	font-family: Roboto;
+	font-family: 'Roboto', sans-serif;
 }
 
 .nav{
@@ -119,6 +120,7 @@
 
 table{
 	padding: 30px;
+	font-family: 'Roboto', sans-serif;
 }
 
 table tr select{

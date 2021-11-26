@@ -4,7 +4,7 @@
 
 .navbar{
 	position:absolute;
-	font-family: Roboto;
+	font-family: 'Roboto', sans-serif;
 	border-bottom: 2px solid;
 	width: 100%;
 	height: 50px;
@@ -26,6 +26,7 @@
 }
 
 .welcome{
+	font-family: 'Roboto', sans-serif;
 	font-style: normal;
 	font-weight: 400;
 	font-size: 15px;
@@ -49,7 +50,7 @@
 }
 
 .main {
-	font-family: Roboto;
+	font-family: 'Roboto', sans-serif;
 }
 
 .main .label44{
@@ -135,6 +136,7 @@
 
 table{
 	padding: 30px;
+	font-family: 'Roboto', sans-serif;
 }
 
 table tr select{

@@ -2,6 +2,7 @@
 	position: relative;
 	width: 1440px;
 	height: 1024px;
+	font-family: 'Roboto', sans-serif;
 }
 
 .staff_login{
@@ -17,7 +18,7 @@
 }
 
 .staff_login h1{
-	font-family: Roboto;
+	font-family: 'Roboto', sans-serif;
 	font-style: normal;
 	font-weight: bold;
 	font-size: 20px;
@@ -105,7 +106,7 @@
 
 .admin_login{
 	font-size: 15px;
-	font-family: Roboto;
+	font-family: 'Roboto', sans-serif;
 	
 	position: absolute;
 	left: 490px;
