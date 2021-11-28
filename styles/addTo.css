@@ -113,6 +113,7 @@ section{
 .data-frame{
     background: #D0E6FF;
     padding: 15px;
+    overflow-x: scroll;
 }
 
 .head-frame{
@@ -140,20 +141,18 @@ section{
 .data{
     border-collapse: collapse;
     margin-bottom: 25px;
-}
-
-.data th{
-    background: white;
+    position: relative;
 }
 
 .data td, .data th{
     border: 1px solid #ddd;
-    padding: 8px
+    padding: 8px;
 }
 
 .data th{
     padding-top: 12px;
     padding-bottom: 12px;
+    background: white;
 }
 
 .sub-head{
