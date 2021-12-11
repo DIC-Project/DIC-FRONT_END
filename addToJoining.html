@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DIC Project</title>
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="./styles/addTo.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css" integrity="sha512-YWzhKL2whUzgiheMoBFwW8CKV4qpHQAEuvilg9FAn5VJUDwKZZxkJNuGM4XkWuk94WCrrwslk8yWNGmY1EduTA==" crossorigin="anonymous" referrerpolicy="no-referrer" /> 
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <h1 class="logo">LOGO</h1>
+            <p class="user-signout">Welcome user, <span class="signout">sign out</span></p>
+        </nav>
+    </header>
+    <main>
+        <div class="container">
+            <div class="left">
+                <h2 class="team-title">Uniform distribution Team</h2>
+                <br>
+                <div class="team-data">
+                    <p class="team-detail">Team Id &nbsp;: </p> <span class="team-id">X301</span>
+                </div>
+                <div class="team-data">
+                    <p class="team-detail">Location : </p> <span class="team-location">Delhi, India</span>
+                </div>
+                <div class="team-data">
+                    <p class="team-detail">Contact&nbsp;  : </p> <span class="team-mobnum">989 898 XXXX</span>
+                </div>
+                <br>
+                <div class="check_size">
+                    <div class="first-size sizes">
+                        <input type="radio" name="size" id="">
+                        <p class="size"> 44'</p>
+                    </div>
+                    <div class="second-size sizes">
+                        <input type="radio" name="size" id="">
+                        <p class="size"> 58'</p>
+                    </div>
+                </div>
+            </div>
+            <div class="right">
+                <input type="button" class="view-btns" value="Update Team List">
+            </div>
+        </div>
+    </main>
+    <section>
+        <div class="data-frame">
+            <div class="category">
+                <div class="head-frame">
+                    <h1 class="cate-title">Joining</h1>
+                    <a href="teamlist.html"><input type="button" class="view-btns add-view" value="Add +"></a>
+                </div>
+    
+                <table id="dataTable" style="width:100%" class="data">
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        
+                    </tr>
+                   
+                </table>
+            </div>
+
+           
+        </div>
+        <div class="bottom-nav">
+            <div class="left-dash">
+                <i class="fas fa-long-arrow-alt-left"></i>
+                <a class="dash" href="addToWinding.html"> Bact to Winding</a>
+            </div>
+            <div class="right-dash">
+                <a href=""><input type="button" class="view-btns add-view" value="Save"></a>
+                <a href="addMetre.html"><input type="button" class="view-btns add-view" value="Submit"></a>
+            </div>
+        </div>
+    </section>
+    <!-- Script -->
+    <script src="./js/app.js"></script>
+</body>
+</html>
