@@ -3,23 +3,39 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css" integrity="sha512-YWzhKL2whUzgiheMoBFwW8CKV4qpHQAEuvilg9FAn5VJUDwKZZxkJNuGM4XkWuk94WCrrwslk8yWNGmY1EduTA==" crossorigin="anonymous" referrerpolicy="no-referrer" /> 
+	<link rel="stylesheet" type="text/css" href="fontawesome/css/all.min.css">
 	<link rel="stylesheet" type="text/css" href="styles/AdminLogin.css">
 	<title>Admin login</title>
 </head>
 <body>
 	<div class="admin_login">
+	  <form onsubmit="adminLogin(event)">
 		<h1>Admin Login</h1>
 		<i class="fa fa-user" id="user_icon"></i>
-		<input type="text" name="username" placeholder="Username" class="admin_username">
+		<input type="text" name="username" placeholder="Username" class="admin_username" required>
 		<i class="fa fa-lock" id="lock_icon"></i>
 		<input type="password" name="password" placeholder="Password" id="admin_pass" class="admin_password" required>
 		<i class="far fa-eye" id="togglePassword" onclick="toggle()" style="margin-left: -30px; cursor: pointer;"></i>
-		<a href="Admin_Dashboard.html"><button class="admin_button">Login</button></a>
-		<a href="index.html"><button class="staff_login">Staff Login</button></a>
-
+		<button type="submit" class="admin_button">Login</button>
+		<a href="index.html"><button type="button" class="staff_login">Staff Login</button></a>
+		</form>
 	</div>	
-	<script src="./js/app.js"></script>
+	<script src="js/api.js"></script>
+	<script>
+		var state= false;
+		function toggle(){
+			if (state) {
+				document.getElementById("admin_pass").setAttribute("type","password");
+				document.getElementById("togglePassword").style.color='#707070';
+				state= false;
+			}
+			else{
+				document.getElementById("admin_pass").setAttribute("type","text");
+				document.getElementById("togglePassword").style.color='#5887ef';
+				state= true;
+			}
+		}
+
+	</script>
 </body>
 </html>

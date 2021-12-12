@@ -29,54 +29,6 @@
 					<th>Month & Year</th>
 					<th>Select Team</th>
 				</tr>
-				<tr>
-					<td>X3061</td>
-					<td>Uniform distribution Team</td>
-					<td>Kollam</td>
-					<td>989 898 XXXX</td>
-					<td>
-						<select>
-							<input type="Month" name="" value="2021-11">
-						</select>
-					</td>
-					<td><a href="addTo.html">SELECT</a></td>
-				</tr>
-				<tr>
-					<td>X3061</td>
-					<td>Uniform distribution Team</td>
-					<td>Kollam</td>
-					<td>989 898 XXXX</td>
-					<td>
-						<select>
-							<input type="Month" name="" value="2021-11">
-						</select>
-					</td>
-					<td><a href="addTo.html">SELECT</a></td>
-				</tr>
-				<tr>
-					<td>X3061</td>
-					<td>Uniform distribution Team</td>
-					<td>Kollam</td>
-					<td>989 898 XXXX</td>
-					<td>
-						<select>
-							<input type="Month" name="" value="2021-11">
-						</select>
-					</td>
-					<td><a href="addTo.html">SELECT</a></td>
-				</tr>
-				<tr>
-					<td>X3061</td>
-					<td>Uniform distribution Team</td>
-					<td>Kollam</td>
-					<td>989 898 XXXX</td>
-					<td>
-						<select>
-							<input type="Month" name="" value="2021-11">
-						</select>
-					</td>
-					<td><a href="addTo.html">SELECT</a></td>
-				</tr>
 			</table>
 		</div>
 		</div>
@@ -84,25 +36,39 @@
 		<i class="fas fa-users" id="team_icon"></i>
 
 		<div id="AddTeam_popup" class="AddTeam_popup">
+		  <form onsubmit="addTeam(event)">
 			<table id="Popup_table">
 				<tr>
 					<th>ID</th>
 					<th>Team Name</th>
 					<th>Location</th>
 					<th>Contact</th>
+					<th>Category</th>
+					<th>Bank Account No</th>
+					<th>Ifsc Code</th>
+					<th>Branch Name</th>
+					<th>Bank Name</th>
 				</tr>
 				<tr>
-					<td><input type="" name=""></td>
-					<td><input type="" name=""></td>
-					<td><input type="" name=""></td>
-					<td><input type="" name=""></td>
+					<td><input type="text" name="id" required></td>
+					<td><input type="text" name="name" required></td>
+					<td><input type="text" name="location" required></td>
+					<td><input type="text" name="contact" required></td>
+					<td><input type="text" name="category" required></td>
+					<td><input type="text" name="bank_account_number" required></td>
+					<td><input type="text" name="bank_ifsc_code" required></td>
+					<td><input type="text" name="branch_name" required></td>
+					<td><input type="text" name="bank_name" required></td>
 				</tr>
 			</table>
-			<button id="Popup_addteam">Add Team</button>
-			<button id="Popup_cancel" onclick="Hide()">Cancel</button>
+			<button type="submit" id="Popup_addteam">Add Team</button>
+			<button type="button" id="Popup_cancel" onclick="Hide()">Cancel</button>
+			</form>
 		</div>
 	</div>
+	<script src="js/api.js"></script>
 	<script>
+	  window.onload = () => getTeams();
 		function Show() {
 		  var x = document.getElementById("AddTeam_popup");
 		  if (x.style.display === "none") {

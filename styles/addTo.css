@@ -1,5 +1,18 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap');
 
+:root {
+  --show44: 'table-row';
+  --show58: 'none';
+}
+
+.category44 {
+  display: var(--show44)
+}
+
+.category58 {
+  display: var(--show58);
+}
+
 *,html{
     padding: 0;
     margin: 0;
