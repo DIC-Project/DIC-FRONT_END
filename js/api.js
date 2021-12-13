@@ -89,6 +89,7 @@ const appendTeams = (teams) => {
     row.insertCell(2).innerHTML = team.location;
     row.insertCell(3).innerHTML = team.contact;
     row.insertCell(4).innerHTML = '<select><input type="Month" name="" value="2021-11"></select>';
+    /**modify*/
     row.insertCell(5).innerHTML = `<a href="addToWeaving.html?team_id=${team.id}">SELECT</a>`;
   }
 };
@@ -212,3 +213,132 @@ function goToTeamList() {
   const category = document.getElementById('44').checked ? '44' : '58';
   window.location.href = `teamlist.html?page=${window.location.pathname}&team_id=${getQuery('team_id')}&category=${category}&work_id=${work.id}&ids=${JSON.stringify(work[`workers_${category}`])}`;
 }
+
+async function loadMetrePage(id) {
+  window.w = {};
+  window.updates = {};
+  const [works, data] = await Promise.all([
+    request.get(`/users/get_works`)
+    .then(q => q.works),
+  request.get(`/users/get_team_members/${id}`)
+    .then(q => q.teamMembers)
+  ]);
+  for (const work of works) {
+    window.w[work.name] = work;
+  };
+  const table = document.getElementById('dataTable');
+  for (const member of data) {
+    const tr = document.createElement('tr');
+    tr.setAttribute('id', 'm' + member.id);
+    tr.innerHTML = `<td>${member.id}</td><td>${member.name}</td><td><input type="number" onchange="onMetreChange('${member.id}', this.value)"></td><td data-id="weaving">0</td><td data-id="winding">0</td><td data-id="warping">0</td><td data-id="joining">0</td><td data-id="pf">0</td><td data-id="esi">0</td><td data-id="gt">0</td><td data-id="others">0</td><td data-id="sum">0</td><td data-id="margin">0</td><td data-id="mw">0</td><td data-id="mt">0</td><td data-id="dividends">0</td>`;
+    table.appendChild(tr);
+  };
+
+}
+
+function setText(id, dataId, value) {
+  const el = document.querySelector(`#m${id} > td[data-id="${dataId}"`);
+  el.textContent = value.toFixed(2);
+}
+
+function onMetreChange(id, value) {
+  value = parseInt(value);
+  if (!value) return alert('Invalid number provided');
+  const values = calculate(id, value);
+  console.log(values);
+  setText(id, 'weaving', values.weaving);
+  setText(id, 'winding', values.winding);
+  setText(id, 'warping', values.warping);
+  setText(id, 'joining', values.joining);
+  setText(id, 'pf', values.pf);
+  setText(id, 'esi', values.esi);
+  setText(id, 'gt', values.gratuity);
+  setText(id, 'others', values.others);
+  setText(id, 'margin', values.margin);
+  setText(id, 'sum', values.sum);
+  setText(id, 'mw', values.mw);
+  setText(id, 'mt', values.mt);
+  setText(id, 'dividends', values.dividends);
+  window.updates[id] = values;
+};
+
+const formulas44 = {
+  weaving: 56.98,
+  winding: 17.81,
+  warping: 2.31,
+  joining: 2.03,
+  pf: 12,
+  esi: 3.25,
+  gratuity: 7,
+  others: 20.33
+};
+
+const formulas58 = {
+  weaving: 68.53,
+  winding: 20.66,
+  warping: 2.03,
+  joining: 2.59,
+  pf: 12,
+  esi: 3.25,
+  gratuity: 7,
+  others: 20.33
+};
+
+function calculate(id, value) {
+  function isValid(name, is) {
+    const work = w[name];
+    if (!work) return false;
+    if (is && work.workers_44.includes(id)) return true;
+    if (work.workers_58.includes(id)) return true;
+    return false;
+  };
+
+  let values = {
+    winding: 0,
+    weaving: 0,
+    warping: 0,
+    joining: 0,
+    pf: 0,
+    esi: 0,
+    gratuity: 0,
+    others: 0,
+    margin: 0,
+    sum: 0,
+    mw: 0,
+    mt: 0,
+    dividends: 0
+  };
+
+  Object.keys(w).map((name) => {
+    // 44 category
+    if (isValid(name, true)) {
+      values[name] += value * formulas44[name];
+      values.pf += formulas44.pf / 100 * values[name];
+      values.esi += formulas44.esi / 100 * values[name];
+      values.gratuity += formulas44.gratuity / 100 * values[name];
+      values.others += formulas44.others / 100 * values[name];
+      values.margin += 0;
+      values.sum += (values[name] + values.pf + values.esi + values.gratuity + values.others);
+    }
+
+    // 58 category
+    if (isValid(name)) {
+      values[name] += value * formulas58[name];
+      values.pf += formulas58.pf / 100 * values[name];
+      values.esi += formulas58.esi / 100 * values[name];
+      values.gratuity += formulas58.gratuity / 100 * values[name];
+      values.others += formulas58.others / 100 * values[name];
+      values.margin += 0;
+      values.sum += (values[name] + values.pf + values.esi + values.gratuity + values.others);
+    }
+      
+      if(name == 'weaving') {
+        values.margin += values.weaving * 3.96;
+        values.mw += values.weaving * 34;
+        values.mt += values.margin - values.mw;
+        values.dividends += values.margin + values.mt;
+      };
+  });
+
+  return values;
+};
