@@ -238,11 +238,11 @@ async function loadMetrePage(id) {
 
 function setText(id, dataId, value) {
   const el = document.querySelector(`#m${id} > td[data-id="${dataId}"`);
-  el.textContent = value.toFixed(2);
+  el.textContent = Math.trunc(value * 100) / 100;
 }
 
 function onMetreChange(id, value) {
-  value = parseInt(value);
+  value = Number(value);
   if (!value) return alert('Invalid number provided');
   const values = calculate(id, value);
   console.log(values);
@@ -285,6 +285,12 @@ const formulas58 = {
 };
 
 function calculate(id, value) {
+  let [totalMargin, totalSum] = Object.values(updates).filter(e => e.id !== id).reduce((prev, cur) => {
+    prev[0] = prev[0] + cur.input;
+    prev[1] = prev[1] + cur.sum;
+    return pre;
+  }, [value, 0]);
+  totalMargin = totalMargin * 3.96;
   function isValid(name, is) {
     const work = w[name];
     if (!work) return false;
@@ -294,6 +300,8 @@ function calculate(id, value) {
   };
 
   let values = {
+    id,
+    input: value,
     winding: 0,
     weaving: 0,
     warping: 0,
@@ -302,7 +310,7 @@ function calculate(id, value) {
     esi: 0,
     gratuity: 0,
     others: 0,
-    margin: 0,
+    margin: totalMargin,
     sum: 0,
     mw: 0,
     mt: 0,
@@ -317,7 +325,6 @@ function calculate(id, value) {
       values.esi += formulas44.esi / 100 * values[name];
       values.gratuity += formulas44.gratuity / 100 * values[name];
       values.others += formulas44.others / 100 * values[name];
-      values.margin += 0;
       values.sum += (values[name] + values.pf + values.esi + values.gratuity + values.others);
     }
 
@@ -328,17 +335,16 @@ function calculate(id, value) {
       values.esi += formulas58.esi / 100 * values[name];
       values.gratuity += formulas58.gratuity / 100 * values[name];
       values.others += formulas58.others / 100 * values[name];
-      values.margin += 0;
       values.sum += (values[name] + values.pf + values.esi + values.gratuity + values.others);
-    }
-      
-      if(name == 'weaving') {
-        values.margin += values.weaving * 3.96;
-        values.mw += values.weaving * 34;
-        values.mt += values.margin - values.mw;
-        values.dividends += values.margin + values.mt;
-      };
-  });
+    };
 
+    if (name == 'weaving') {
+      values.mw += value * 34;
+    };
+  });
+  
+  totalSum += values.sum;
+  values.mt = totalSum - values.mw;
+  values.dividends = totalMargin + values.mt;
   return values;
 };
