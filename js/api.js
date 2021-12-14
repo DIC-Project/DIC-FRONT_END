@@ -205,7 +205,8 @@ function loadTeamMembers() {
     });
 }
 
-function goToWorkPage(page, category = "44") {
+function goToWorkPage(page, category) {
+  category = category || (document.getElementById('44').checked ? '44' : '58');
   window.location.href = `${page}?team_id=${getQuery('team_id')}&category=${category}`;
 };
 
@@ -290,14 +291,14 @@ function calculate(id, value, name) {
   let [totalMargin, totalSum] = Object.values(updates).filter(e => e.id !== id).reduce((prev, cur) => {
     prev[0] = prev[0] + cur.input;
     prev[1] = prev[1] + cur.sum;
-    return pre;
+    return prev;
   }, [value, 0]);
   totalMargin = totalMargin * 3.96;
   function isValid(name, is) {
     const work = w[name];
     if (!work) return false;
     if (is && work.workers_44.includes(id)) return true;
-    if (work.workers_58.includes(id)) return true;
+    if (!is && work.workers_58.includes(id)) return true;
     return false;
   };
 
@@ -347,6 +348,7 @@ function calculate(id, value, name) {
   });
   
   totalSum += values.sum;
+  console.log(totalSum, values.sum);
   values.mt = totalSum - values.mw;
   values.dividends = totalMargin + values.mt;
   return values;
