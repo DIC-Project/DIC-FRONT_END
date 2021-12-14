@@ -1,78 +1,108 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DIC Project</title>
-    <!-- Stylesheet -->
-    <link rel="stylesheet" href="./styles/teamlist.css">
-    <link rel="stylesheet" href="./styles/addTo.css">
-    <link rel="stylesheet" href="./styles/addMetre.css">
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css" integrity="sha512-YWzhKL2whUzgiheMoBFwW8CKV4qpHQAEuvilg9FAn5VJUDwKZZxkJNuGM4XkWuk94WCrrwslk8yWNGmY1EduTA==" crossorigin="anonymous" referrerpolicy="no-referrer" /> 
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DIC Project</title>
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="./styles/teamlist.css">
+  <link rel="stylesheet" href="./styles/addTo.css">
+  <link rel="stylesheet" href="./styles/addMetre.css">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css" integrity="sha512-YWzhKL2whUzgiheMoBFwW8CKV4qpHQAEuvilg9FAn5VJUDwKZZxkJNuGM4XkWuk94WCrrwslk8yWNGmY1EduTA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
+
 <body>
-    <header>
-        <nav class="navbar">
-            <h1 class="logo">LOGO</h1>
-            <p class="user-signout">Welcome user, <span class="signout">sign out</span></p>
-        </nav>
-    </header>
-    <main class="main-sec">
-        <div class="cont-flex">
-            <div class="frame-head">
-                <h2 class="f-heading">Profomma <span class="inch">44'</span></h2>
-                <p class="category">Head</p>
-            </div>
-            <div class="data-frame">
-                <table id="dataTable" style="width:100%" class="data">
-                   
-                    <tr>
-                        <th>ID</th>
-                        <th>Name</th>
-                        <th>Metre</th>
-                        <th>Weaving</th>
-                        <th>Pern Winding</th>
-                        <th>Warping</th>
-                        <th>Joining</th>
-                        <th>PF</th>
-                        <th>ESI</th>
-                        <th>Gty</th>
-                        <th>Others</th>
-                        <th>Total Sum</th>
-                        <th>Margin</th>
-                        <th>Money for Weavers</th>
-                        <th>Money for Team</th>
-                        <th>Dividends</th>
-                        <th>Action</th>
-                    </tr>
-                </table>
-            </div>
-            <div class="bottom-nav">
-                <div class="left-dash">
-                    <i class="fas fa-long-arrow-alt-left"></i>
-                    <a class="dash" href="Staff_Dashboard.html"> Bact to Dashboard</a>
-                </div>
-                <div class="right-dash">
-                    <input onclick="submitCalculation()" type="button" class="view-btns add-view" value="Submit">
-                </div>
-            </div>
+  <header>
+    <nav class="navbar">
+      <h1 class="logo">LOGO</h1>
+      <p class="user-signout">Welcome user, <span class="signout">sign out</span></p>
+    </nav>
+  </header>
+  <main class="main-sec">
+    <div class="cont-flex">
+      <div class="frame-head">
+        <h2 class="f-heading">Profomma <span class="inch">44'</span></h2>
+        <p class="category">Head</p>
+      </div>
+      <div class="data-frame">
+        <table id="dataTable" style="width:100%" class="data">
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Metre</th>
+            <th>Weaving</th>
+            <th>Pern Winding</th>
+            <th>Warping</th>
+            <th>Joining</th>
+            <th>PF</th>
+            <th>ESI</th>
+            <th>Gty</th>
+            <th>Others</th>
+            <th>Total Sum</th>
+            <th>Margin</th>
+            <th>Money for Weavers</th>
+            <th>Money for Team</th>
+            <th>Dividends</th>
+            <th>Action</th>
+          </tr>
+        </table>
+      </div>
+      <div class="bottom-nav">
+        <div class="left-dash">
+          <i class="fas fa-long-arrow-alt-left"></i>
+          <a class="dash" href="Staff_Dashboard.html"> Bact to Dashboard</a>
         </div>
-        <div id="myModal" class="modal">
-            <div class="modal-content">
-              <input type="button" class="view-btns add-view" value="Final Submission">
-              <input type="button" class="view-btns add-view" value="Cancel">
-            </div>
-          </div>
-    </main>
-    <!-- Script -->
-    <script src="./js/api.js"></script>
-    <script src="./js/app.js"></script>
-    <script>
-      window.onload = function () {
-        loadMetrePage(getQuery('team_id'));
-      }
-    </script>
+        <div class="right-dash">
+          <input onclick="toggleModal()" type="button" class="view-btns add-view" value="Submit">
+        </div>
+      </div>
+    </div>
+    <div id="myModal" class="modal">
+      <div class="modal-content">
+        <input onclick="onMetreSubmit()" type="button" class="view-btns add-view" value="Final Submission">
+        <input onclick="toggleModal()" type="button" class="view-btns add-view" value="Cancel">
+      </div>
+    </div>
+  </main>
+  <!-- Script -->
+  <script src="./js/api.js"></script>
+  <script src="./js/app.js"></script>
+  <script src="https://unpkg.com/papaparse@5.3.1/papaparse.min.js"></script>
+  <script>
+    window.members = [];
+
+    function toggleModal() {
+      const modal = document.getElementById('myModal');
+      modal.style.display = modal.style.display === 'inline-block' ? 'none' : 'inline-block';
+    };
+
+    window.onload = function() {
+      loadMetrePage(getQuery('team_id'));
+    };
+
+    function exportToCsv() {
+      const data = window.members.map((item) => {
+        item = window.updates[item.id] || item;
+        item.money_for_team = item.mt;
+        item.money_for_weaving = item.mw;
+        delete item.team;
+        delete item.bank_account_info;
+        return item;
+      });
+      const csv = window.Papa.unparse(data, {
+        columns: ['id', 'name', 'pf', 'esi', 'gratuity', 'others', 'sum', 'margin', 'money_for_team', 'money_for_weaving', 'dividends']
+      });
+      const encodedUri = encodeURI("data:text/csv;charset=utf-8," + csv);
+      const link = document.createElement("a");
+      link.setAttribute("href", encodedUri);
+      link.setAttribute("download", "members.csv");
+      document.body.appendChild(link);
+      link.click();
+    };
+  </script>
 </body>
+
 </html>

@@ -215,6 +215,7 @@ function goToTeamList() {
 }
 
 async function loadMetrePage(id) {
+  window.members = [];
   window.w = {};
   window.updates = {};
   const [works, data] = await Promise.all([
@@ -227,10 +228,11 @@ async function loadMetrePage(id) {
     window.w[work.name] = work;
   };
   const table = document.getElementById('dataTable');
+  window.members = data;
   for (const member of data) {
     const tr = document.createElement('tr');
     tr.setAttribute('id', 'm' + member.id);
-    tr.innerHTML = `<td>${member.id}</td><td>${member.name}</td><td><input type="number" onchange="onMetreChange('${member.id}', this.value)"></td><td data-id="weaving">0</td><td data-id="winding">0</td><td data-id="warping">0</td><td data-id="joining">0</td><td data-id="pf">0</td><td data-id="esi">0</td><td data-id="gt">0</td><td data-id="others">0</td><td data-id="sum">0</td><td data-id="margin">0</td><td data-id="mw">0</td><td data-id="mt">0</td><td data-id="dividends">0</td>`;
+    tr.innerHTML = `<td>${member.id}</td><td>${member.name}</td><td><input type="number" value="${member.input || 0}" onchange="onMetreChange('${member.id}', this.value, '${member.name}')"></td><td data-id="weaving">${member.weaving || '0'}</td><td data-id="winding">${member.winding || 0}</td><td data-id="warping">${member.warping || 0}</td><td data-id="joining">${member.joining || 0}</td><td data-id="pf">${member.pf || 0}</td><td data-id="esi">${member.esi || 0}</td><td data-id="gt">${member.graduity || 0}</td><td data-id="others">${member.others || 0}</td><td data-id="sum">${member.sum || 0}</td><td data-id="margin">${member.margin || 0}</td><td data-id="mw">${member.mw || 0}</td><td data-id="mt">${member.mt || 0}</td><td data-id="dividends">${member.dividends || 0}</td>`;
     table.appendChild(tr);
   };
 
@@ -241,10 +243,10 @@ function setText(id, dataId, value) {
   el.textContent = Math.trunc(value * 100) / 100;
 }
 
-function onMetreChange(id, value) {
+function onMetreChange(id, value, name) {
   value = Number(value);
   if (!value) return alert('Invalid number provided');
-  const values = calculate(id, value);
+  const values = calculate(id, value, name);
   console.log(values);
   setText(id, 'weaving', values.weaving);
   setText(id, 'winding', values.winding);
@@ -284,7 +286,7 @@ const formulas58 = {
   others: 20.33
 };
 
-function calculate(id, value) {
+function calculate(id, value, name) {
   let [totalMargin, totalSum] = Object.values(updates).filter(e => e.id !== id).reduce((prev, cur) => {
     prev[0] = prev[0] + cur.input;
     prev[1] = prev[1] + cur.sum;
@@ -301,6 +303,7 @@ function calculate(id, value) {
 
   let values = {
     id,
+    name,
     input: value,
     winding: 0,
     weaving: 0,
@@ -347,4 +350,13 @@ function calculate(id, value) {
   values.mt = totalSum - values.mw;
   values.dividends = totalMargin + values.mt;
   return values;
+};
+
+function onMetreSubmit() {
+  exportToCsv()
+  request.put(`/users/update_team_member_bulk`, Object.values(window.updates))
+  .then((data) => {
+    console.log(data);
+    alert('Member updated');
+  })
 };
