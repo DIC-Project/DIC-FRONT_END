@@ -24,7 +24,7 @@
   <main class="main-sec">
     <div class="cont-flex">
       <div class="frame-head">
-        <h2 class="f-heading">Profomma <span class="inch">44'</span></h2>
+        <h2 class="f-heading">Profomma <span id="inch" class="inch">...</span></h2>
         <p class="category">Head</p>
       </div>
       <div class="data-frame">
@@ -33,10 +33,7 @@
             <th>ID</th>
             <th>Name</th>
             <th>Metre</th>
-            <th>Weaving</th>
-            <th>Pern Winding</th>
-            <th>Warping</th>
-            <th>Joining</th>
+            <th id="wName">...</th>
             <th>PF</th>
             <th>ESI</th>
             <th>Gty</th>
@@ -80,10 +77,14 @@
     };
 
     window.onload = function() {
+      document.getElementById('inch').innerHTML = getQuery('category');
+      document.getElementById('wName').textContent = getQuery('work').split('.')[0].slice(6);
       loadMetrePage(getQuery('team_id'));
     };
 
-    function exportToCsv() {
+    function exportToCsv() {function goToMetre() {
+      window.location.href = `addMetre.html?team_id=${getQuery('team_id')}&category=${document.getElementById('44').checked ? '44' : '58'}`;
+      };
       const data = window.members.map((item) => {
         item = window.updates[item.id] || item;
         item.money_for_team = item.mt;

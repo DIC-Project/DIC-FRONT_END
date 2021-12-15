@@ -216,8 +216,9 @@ function goToTeamList() {
 }
 
 async function loadMetrePage(id) {
+  window.category = getQuery('category');
   window.members = [];
-  window.w = {};
+  window.work = {};
   window.updates = {};
   const [works, data] = await Promise.all([
     request.get(`/users/get_works`)
@@ -225,15 +226,18 @@ async function loadMetrePage(id) {
   request.get(`/users/get_team_members/${id}`)
     .then(q => q.teamMembers)
   ]);
-  for (const work of works) {
-    window.w[work.name] = work;
-  };
+  console.log(getQuery('work'))
+  window.work = works.find(e => getQuery('work').toLowerCase().includes(e.name));
+  if (!work) return alert('Please create work before moving forward');
   const table = document.getElementById('dataTable');
   window.members = data;
   for (const member of data) {
+    if (category == '44' && !work.workers_44.includes(member.id)) continue;
+    if (category == '58' && !work.workers_58.includes(member.id)) continue;
     const tr = document.createElement('tr');
     tr.setAttribute('id', 'm' + member.id);
-    tr.innerHTML = `<td>${member.id}</td><td>${member.name}</td><td><input type="number" value="${member.input || 0}" onchange="onMetreChange('${member.id}', this.value, '${member.name}')"></td><td data-id="weaving">${member.weaving || '0'}</td><td data-id="winding">${member.winding || 0}</td><td data-id="warping">${member.warping || 0}</td><td data-id="joining">${member.joining || 0}</td><td data-id="pf">${member.pf || 0}</td><td data-id="esi">${member.esi || 0}</td><td data-id="gt">${member.graduity || 0}</td><td data-id="others">${member.others || 0}</td><td data-id="sum">${member.sum || 0}</td><td data-id="margin">${member.margin || 0}</td><td data-id="mw">${member.mw || 0}</td><td data-id="mt">${member.mt || 0}</td><td data-id="dividends">${member.dividends || 0}</td>`;
+    const v = member[work.name][category];
+    tr.innerHTML = `<td>${member.id}</td><td>${member.name}</td><td><input type="number" value="${v.input}" onchange="onMetreChange('${member.id}', this.value, '${member.name}')"></td><td data-id="${work.name}">${v[work.name]}</td><td data-id="pf">${v.pf}</td><td data-id="esi">${v.esi}</td><td data-id="gt">${v.gratuity}</td><td data-id="others">${v.others}</td><td data-id="sum">${v.sum}</td><td data-id="margin">${v.margin}</td><td data-id="mw">${v.mw}</td><td data-id="mt">${v.mt}</td><td data-id="dividends">${v.dividends}</td>`;
     table.appendChild(tr);
   };
 
@@ -246,13 +250,10 @@ function setText(id, dataId, value) {
 
 function onMetreChange(id, value, name) {
   value = Number(value);
-  if (!value) return alert('Invalid number provided');
+  if (typeof value != 'number') return alert('Invalid number provided');
   const values = calculate(id, value, name);
   console.log(values);
-  setText(id, 'weaving', values.weaving);
-  setText(id, 'winding', values.winding);
-  setText(id, 'warping', values.warping);
-  setText(id, 'joining', values.joining);
+  setText(id, work.name, values[work.name]);
   setText(id, 'pf', values.pf);
   setText(id, 'esi', values.esi);
   setText(id, 'gt', values.gratuity);
@@ -265,42 +266,37 @@ function onMetreChange(id, value, name) {
   window.updates[id] = values;
 };
 
-const formulas44 = {
-  weaving: 56.98,
-  winding: 17.81,
-  warping: 2.31,
-  joining: 2.03,
-  pf: 12,
-  esi: 3.25,
-  gratuity: 7,
-  others: 20.33
+const formulas = {
+  44: {
+    weaving: 56.98,
+    winding: 17.81,
+    warping: 2.31,
+    joining: 2.03,
+    pf: 12,
+    esi: 3.25,
+    gratuity: 7,
+    others: 20.33
+  },
+  58: {
+    weaving: 68.53,
+    winding: 20.66,
+    warping: 2.03,
+    joining: 2.59,
+    pf: 12,
+    esi: 3.25,
+    gratuity: 7,
+    others: 20.33
+  }
 };
 
-const formulas58 = {
-  weaving: 68.53,
-  winding: 20.66,
-  warping: 2.03,
-  joining: 2.59,
-  pf: 12,
-  esi: 3.25,
-  gratuity: 7,
-  others: 20.33
-};
-
-function calculate(id, value, name) {
+function calculate(id, value) {
+  const name = window.work.name;
   let [totalMargin, totalSum] = Object.values(updates).filter(e => e.id !== id).reduce((prev, cur) => {
     prev[0] = prev[0] + cur.input;
     prev[1] = prev[1] + cur.sum;
     return prev;
   }, [value, 0]);
   totalMargin = totalMargin * 3.96;
-  function isValid(name, is) {
-    const work = w[name];
-    if (!work) return false;
-    if (is && work.workers_44.includes(id)) return true;
-    if (!is && work.workers_58.includes(id)) return true;
-    return false;
-  };
 
   let values = {
     id,
@@ -321,44 +317,36 @@ function calculate(id, value, name) {
     dividends: 0
   };
 
-  Object.keys(w).map((name) => {
-    // 44 category
-    if (isValid(name, true)) {
-      values[name] += value * formulas44[name];
-      values.pf += formulas44.pf / 100 * values[name];
-      values.esi += formulas44.esi / 100 * values[name];
-      values.gratuity += formulas44.gratuity / 100 * values[name];
-      values.others += formulas44.others / 100 * values[name];
-      values.sum += (values[name] + values.pf + values.esi + values.gratuity + values.others);
-    }
 
-    // 58 category
-    if (isValid(name)) {
-      values[name] += value * formulas58[name];
-      values.pf += formulas58.pf / 100 * values[name];
-      values.esi += formulas58.esi / 100 * values[name];
-      values.gratuity += formulas58.gratuity / 100 * values[name];
-      values.others += formulas58.others / 100 * values[name];
-      values.sum += (values[name] + values.pf + values.esi + values.gratuity + values.others);
-    };
+  values[name] += value * formulas[category][name];
+  values.pf += formulas[category].pf / 100 * values[name];
+  values.esi += formulas[category].esi / 100 * values[name];
+  values.gratuity += formulas[category].gratuity / 100 * values[name];
+  values.others += formulas[category].others / 100 * values[name];
+  values.sum += (values[name] + values.pf + values.esi + values.gratuity + values.others);
+  if (name == 'weaving') {
+    values.mw += value * 34;
+  };
 
-    if (name == 'weaving') {
-      values.mw += value * 34;
-    };
-  });
-  
   totalSum += values.sum;
-  console.log(totalSum, values.sum);
   values.mt = totalSum - values.mw;
   values.dividends = totalMargin + values.mt;
   return values;
 };
 
-function onMetreSubmit() {
-  exportToCsv()
-  request.put(`/users/update_team_member_bulk`, Object.values(window.updates))
-  .then((data) => {
-    console.log(data);
-    alert('Member updated');
+async function onMetreSubmit() {
+  exportToCsv();
+  const data = await request.put(`/users/update_team_member_bulk`, {
+    work: work.name,
+    category,
+    data: Object.values(window.updates)
   })
+  console.log(data);
+  alert('Member updated');
+  toggleModal();
+
+};
+
+function goToMetre() {
+  window.location.href = `addMetre.html?work="${window.location.pathname}&team_id=${getQuery('team_id')}&category=${document.getElementById('44').checked ? '44' : '58'}`;
 };
