@@ -78,28 +78,29 @@
 
     window.onload = function() {
       document.getElementById('inch').innerHTML = getQuery('category');
-      document.getElementById('wName').textContent = getQuery('work').split('.')[0].slice(6);
+      document.getElementById('wName').textContent = getQuery('work').split('.')[0].slice(7);
       loadMetrePage(getQuery('team_id'));
     };
 
-    function exportToCsv() {function goToMetre() {
-      window.location.href = `addMetre.html?team_id=${getQuery('team_id')}&category=${document.getElementById('44').checked ? '44' : '58'}`;
+    function exportToCsv() {
+      function goToMetre() {
+        window.location.href = `addMetre.html?team_id=${getQuery('team_id')}&category=${document.getElementById('44').checked ? '44' : '58'}`;
       };
       const data = window.members.map((item) => {
-        item = window.updates[item.id] || item;
-        item.money_for_team = item.mt;
-        item.money_for_weaving = item.mw;
-        delete item.team;
-        delete item.bank_account_info;
-        return item;
+        let mData = window.updates[item.id] || item[work.name][category];
+        mData.id = item.id;
+        mData.name = item.name;
+        mData.money_for_team = mData.mt;
+        mData.money_for_weaving = mData.mw;
+        return mData;
       });
       const csv = window.Papa.unparse(data, {
-        columns: ['id', 'name', 'pf', 'esi', 'gratuity', 'others', 'sum', 'margin', 'money_for_team', 'money_for_weaving', 'dividends']
+        columns: ['id', 'name', work.name, 'pf', 'esi', 'gratuity', 'others', 'sum', 'margin', 'money_for_team', 'money_for_weaving', 'dividends']
       });
       const encodedUri = encodeURI("data:text/csv;charset=utf-8," + csv);
       const link = document.createElement("a");
       link.setAttribute("href", encodedUri);
-      link.setAttribute("download", "members.csv");
+      link.setAttribute("download", `${work.name + category}.csv`);
       document.body.appendChild(link);
       link.click();
     };

@@ -199,7 +199,7 @@ function loadTeamMembers() {
     .then(({ teamMembers: data }) => {
       for (const team of data) {
         const is = window.ids.includes(team.id);
-        html += `<tr><td><input id="${team.id}"  onclick="onTeamMemberClick(this.id, this.checked)" type="checkbox" ${is ? 'checked': 'null'}></td><td>${team.id}</td><td>${team.name}</td></tr>`;
+        html += `<tr><td><input id="${team.id}"  onclick="onTeamMemberClick(this.id, this.checked)" type="checkbox" ${is ? 'checked': 'null'}></td><td>${team.id}</td><td>${team.name}</td><td>${team.bank_account_info.bank_account_number}</td><td>${team.bank_account_info.bank_name}</td><td>${team.bank_account_info.bank_ifsc_code}</td><td>${team.bank_account_info.branch_name}</td></tr>`;
       };
       document.getElementById('dataTab').innerHTML = html;
     });
@@ -226,14 +226,15 @@ async function loadMetrePage(id) {
   request.get(`/users/get_team_members/${id}`)
     .then(q => q.teamMembers)
   ]);
-  console.log(getQuery('work'))
   window.work = works.find(e => getQuery('work').toLowerCase().includes(e.name));
   if (!work) return alert('Please create work before moving forward');
   const table = document.getElementById('dataTable');
-  window.members = data;
-  for (const member of data) {
-    if (category == '44' && !work.workers_44.includes(member.id)) continue;
-    if (category == '58' && !work.workers_58.includes(member.id)) continue;
+  window.members = data.filter(e => {
+    if (category == '44' && work.workers_44.includes(e.id)) return true;
+    if (category == '58' && work.workers_58.includes(e.id)) return true;
+  });
+
+  for (const member of members) {
     const tr = document.createElement('tr');
     tr.setAttribute('id', 'm' + member.id);
     const v = member[work.name][category];
@@ -335,18 +336,91 @@ function calculate(id, value) {
 };
 
 async function onMetreSubmit() {
-  exportToCsv();
   const data = await request.put(`/users/update_team_member_bulk`, {
     work: work.name,
     category,
     data: Object.values(window.updates)
-  })
-  console.log(data);
-  alert('Member updated');
+  });
+  exportToCsv();
   toggleModal();
-
+  goToNextPage();
 };
 
 function goToMetre() {
   window.location.href = `addMetre.html?work="${window.location.pathname}&team_id=${getQuery('team_id')}&category=${document.getElementById('44').checked ? '44' : '58'}`;
 };
+
+function goToNextPage() {
+  let current;
+  let next;
+  switch (work.name) {
+    case "weaving":
+      current = 'addToWeaving.html'
+      next = 'addToWinding.html'
+      break;
+    case "winding":
+      current = 'addToWinding.html'
+      next = 'addToWarping.html';
+      break;
+    case "warping":
+      current = 'addToWarping.html'
+      next = 'addToJoining.html'
+    case "joining":
+      current = 'addToJoining.html'
+  };
+  if (category == '44') return goToWorkPage(current, '58');
+  if (!next) return;
+  goToWorkPage(next, '44');
+};
+
+function searchTable(id, text, row = 0) {
+  const table = document.getElementById(id);
+  if (!table) return;
+  const tr = table.getElementsByTagName('tr');
+
+  for (i = 0; i < tr.length; i++) {
+    let td = tr[i].getElementsByTagName('td')[row];
+    if (td) {
+      if ((td.textContent || td.innerText).toLowerCase().indexOf(text.toLowerCase()) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }
+  }
+}
+
+function sortTable(id, row = 0) {
+  let table, rows, switching, i, x, y, shouldSwitch;
+  table = document.getElementById(id);
+  switching = true;
+  /* Make a loop that will continue until
+  no switching has been done: */
+  while (switching) {
+    // Start by saying: no switching is done:
+    switching = false;
+    rows = table.rows;
+    /* Loop through all table rows (except the
+    first, which contains table headers): */
+    for (i = 1; i < (rows.length - 1); i++) {
+      // Start by saying there should be no switching:
+      shouldSwitch = false;
+      /* Get the two elements you want to compare,
+      one from current row and one from the next: */
+      x = rows[i].getElementsByTagName("td")[row];
+      y = rows[i + 1].getElementsByTagName("td")[row];
+      // Check if the two rows should switch place:
+      if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+        // If so, mark as a switch and break the loop:
+        shouldSwitch = true;
+        break;
+      }
+    }
+    if (shouldSwitch) {
+      /* If a switch has been marked, make the switch
+      and mark that a switch has been done: */
+      rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+      switching = true;
+    }
+  }
+}

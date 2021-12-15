@@ -22,11 +22,11 @@
         <div class="container">
             <div class="right-pos">
                 <input type="button" class="view-btns add-view" value="Add New">
-                <select name="" id="" class="view-btns add-view">
-                    <option value="sortbyname">Sort By Name</option>
-                    <option value="sortbyid">Sort By ID</option>
+                <select onchange="sortTable('dataTab', Number(this.value))" name="" class="view-btns add-view">
+                    <option value="2">Sort By Name</option>
+                    <option selected value="1">Sort By ID</option>
                   </select>
-                <input type="search" class="view-btns add-view" placeholder="Search team member">
+                <input onkeyup="searchTable('dataTab', this.value, 2)" onsearch="searchTable('dataTab', this.value, 2)" type="search" class="view-btns add-view" placeholder="Search team member">
             </div>
         </div>
 
