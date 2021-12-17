@@ -189,6 +189,7 @@ td a:hover{
 	font-family: Roboto;
 	left: 170px;
 	width: 1020px;
+	overflow: auto;
 	height: 600px;
 	border: 1px solid #0075FF;
 	background: #D0E6FF;
