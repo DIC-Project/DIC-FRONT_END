@@ -17,7 +17,7 @@
 	border-bottom: 2px solid;
 	left: 0px;
 	right: 0px;
-	width: 100%;
+	width: 84.2rem;
 
 }
 
@@ -56,7 +56,8 @@
 .content #searchbar{
 	position: absolute;
 	width: 260px;
-	height: 35px;
+	height: 38px;
+	font-size: 16px;
 	left: 1000px;
 	top: 105px;
 	padding: 4px 0px 4px 8px;
@@ -65,7 +66,6 @@
 	border: 0px;
 	box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.2), 0 4px 8px 0 rgba(0, 0, 0, 0.19);
 	background: #EAEAEA;
-	border-radius: 10px;
 }
 
 .content #search{
@@ -109,7 +109,6 @@
 	left: 218px;
 	top: 170px;
 	background-color: #EAEAEA;
-	border-radius: 15px;
 	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
@@ -152,31 +151,28 @@ td a:hover{
 	text-decoration: underline;
 }
 
-#addnew_team{
+#bottom-nav{
 	position: absolute;
-	width: 185px;
 	height: 50px;
-	left: 1100px;
+	padding-bottom: 20px;
+	width: 79em;
 	top: 850px;
+}
+
+#addnew_team{
+	width: 175px;
+	height: 50px;
 	font-size: 16px;
 	background: #a9d0fc;
 	border-radius: 10px;
 	border: 0px;
 	color: #4D4D4D;
-	padding-left: 10px;
+	float: right;
 }
 
 #addnew_team:hover{
 	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 	cursor: pointer;
-}
-
-
-#team_icon{
-	position: absolute;
-	top: 865px;
-	left: 1110px;
-	color: #4D4D4D;
 }
 
 
@@ -223,7 +219,7 @@ td a:hover{
 } 
 
 #Popup_addteam{
-	position: absolute;
+	position: fixed;
 	width: 155px;
 	height: 40px;
 	left: 750px;
@@ -240,7 +236,7 @@ td a:hover{
 }
 
 #Popup_cancel{
-	position: absolute;
+	position: fixed;
 	width: 155px;
 	height: 40px;
 	left: 550px;
