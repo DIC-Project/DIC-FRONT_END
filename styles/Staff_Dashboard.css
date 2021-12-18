@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap');
+
 .body{
 	position: relative;
 	width: 1440px;
@@ -11,7 +13,7 @@
 
 .nav{
 	position: absolute;
-	height: 40px;
+	min-height: 10vh;
 	border-bottom: 2px solid;
 	left: 0px;
 	right: 0px;
@@ -24,37 +26,31 @@
 	font-weight: bold;
 	font-size: 24px;
 	line-height: 28px;
+	padding: 10px 0px 10px 50px;
+	width: 50%;
+	display: inline-block;
 
-	position: absolute;
-	width: 48px;
-	height: 28px;
-	left: 70px;
-	top: 10px;
 }
 
 .welcome{
-	position: absolute;
 	font-style: normal;
 	font-weight: 400;
-	font-size: 15px;
-	line-height: 21px;
+	font-size: 18px;
+	float: right;
+	padding-right: 15px;
 
-	padding: 0px;
-	top: 20px;
-	left: 85%;
-	width: 187px;
-	line-height: 21px;
+	margin-top: 20px;
 
 }
 
 .welcome #signout{
 	text-decoration: none;
-
 	color: #0075FF;
 }
 
 .welcome #signout:hover{
 	text-decoration: underline;
+	cursor: pointer;
 }
 
 .content #searchbar{
@@ -62,7 +58,7 @@
 	width: 260px;
 	height: 35px;
 	left: 1000px;
-	top: 60px;
+	top: 105px;
 	padding: 4px 0px 4px 8px;
 	color: #4D4D4D;
 
@@ -76,22 +72,20 @@
 	position: absolute;
 	width: 24px;
 	height: 24px;
-	left: 1235px;
-	top: 72px;
+	left: 1230px;
+	top: 115px;
 	color: #707070;
 }
 
-.content #search:hover{
-	cursor: pointer;
-}
 
 .content #dashboard_button{
 	position: absolute;
 	width: 110px;
 	height: 50px;
 	left: 50px;
-	top: 130px;
+	top: 180px;
 	border: 0px;
+	font-size: 15px;
 	color: #ffff;
 	cursor: pointer;
 	
@@ -109,10 +103,11 @@
 
 .teamlist{
 	position: absolute;
-	width: 1040px;
-	height: 450px;
+	width: 1050px;
+	height: 600px;
+	overflow: auto;
 	left: 218px;
-	top: 110px;
+	top: 170px;
 	background-color: #EAEAEA;
 	border-radius: 15px;
 	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
@@ -129,7 +124,7 @@ table tr select{
 
 tr{
 	text-align: center;
-	font-size: 14px;
+	font-size: 16px;
 	line-height: 20px;
 	font-style: normal;
 	font-weight: normal;
@@ -150,7 +145,7 @@ td{
 td a{
 	text-decoration: none;
 	color: #0075FF;
-	font-size: 14px;
+	font-size: 16px;
 }
 
 td a:hover{
@@ -159,10 +154,11 @@ td a:hover{
 
 #addnew_team{
 	position: absolute;
-	width: 155px;
-	height: 40px;
+	width: 185px;
+	height: 50px;
 	left: 1100px;
-	top: 570px;
+	top: 850px;
+	font-size: 16px;
 	background: #a9d0fc;
 	border-radius: 10px;
 	border: 0px;
@@ -178,7 +174,7 @@ td a:hover{
 
 #team_icon{
 	position: absolute;
-	top: 583px;
+	top: 865px;
 	left: 1110px;
 	color: #4D4D4D;
 }
@@ -188,6 +184,7 @@ td a:hover{
 	position: absolute;
 	font-family: Roboto;
 	left: 170px;
+	top: 250px;
 	width: 1020px;
 	overflow: auto;
 	height: 600px;
