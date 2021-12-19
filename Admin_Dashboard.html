@@ -34,60 +34,77 @@
 						<th>Category</th>
 						<th>Restriction</th>
 						<th>Rate</th>
-						<th>ESI</th>
-						<th>Bonus</th>
 						<th>PF</th>
-						<th>Gratuity</th>
+						<th>ESI</th>
+						<th>Gty</th>
+						<th>Others</th>
 					</tr>
 					<tr>
 						<td>01</td>
 						<td>Weaving</td>
 						<td>XYZ SAMPLE</td>
-						<td>750</td>
-						<td><input type="number" name="" value="250" id="table_input"></td>
-						<td><input type="number" name="" id="table_input"></td>
-						<td><input type="number" name="" value="" id="table_input"></td>
-						<td><input type="number" name="" value="" id="table_input"></td>
+						<td><input type="number" name="" value="56.98" class="table_input" readonly></td>
+						<td><input type="number" name="" value="12" class="table_input" readonly></td>
+						<td><input type="number" name="" value="3.25" class="table_input" readonly></td>
+						<td><input type="number" name="" value="7" class="table_input" readonly></td>
+						<td><input type="number" name="" value="20.33" class="table_input" readonly></td>
 					</tr>
 					<tr>
 						<td>02</td>
-						<td>Pern</td>
+						<td>Warping</td>
 						<td>XYZ SAMPLE</td>
-						<td>400</td>
-						<td><input type="number" name="" value="250" id="table_input"></td>
-						<td><input type="number" name="" id="table_input"></td>
-						<td><input type="number" name="" value="" id="table_input"></td>
-						<td><input type="number" name="" value="" id="table_input"></td>
+						<td><input type="number" name="" value="7.81" id="table_input" class="table_input" readonly></td>
+						<td><input type="number" name="" value="12" id="table_input" class="table_input" readonly></td>
+						<td><input type="number" name="" value="3.25" id="table_input" class="table_input" readonly></td>
+						<td><input type="number" name="" value="7" id="table_input" class="table_input" readonly></td>
+						<td><input type="number" name="" value="20.33" id="table_input" class="table_input" readonly></td>
 					</tr>
 					<tr>
 						<td>03</td>
-						<td>Wrapping</td>
+						<td>Pern Winding</td>
 						<td>XYZ SAMPLE</td>
-						<td>250</td>
-						<td><input type="number" name="" value="250" id="table_input"></td>
-						<td><input type="number" name="" id="table_input"></td>
-						<td><input type="number" name="" value="" id="table_input"></td>
-						<td><input type="number" name="" value="" id="table_input"></td>
+						<td><input type="number" name="" value="2.31" id="table_input" class="table_input" readonly></td>
+						<td><input type="number" name="" value="12" id="table_input" class="table_input" readonly></td>
+						<td><input type="number" name="" value="3.25" id="table_input" class="table_input" readonly></td>
+						<td><input type="number" name="" value="7" id="table_input" class="table_input" readonly></td>
+						<td><input type="number" name="" value="20.33" id="table_input" class="table_input" readonly></td>
 					</tr>
 					<tr>
 						<td>04</td>
 						<td>Joining</td>
 						<td>XYZ SAMPLE</td>
-						<td>150</td>
-						<td><input type="number" name="" value="250" id="table_input"></td>
-						<td><input type="number" name="" id="table_input"></td>
-						<td><input type="number" name="" value="" id="table_input"></td>
-						<td><input type="number" name="" value="" id="table_input"></td>
+						<td><input type="number" name="" value="2.03" id="table_input" class="table_input" readonly></td>
+						<td><input type="number" name="" value="12" id="table_input" class="table_input" readonly></td>
+						<td><input type="number" name="" value="3.25" id="table_input" class="table_input" readonly></td>
+						<td><input type="number" name="" value="7" id="table_input" class="table_input" readonly></td>
+						<td><input type="number" name="" value="20.33" id="table_input" class="table_input" readonly></td>
 					</tr>
 				</table>
 			</div>
 			<div class="buttons">
-				<button id="Admin_edit">Edit</button>
-				<button id="Admin_Dashboard_save">Save</button>
+				<button id="Admin_edit" onclick="edit()">Edit</button>
+				<button id="Admin_Dashboard_save" onclick="save()">Save</button>
 				<button id="Admin_Dashboard_submit">Submit</button>
 			</div>
 		</div>
 	</div>
+
+	<script>
+		var x=document.getElementsByClassName("table_input")
+
+		function edit() {
+			for (i=0;i<20; i++){
+				x[i].readOnly = false;
+			}
+
+		}
+
+		function save() {
+			for (i=0;i<20; i++){
+				x[i].readOnly = true;
+			}
+		}
+	</script>
 </body>
 
 </html>

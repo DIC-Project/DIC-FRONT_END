@@ -159,6 +159,12 @@ td a:hover{
 	text-decoration: underline;
 }
 
+.table_input{
+	width: 70px;
+	text-align: center;
+	padding: 2px 0px 2px 5px;
+}
+
 table #table_input{
 	width: 70px;
 	padding: 2px 0px 2px 5px;
