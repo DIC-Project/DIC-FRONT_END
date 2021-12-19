@@ -62,6 +62,7 @@
 	top: 105px;
 	padding: 4px 0px 4px 8px;
 	color: #4D4D4D;
+	outline: none;
 
 	border: 0px;
 	box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.2), 0 4px 8px 0 rgba(0, 0, 0, 0.19);

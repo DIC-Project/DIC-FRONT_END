@@ -147,28 +147,18 @@ th{
 
 td{
 	padding: 0px 20px 15px 3px;
+	font-size: 16px;
 }
 
-td a{
-	text-decoration: none;
-	color: #0075FF;
-	font-size: 14px;
-}
-
-td a:hover{
-	text-decoration: underline;
-}
 
 .table_input{
 	width: 70px;
+	height: 20px;
+	font-size: 16px;
+	color: #494949;
 	text-align: center;
-	padding: 2px 0px 2px 5px;
-}
-
-table #table_input{
-	width: 70px;
-	padding: 2px 0px 2px 5px;
-	text-align: center;
+	padding: 3px 0px 3px 5px;
+	outline: none;
 }
 
 .buttons{
