@@ -1,26 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet" type="text/css" href="styles/Admin_Dashboard.css">
 	<title>Admin Dashboard</title>
 </head>
+
 <body>
-	<header>
-		<div class="navbar">
-			<div class="logo">Logo</div>
-			<div class="welcome">Welcome Admin, <a href="AdminLogin.html" id="signout">Signout</a></div>
-		</div>
-		<div class="main">
+	<div class="main">
+		<header>
+			<div class="navbar">
+				<div class="logo">LOGO</div>
+				<div class="welcome">Welcome Admin, <a href="AdminLogin.html" id="signout">Signout</a></div>
+			</div>
+		</header>
+		<div class="container">
 			<a href=""><button id="Update_pricing">Update Pricing</button></a>
 			<a href="Staff_Dashboard.html"><button id="dashboard_button">Dashboard</button></a>
-			<label class="label44">
-				<input type="radio" id="forty" name="size" value="44" checked="checked">44&#8243
-			</label>
-			<label class="label58">
-				<input type="radio" id="fifty" name="size" value="58">58&#8243
-			</label>
+			<div class="radio">
+				<label class="radio-label">
+					<input type="radio" id="forty" name="size" value="44" checked="checked">44&#8243
+				</label>
+				<label class="radio-label">
+					<input type="radio" id="fifty" name="size" value="58">58&#8243
+				</label>
+			</div>
 			<div class="teamlist">
 				<table id="Team_table">
 					<tr>
@@ -38,47 +44,50 @@
 						<td>Weaving</td>
 						<td>XYZ SAMPLE</td>
 						<td>750</td>
-						<td><input type="text" name="" value="250" id="table_input"></td>
-						<td><input type="text" name="" id="table_input"></td>
-						<td><input type="text" name="" value="" id="table_input"></td>
-						<td><input type="text" name="" value="" id="table_input"></td>
+						<td><input type="number" name="" value="250" id="table_input"></td>
+						<td><input type="number" name="" id="table_input"></td>
+						<td><input type="number" name="" value="" id="table_input"></td>
+						<td><input type="number" name="" value="" id="table_input"></td>
 					</tr>
 					<tr>
 						<td>02</td>
 						<td>Pern</td>
 						<td>XYZ SAMPLE</td>
 						<td>400</td>
-						<td><input type="text" name="" value="250" id="table_input"></td>
-						<td><input type="text" name="" id="table_input"></td>
-						<td><input type="text" name="" value="" id="table_input"></td>
-						<td><input type="text" name="" value="" id="table_input"></td>
+						<td><input type="number" name="" value="250" id="table_input"></td>
+						<td><input type="number" name="" id="table_input"></td>
+						<td><input type="number" name="" value="" id="table_input"></td>
+						<td><input type="number" name="" value="" id="table_input"></td>
 					</tr>
 					<tr>
 						<td>03</td>
 						<td>Wrapping</td>
 						<td>XYZ SAMPLE</td>
 						<td>250</td>
-						<td><input type="text" name="" value="250" id="table_input"></td>
-						<td><input type="text" name="" id="table_input"></td>
-						<td><input type="text" name="" value="" id="table_input"></td>
-						<td><input type="text" name="" value="" id="table_input"></td>
+						<td><input type="number" name="" value="250" id="table_input"></td>
+						<td><input type="number" name="" id="table_input"></td>
+						<td><input type="number" name="" value="" id="table_input"></td>
+						<td><input type="number" name="" value="" id="table_input"></td>
 					</tr>
 					<tr>
 						<td>04</td>
 						<td>Joining</td>
 						<td>XYZ SAMPLE</td>
 						<td>150</td>
-						<td><input type="text" name="" value="250" id="table_input"></td>
-						<td><input type="text" name="" id="table_input"></td>
-						<td><input type="text" name="" value="" id="table_input"></td>
-						<td><input type="text" name="" value="" id="table_input"></td>
+						<td><input type="number" name="" value="250" id="table_input"></td>
+						<td><input type="number" name="" id="table_input"></td>
+						<td><input type="number" name="" value="" id="table_input"></td>
+						<td><input type="number" name="" value="" id="table_input"></td>
 					</tr>
 				</table>
 			</div>
-			<button id="Admin_Dashboard_save">Save</button>
-			<button id="Admin_Dashboard_submit">Submit</button>
-			<button id="Admin_edit">Edit</button>
+			<div class="buttons">
+				<button id="Admin_edit">Edit</button>
+				<button id="Admin_Dashboard_save">Save</button>
+				<button id="Admin_Dashboard_submit">Submit</button>
+			</div>
 		</div>
-	</header>
+	</div>
 </body>
+
 </html>

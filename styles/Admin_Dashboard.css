@@ -1,15 +1,20 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap');
+
 .body{
 	position: relative;
 }
 
-.navbar{
-	position:absolute;
+.main{
 	font-family: 'Roboto', sans-serif;
+}
+
+.navbar{
+	position: absolute;
+	min-height: 10vh;
 	border-bottom: 2px solid;
-	width: 100%;
-	height: 50px;
 	left: 0px;
 	right: 0px;
+	width: 84.2rem;
 }
 
 .logo{
@@ -17,26 +22,19 @@
 	font-weight: bold;
 	font-size: 24px;
 	line-height: 28px;
-
-	position: absolute;
-	width: 48px;
-	height: 28px;
-	left: 100px;
-	top: 20px;
+	padding: 10px 0px 10px 50px;
+	width: auto;
+	display: inline-block;
 }
 
 .welcome{
-	font-family: 'Roboto', sans-serif;
 	font-style: normal;
 	font-weight: 400;
-	font-size: 15px;
-	line-height: 21px;
+	font-size: 18px;
+	float: right;
+	padding-right: 15px;
 
-	position: absolute;
-	width: 170px;
-	height: 21px;
-	left: 87%;
-	top: 30px;
+	margin-top: 20px;
 }
 
 .welcome #signout{
@@ -49,77 +47,66 @@
 	text-decoration: underline;
 }
 
-.main {
-	font-family: 'Roboto', sans-serif;
+.container{
+	font-size: 16px;
 }
 
-.main .label44{
+.radio{
 	position: absolute;
-	top: 75px;
-	left: 85%;
-	display: block;
-
+	top: 100px;
+	width: auto;
+	left: 70rem;
+	display: inline-block;
 }
 
-.main #forty{
+.radio-label{
 	cursor: pointer;
-
+	display: inline-block;	
 }
 
-.main .label58{
-	position: absolute;
-	top: 75px;
-	left: 90%;
-	display: block;
-
-}
-
-.main #fifty{
-	cursor: pointer;
-
-}
-
-.main #dashboard_button{
+#dashboard_button{
 	position: absolute;
 	width: 110px;
 	height: 50px;
 	left: 50px;
-	top: 200px;
+	top: 230px;
 	border: 0px;
 	color:#4D4D4D;
 	cursor: pointer;
+	font-size: 16px;
 
 	background: #D0E6FF;
 	border-radius: 10px;
 }
 
-.main #dashboard_button:hover{
+#dashboard_button:hover{
 	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
-.main #dashboard_button a{
+#dashboard_button a{
 	text-decoration: none;
 }
 
-.main #Update_pricing{
+#Update_pricing{
 	position: absolute;
 	width: 110px;
 	height: 50px;
 	left: 50px;
-	top: 120px;
+	top: 150px;
 	border: 0px;
 	color: #ffff;
 	cursor: pointer;
+	font-size: 15px;
 	
 	background: #0075FF;
 	border-radius: 10px;
 }
 
-.main #Update_pricing a{
+#Update_pricing a{
 	text-decoration: none;
 }
 
-.main #Update_pricing:hover{
+#Update_pricing:hover{
 	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
@@ -128,15 +115,15 @@
 	width: 1040px;
 	height: 450px;
 	left: 218px;
-	top: 110px;
+	top: 150px;
 	background-color: #EAEAEA;
-	border-radius: 15px;
-	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+	
 }
 
 table{
 	padding: 30px;
 	font-family: 'Roboto', sans-serif;
+	font-size: 16px;
 }
 
 table tr select{
@@ -145,7 +132,6 @@ table tr select{
 
 tr{
 	text-align: center;
-	font-size: 14px;
 	line-height: 20px;
 	font-style: normal;
 	font-weight: normal;
@@ -179,17 +165,47 @@ table #table_input{
 	text-align: center;
 }
 
-#Admin_Dashboard_save{
+.buttons{
 	position: absolute;
+	top: 650px;
+	left: 220px;
+	width: auto;
+	padding-bottom: 30px;
+}
+
+#Admin_edit{
+	
 	width: 105px;
 	height: 40px;
-	left: 1025px;
-	top: 570px;
 	background: #a9d0fc;
 	border-radius: 10px;
 	border: 0px;
 	color: #4D4D4D;
 	cursor: pointer;
+	font-size: 16px;
+}
+
+#Admin_edit:hover{
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+	cursor: pointer;
+}
+
+#Admin_edit a{
+	text-decoration: none;
+}
+
+
+#Admin_Dashboard_save{
+	
+	width: 105px;
+	height: 40px;
+	background: #a9d0fc;
+	border-radius: 10px;
+	border: 0px;
+	margin-left: 43rem;
+	color: #4D4D4D;
+	cursor: pointer;
+	font-size: 16px;
 }
 
 #Admin_Dashboard_save:hover{
@@ -202,16 +218,16 @@ table #table_input{
 
 
 #Admin_Dashboard_submit{
-	position: absolute;
+	
 	width: 105px;
 	height: 40px;
-	left: 1155px;
-	top: 570px;
 	background: #a9d0fc;
 	border-radius: 10px;
 	border: 0px;
+	margin-left: 1.5rem;
 	color: #4D4D4D;
 	cursor: pointer;
+	font-size: 16px;
 }
 
 #Admin_Dashboard_submit:hover{
@@ -219,28 +235,5 @@ table #table_input{
 }
 
 #Admin_Dashboard_submit a{
-	text-decoration: none;
-}
-
-
-#Admin_edit{
-	position: absolute;
-	width: 105px;
-	height: 40px;
-	left: 250px;
-	top: 570px;
-	background: #a9d0fc;
-	border-radius: 10px;
-	border: 0px;
-	color: #4D4D4D;
-	cursor: pointer;
-}
-
-#Admin_edit:hover{
-	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-	cursor: pointer;
-}
-
-#Admin_edit a{
 	text-decoration: none;
 }
