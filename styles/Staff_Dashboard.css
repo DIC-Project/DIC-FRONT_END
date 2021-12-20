@@ -179,11 +179,11 @@ td a:hover{
 .AddTeam_popup{
 	position: absolute;
 	font-family: Roboto;
-	left: 170px;
-	top: 250px;
-	width: 1020px;
+	left: 220px;
+	top: 300px;
+	width: 1040px;
 	overflow: auto;
-	height: 600px;
+	height: 500px;
 	border: 1px solid #0075FF;
 	background: #D0E6FF;
 	border-radius: 20px;
@@ -199,7 +199,7 @@ td a:hover{
 
 .AddTeam_popup tr{
 	text-align: center;
-	font-size: 14px;
+	font-size: 16px;
 }
 
 .AddTeam_popup th{
@@ -213,17 +213,19 @@ td a:hover{
 .AddTeam_popup input{
 	border-radius: 5px;
 	border: 1px solid #0075FF;
+	outline: none;
 	height: 25px;
 	padding-left: 7px;
 
 } 
 
 #Popup_addteam{
-	position: fixed;
+	position: absolute;
+	font-size: 16px;
 	width: 155px;
 	height: 40px;
 	left: 750px;
-	top: 490px;
+	top: 390px;
 	background: #0075FF;
 	border-radius: 10px;
 	color: #ffff;
@@ -236,11 +238,12 @@ td a:hover{
 }
 
 #Popup_cancel{
-	position: fixed;
+	position: absolute;
+	font-size: 16px;
 	width: 155px;
 	height: 40px;
 	left: 550px;
-	top: 490px;
+	top: 390px;
 	background: #0075FF;
 	border-radius: 10px;
 	color: #ffff;
