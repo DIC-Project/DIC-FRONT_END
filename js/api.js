@@ -1,5 +1,26 @@
 const base_url = 'https://random-api1.herokuapp.com/dic_2021/api';
 
+const loading = {
+  start: function() {
+    document.body.insertAdjacentHTML('beforeend', '<div id="loading"></div>');
+  },
+  stop: function() {
+    let div = document.getElementById("loading");
+    if(!div) return;
+    div.remove(div);
+  }
+};
+
+addStyle()
+//loading.start();
+
+function addStyle() {
+  const css = "#loading { margin: -25px 0 0 -25px;position: absolute;top: 50%;left:50%; border: 16px solid #f3f3f3;border-radius: 50%;border-top: 16px solid #3498db;width: 120px; height: 120px; -webkit-animation: spin 2s linear infinite;animation: spin 2s linear infinite; } @-webkit-keyframes spin { 0% { -webkit-transform: rotate(0deg); } 100% { -webkit-transform: rotate(360deg); }";
+  const style = document.createElement('style');
+  document.head.appendChild(style);
+  style.type = "text/css";
+  style.appendChild(document.createTextNode(css));
+};
 
 async function callApi(method = 'get', path, data) {
   const token = localStorage.getItem('token');
@@ -88,13 +109,19 @@ const appendTeams = (teams) => {
     row.insertCell(1).innerHTML = team.name;
     row.insertCell(2).innerHTML = team.location;
     row.insertCell(3).innerHTML = team.contact;
-    row.insertCell(4).innerHTML = '<select><input type="Month" name="" value="2021-11"></select>';
+    row.insertCell(4).innerHTML = `<input type="month" value="${window.currentMonth}" onchange="window.currentMonth=this.value">`;
     /**modify*/
-    row.insertCell(5).innerHTML = `<a href="addToWeaving.html?team_id=${team.id}">SELECT</a>`;
+    row.insertCell(5).innerHTML = `<a onclick="onSelectTeam('${team.id}')">SELECT</a>`;
   }
 };
 
+function onSelectTeam(id) {
+  window.location.href = `addToWeaving.html?team_id=${id}&month=${window.currentMonth}`;
+};
+
 function getTeams() {
+  const date = new Date();
+  window.currentMonth = `${date.getFullYear()}-${date.getMonth()+1}`;
   request.get('/users/get_teams')
     .then((data) => {
       appendTeams(data.teams);
@@ -117,7 +144,13 @@ const onClick = (id) => {
 
 };
 
+const monthNames = ["January", "February", "March", "April", "May", "June",
+  "July", "August", "September", "October", "November", "December"
+];
+
 async function loadWorkPage(workName) {
+ const dateObj = new Date(getQuery('month'));
+ document.getElementById('month').innerHTML = `${monthNames[dateObj.getMonth()]} ${dateObj.getFullYear()}`;
   const header = "<tr><th>ID</th><th>Name</th></tr>";
   const table = document.getElementById("dataTable");
   const category = getQuery('category');
@@ -207,7 +240,7 @@ function loadTeamMembers() {
 
 function goToWorkPage(page, category) {
   category = category || (document.getElementById('44').checked ? '44' : '58');
-  window.location.href = `${page}?team_id=${getQuery('team_id')}&category=${category}`;
+  window.location.href = `${page}?team_id=${getQuery('team_id')}&category=${category}&month=${getQuery('month')}`;
 };
 
 function goToTeamList() {
@@ -233,12 +266,13 @@ async function loadMetrePage(id) {
     if (category == '44' && work.workers_44.includes(e.id)) return true;
     if (category == '58' && work.workers_58.includes(e.id)) return true;
   });
-
+  
   for (const member of members) {
+    const wage = member.wages.find((item) => item.monthYear === getQuery('month'));
     const tr = document.createElement('tr');
     tr.setAttribute('id', 'm' + member.id);
-    const v = member[work.name][category];
-    tr.innerHTML = `<td>${member.id}</td><td>${member.name}</td><td><input type="number" value="${v.input}" onchange="onMetreChange('${member.id}', this.value, '${member.name}')"></td><td data-id="${work.name}">${v[work.name]}</td><td data-id="pf">${v.pf}</td><td data-id="esi">${v.esi}</td><td data-id="gt">${v.gratuity}</td><td data-id="others">${v.others}</td><td data-id="sum">${v.sum}</td><td data-id="margin">${v.margin}</td><td data-id="mw">${v.mw}</td><td data-id="mt">${v.mt}</td><td data-id="dividends">${v.dividends}</td>`;
+    const get = (key) => (wage && wage[work.name][category][key]) || 0;
+    tr.innerHTML = `<td>${member.id}</td><td>${member.name}</td><td><input type="number" value="${get('input')}" onchange="onMetreChange('${member.id}', this.value, '${member.name}', ${!!wage})"></td><td data-id="${work.name}">${work.name}</td><td data-id="pf">${get('pf')}</td><td data-id="esi">${get('esi')}</td><td data-id="gt">${get('gratuity')}</td><td data-id="others">${get('others')}</td><td data-id="sum">${get('sum')}</td><td data-id="margin">${get('margin')}</td><td data-id="mw">${get('mw')}</td><td data-id="mt">${get('mt')}</td><td data-id="dividends">${get('dividends')}</td>`;
     table.appendChild(tr);
   };
 
@@ -249,11 +283,11 @@ function setText(id, dataId, value) {
   el.textContent = Math.trunc(value * 100) / 100;
 }
 
-function onMetreChange(id, value, name) {
+function onMetreChange(id, value, name, exists) {
   value = Number(value);
   if (typeof value != 'number') return alert('Invalid number provided');
   const values = calculate(id, value, name);
-  console.log(values);
+  values.exists = exists;
   setText(id, work.name, values[work.name]);
   setText(id, 'pf', values.pf);
   setText(id, 'esi', values.esi);
@@ -338,6 +372,7 @@ function calculate(id, value) {
 async function onMetreSubmit() {
   const data = await request.put(`/users/update_team_member_bulk`, {
     work: work.name,
+    monthYear: getQuery('month'),
     category,
     data: Object.values(window.updates)
   });
@@ -347,7 +382,7 @@ async function onMetreSubmit() {
 };
 
 function goToMetre() {
-  window.location.href = `addMetre.html?work="${window.location.pathname}&team_id=${getQuery('team_id')}&category=${document.getElementById('44').checked ? '44' : '58'}`;
+  window.location.href = `addMetre.html?work="${window.location.pathname}&team_id=${getQuery('team_id')}&category=${document.getElementById('44').checked ? '44' : '58'}&month=${getQuery('month')}`;
 };
 
 function goToNextPage() {
