@@ -1,25 +1,20 @@
-.body{
-	position: relative;
-	width: 1440px;
-	height: 1024px;
+body{
+	padding: 0px;
+	margin: 0px;
 	font-family: 'Roboto', sans-serif;
 }
 
 .admin_login{
-	position: absolute;
 	width: 650px;
 	height: 350px;
-	left: 355px;
-	top: 137px;
-
+	margin: auto;
+	margin-top: 10%;
+	padding: 30px 30px;
 	border: 2px solid #0075FF;
 	box-sizing: border-box;
-	border-radius: 10px;
 }
 
 .admin_login h1{
-	font-family: 'Roboto', sans-serif;
-	font-style: normal;
 	font-weight: bold;
 	font-size: 20px;
 	line-height: 48px;
@@ -29,42 +24,69 @@
 }
 
 .admin_username{
-	position: absolute;
+	
 	width: 300px;
-	height: 35px;
-	left: 180px;
-	top: 28%; 
+	height: 40px;
 	color: #707070;
 	border: 0px;
+	outline: none;
 	padding-left: 10px;
+	font-size: 16px;
 
 	background: #E1E1E1;
-	border-radius: 5px;
 }
+
+.admin_username:focus{
+	outline: 1px solid #0075FF;
+}
+
 
 .admin_password{
-	position: absolute;
+		
 	width: 300px;
-	height: 35px;
-	left: 180px;
-	top: 48%;
+	height: 40px;
 	border: 0px;
+	outline: none;
 	padding-left: 10px;
+	font-size: 16px;
 
 	background: #E1E1E1;
-	border-radius: 5px;
 }
 
+.admin_password:focus{
+	outline: 1px solid #0075FF;
+}
+
+.admin_login i{
+	color: #333;
+	font-size: 20px;
+
+}
+
+#user_icon{
+	margin: 20px 5px 20px 110px;
+}
+
+#lock_icon{
+	margin: 35px 5px 20px 110px;
+}
+
+#togglePassword{
+	font-size: 17px;
+	color: #707070;
+
+}
+
+
 .admin_button{
-	position: absolute;
+	
 	width: 100px;
 	height: 35px;
-	left: 280px;
-	top: 68%;
+	margin: 4% 42%;
+	color: #ffff;
 	border: 0px;
 	cursor: pointer;
-	color: #ffff;
-	font-size: 15px;
+	font-size: 16px;
 
 	background: #0075FF;
 	border-radius: 10px;
@@ -75,48 +97,12 @@
 	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
-.admin_login i{	
-	position: absolute;
-	color: #333;
-	font-size: 20px;
-
-}
-
-#user_icon{
-	position: absolute;
-	top: 30%;
-	left: 150px;
-}
-
-#lock_icon{
-	position: absolute;
-	top: 50%;
-	left: 150px;
-}
-
-#togglePassword{
-	position: absolute;
-	left: 483px;
-	top: 51%;
-	font-size: 17px;
-	color: #707070;
-
-}
-
 .staff_login{
-	font-size: 15px;
-	font-family: 'Roboto', sans-serif;
-
-	position: absolute;
-	left: 490px;
-	top: 90%;
+	font-size: 16px;
+	float: right;
 	border: 0px;
 	cursor: pointer;
 	color: #0075FF;
-}
-
-.staff_login a{
-	text-decoration: none;
 }
 
 .staff_login:hover{
