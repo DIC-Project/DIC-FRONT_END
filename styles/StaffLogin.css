@@ -1,24 +1,23 @@
-.body{
-	position: relative;
-	width: 1440px;
-	height: 1024px;
+body{
+	padding: 0px;
+	margin: 0px;
 	font-family: 'Roboto', sans-serif;
 }
 
+
 .staff_login{
-	position: absolute;
+	
 	width: 650px;
 	height: 350px;
-	left: 355px;
-	top: 137px;
-
+	margin: auto;
+	margin-top: 10%;
+	padding: 30px 30px;
 	border: 2px solid #0075FF;
 	box-sizing: border-box;
 
 }
 
 .staff_login h1{
-	font-family: 'Roboto', sans-serif;
 	font-style: normal;
 	font-weight: bold;
 	font-size: 20px;
@@ -29,88 +28,81 @@
 }
 
 .staff_username{
-	position: absolute;
+	
 	width: 300px;
-	height: 35px;
-	left: 180px;
-	top: 28%; 
+	height: 40px;
 	color: #707070;
 	border: 0px;
+	outline: none;
 	padding-left: 10px;
+	font-size: 16px;
 
 	background: #E1E1E1;
-	border-radius: 5px;
+}
+
+.staff_username:focus{
+	outline: 1px solid #0075FF;
 }
 
 .staff_password{
-	position: absolute;
+	
 	width: 300px;
-	height: 35px;
-	left: 180px;
-	top: 48%;
+	height: 40px;
 	border: 0px;
+	outline: none;
 	padding-left: 10px;
+	font-size: 16px;
 
 	background: #E1E1E1;
-	border-radius: 5px;
 }
 
-.staff_button{
-	position: absolute;
-	width: 100px;
-	height: 35px;
-	left: 280px;
-	top: 68%;
-	color: #ffff;
-	border: 0px;
-	cursor: pointer;
-	font-size: 15px;
-
-	background: #0075FF;
-	border-radius: 10px;
-
+.staff_password:focus{
+	outline: 1px solid #0075FF;
 }
 
-
-.staff_button:hover{
-	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-}
 
 .staff_login i{	
-	position: absolute;
 	color: #333;
 	font-size: 20px;
 
 }
 
 #user_icon{
-	position: absolute;
-	top: 30%;
-	left: 150px;
+	margin: 20px 5px 20px 110px;
 }
 
 #lock_icon{
-	position: absolute;
-	top: 50%;
-	left: 150px;
+	margin: 35px 5px 20px 110px;
 }
 
 #togglePassword{
-	position: absolute;
-	left: 483px;
-	top: 51%;
 	font-size: 17px;
 	color: #707070;
 
 }
 
-.admin_login{
-	font-size: 15px;
-	font-family: 'Roboto', sans-serif;
+.staff_button{
 	
-	position: absolute;
-	left: 490px;
-	top: 90%;
+	width: 100px;
+	height: 35px;
+	margin: 4% 42%;
+	color: #ffff;
+	border: 0px;
+	cursor: pointer;
+	font-size: 16px;
+
+	background: #0075FF;
+	border-radius: 10px;
+
+}
+
+.staff_button:hover{
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.admin_login{
+	font-size: 16px;
+	float: right;
 	border: 0px;
 	cursor: pointer;
 	color: #0075FF;

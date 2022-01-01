@@ -11,12 +11,12 @@
 	<div class="admin_login">
 	  <form onsubmit="adminLogin(event)">
 		<h1>Admin Login</h1>
-		<i class="fa fa-user" id="user_icon"></i>
-		<input type="text" name="username" placeholder="Username" class="admin_username" required>
-		<i class="fa fa-lock" id="lock_icon"></i>
-		<input type="password" name="password" placeholder="Password" id="admin_pass" class="admin_password" required>
-		<i class="far fa-eye" id="togglePassword" onclick="toggle()" style="margin-left: -30px; cursor: pointer;"></i>
-		<button type="submit" class="admin_button">Login</button>
+		<label for="username"><i class="fa fa-user" id="user_icon"></i></label> 
+		<input type="text" name="username" placeholder="Username" class="admin_username" required><br>
+		<label for="password"><i class="fa fa-lock" id="lock_icon"></i></label> 
+		<input type="password" name="password" placeholder="Password" id="admin_pass" class="admin_password" required> 
+		<i class="far fa-eye" id="togglePassword" onclick="toggle()" style="margin-left: -30px; cursor: pointer;"></i> <br>
+		<button type="submit" class="admin_button">Login</button> <br>
 		<a href="index.html"><button type="button" class="staff_login">Staff Login</button></a>
 		</form>
 	</div>	

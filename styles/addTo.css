@@ -25,6 +25,12 @@
     margin: 0 auto;
 }
 
+#image{
+	width: 300px;
+	height: 70px;
+    margin: 2px -40px;
+}
+
 .data-frame{
     width: 95%;
     margin: 0 auto;
