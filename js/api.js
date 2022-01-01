@@ -248,11 +248,24 @@ function goToTeamList() {
   window.location.href = `teamlist.html?page=${window.location.pathname}&team_id=${getQuery('team_id')}&category=${category}&work_id=${work.id}&ids=${JSON.stringify(work[`workers_${category}`])}`;
 }
 
+function setMargin(value) {
+  const el = document.querySelector('#dataTable > tr > td[data-id="margin"');
+  el.textContent = Math.trunc(value * 100) / 100;
+};
+
+function setDivideds(value) {
+  const el = document.querySelector('#dataTable > tr > td[data-id="dividends"');
+  el.textContent = Math.trunc(value * 100) / 100;
+};
+
 async function loadMetrePage(id) {
   window.category = getQuery('category');
   window.members = [];
   window.work = {};
   window.updates = {};
+  window.marginValue = 0;
+  window.dividendValue = 0;
+  
   const [works, data] = await Promise.all([
     request.get(`/users/get_works`)
     .then(q => q.works),
@@ -267,21 +280,30 @@ async function loadMetrePage(id) {
     if (category == '58' && work.workers_58.includes(e.id)) return true;
   });
   
-  for (const member of members) {
+  for (let i = 0; i < members.length; i++)  { 
+    const member = members[i];
     const wage = member.wages.find((item) => item.monthYear === getQuery('month'));
     const tr = document.createElement('tr');
     tr.setAttribute('id', 'm' + member.id);
     const get = (key) => (wage && wage[work.name][category][key]) || 0;
-    tr.innerHTML = `<td>${member.id}</td><td>${member.name}</td><td><input type="number" value="${get('input')}" onchange="onMetreChange('${member.id}', this.value, '${member.name}', ${!!wage})"></td><td data-id="${work.name}">${work.name}</td><td data-id="pf">${get('pf')}</td><td data-id="esi">${get('esi')}</td><td data-id="gt">${get('gratuity')}</td><td data-id="others">${get('others')}</td><td data-id="sum">${get('sum')}</td><td data-id="margin">${get('margin')}</td><td data-id="mw">${get('mw')}</td><td data-id="mt">${get('mt')}</td><td data-id="dividends">${get('dividends')}</td>`;
+    tr.innerHTML = `<td>${member.id}</td><td>${member.name}</td><td><input type="number" value="${get('input')}" onchange="onMetreChange('${member.id}', this.value, '${member.name}', ${!!wage})"></td><td data-id="${work.name}">${get(work.name.toLowerCase())}</td><td data-id="pf">${get('pf')}</td><td data-id="esi">${get('esi')}</td><td data-id="gt">${get('gratuity')}</td><td data-id="others">${get('others')}</td><td data-id="sum">${get('sum')}</td>${i == 0 ? `<td rowspan="${members.length}" data-id="margin">${get('margin')}</td>`: ""}<td data-id="mw">${get('mw')}</td><td data-id="mt">${get('mt')}</td>${i == 0 ? `<td rowspan="${members.length}" data-id="dividends">${get('dividends')}</td>` : ""}`;
     table.appendChild(tr);
   };
-
+  
+  const tr = document.createElement('tr');
+  tr.setAttribute('id', 'mtotal')
+  tr.innerHTML = `<td colspan="2">Total</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>`;
+  table.appendChild(tr)
 }
 
 function setText(id, dataId, value) {
   const el = document.querySelector(`#m${id} > td[data-id="${dataId}"`);
   el.textContent = Math.trunc(value * 100) / 100;
 }
+
+function round(e) {
+  return (Math.trunc(e * 100) / 100);
+};
 
 function onMetreChange(id, value, name, exists) {
   value = Number(value);
@@ -293,12 +315,17 @@ function onMetreChange(id, value, name, exists) {
   setText(id, 'esi', values.esi);
   setText(id, 'gt', values.gratuity);
   setText(id, 'others', values.others);
-  setText(id, 'margin', values.margin);
+ // setText(id, 'margin', values.margin);
   setText(id, 'sum', values.sum);
   setText(id, 'mw', values.mw);
   setText(id, 'mt', values.mt);
-  setText(id, 'dividends', values.dividends);
+ // setText(id, 'dividends', values.dividends);
+  setMargin(values.margin);
+  setDivideds(values.dividends);
+  window.marginValue = values.margin;
+  window.dividendValue = values.dividends;
   window.updates[id] = values;
+  setTotals();
 };
 
 const formulas = {
@@ -324,15 +351,28 @@ const formulas = {
   }
 };
 
+function setTotals() {
+  const e = Object.values(updates).reduce((pre, cur) => {
+    pre.size += 1;
+    for(const key in cur) {
+      if(!pre[key]) pre[key] = 0;
+      pre[key] += (Math.trunc((cur[key] || 0) * 100) / 100);
+    };
+    return pre;
+  }, { size: 0 });
+  document.getElementById('mtotal').innerHTML = `<td colspan="2">Total</td><td>${e.input}</td><td>${e[work.name.toLowerCase()]}<td>${e.pf}</td><td>${e.esi}</td><td>${e.gratuity}</td><td>${e.others}</td><td>${e.sum}<td>${round(marginValue)}</td><td>${e.mw}</td><td>${e.mt}</td><td>${round(dividendValue)}`;
+};
+
 function calculate(id, value) {
   const name = window.work.name;
-  let [totalMargin, totalSum] = Object.values(updates).filter(e => e.id !== id).reduce((prev, cur) => {
+  let [totalMargin, totalSum, totalTeamSum] = Object.values(updates).filter(e => e.id !== id).reduce((prev, cur) => {
     prev[0] = prev[0] + cur.input;
     prev[1] = prev[1] + cur.sum;
+    prev[2] = prev[2] + cur.mt;
     return prev;
-  }, [value, 0]);
+  }, [value, 0, 0]);
   totalMargin = totalMargin * 3.96;
-
+  
   let values = {
     id,
     name,
@@ -365,7 +405,7 @@ function calculate(id, value) {
 
   totalSum += values.sum;
   values.mt = totalSum - values.mw;
-  values.dividends = totalMargin + values.mt;
+  values.dividends = totalTeamSum + values.mt + totalMargin;
   return values;
 };
 
