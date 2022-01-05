@@ -183,15 +183,15 @@ td a:hover{
 
 .AddTeam_popup{
 	position: absolute;
-	font-family: Roboto;
-	left: 220px;
-	top: 300px;
-	width: 1040px;
-	overflow: auto;
-	height: 500px;
-	border: 1px solid #0075FF;
-	background: #D0E6FF;
-	border-radius: 20px;
+    font-family: Roboto;
+    left: 187px;
+    top: 243px;
+    width: 1167px;
+    overflow: auto;
+    height: 446px;
+    border: 1px solid #0075FF;
+    background: #D0E6FF;
+    border-radius: 20px;
 }
 
 #AddTeam_popup{
