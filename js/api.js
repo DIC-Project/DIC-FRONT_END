@@ -537,7 +537,7 @@ async function loadPricing(v) {
 						<td><input type="number" name="" value="${value.pf}" class="table_input" readonly onkeyup="onPriceChange('${name}', 'pf', event)"></td>
 						<td><input type="number" name="" value="${value.esi}" class="table_input" readonly onkeyup="onPriceChange('${name}', 'esi', event)"></td>
 						<td><input type="number" name="" value="${value.gty}" class="table_input" readonly onkeyup="onPriceChange('${name}', 'gty', event)"></td>
-						<td><input type="number" name="" value="${value.others}" class="table_input" readonly onkeyup="onPriceChange('${name}', 'others', event)"></td>`
+						<td><input type="number" name="" value="${value.others}" class="table_input" readonly onkeyup="onPriceChange('${name}', 'others', event)"></td><td><input type="number" value="${value.margin}" class="table_input" readonly onkeyup="onPriceChange('${name}', 'margin', event)"></td>`
       table.appendChild(tr);
     };
   }
