@@ -378,8 +378,8 @@ function calculate(id, value) {
     prev[2] = prev[2] + cur.mt;
     return prev;
   }, [value, 0, 0]);
-  totalMargin = totalMargin * 3.96;
   const a = v[name.toLowerCase()][category];
+  totalMargin = totalMargin * a.margin;
   
   let values = {
     id,

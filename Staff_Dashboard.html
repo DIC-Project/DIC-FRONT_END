@@ -23,8 +23,13 @@
 				<tr>
 					<th>Team ID</th>
 					<th>Team Name</th>
-					<th>Location</th>
+					<th>Circle</th>
 					<th>Contact</th>
+					<th>Bank Name</th>
+					<th>Branch Name</th>
+					<th>Account No</th>
+					<th>IFSC</th>
+					<th>Name of Secretary</th>
 					<th>Month & Year</th>
 					<th>Select Team</th>
 				</tr>
@@ -42,14 +47,10 @@
 		  <form onsubmit="addTeam(event)">
 			<table id="Popup_table">
 				<tr>
-					<th>ID</th>
+					<th>Team ID</th>
 					<th>Team Name</th>
-					<th>Location</th>
+					<th>Circle</th>
 					<th>Contact</th>
-					<th>Category</th>
-					<th>Bank Account No</th>
-					<th>Ifsc Code</th>
-					<th>Branch Name</th>
 					<th>Bank Name</th>
 				</tr>
 				<tr>
@@ -57,11 +58,20 @@
 					<td><input type="text" name="name" required></td>
 					<td><input type="text" name="location" required></td>
 					<td><input type="text" name="contact" required></td>
-					<td><input type="text" name="category" required></td>
+					<td><input type="text" name="bank_name" required></td>
+				</tr>
+				<tr>
+					<th>Branch Name</th>
+					<th>Account No</th>
+					<th>IFSC</th>
+					<th>Name of Secretary</th>
+				</tr>
+				
+				<tr>
+					<td><input type="text" name="branch_name" required></td>
 					<td><input type="text" name="bank_account_number" required></td>
 					<td><input type="text" name="bank_ifsc_code" required></td>
-					<td><input type="text" name="branch_name" required></td>
-					<td><input type="text" name="bank_name" required></td>
+					<td><input type="text" name="secretary" required></td>
 				</tr>
 			</table>
 			<button type="submit" id="Popup_addteam">Add Team</button>

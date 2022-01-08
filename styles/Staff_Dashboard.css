@@ -60,8 +60,8 @@ body{
 	width: 260px;
 	height: 38px;
 	font-size: 16px;
-	left: 1000px;
-	top: 105px;
+	left: 1035px;
+	top: 120px;
 	padding: 4px 0px 4px 8px;
 	color: #4D4D4D;
 	outline: none;
@@ -78,8 +78,8 @@ body{
 	position: absolute;
 	width: 24px;
 	height: 24px;
-	left: 1230px;
-	top: 115px;
+	left: 1260px;
+	top: 130px;
 	color: #707070;
 }
 
@@ -89,7 +89,7 @@ body{
 	width: 110px;
 	height: 50px;
 	left: 50px;
-	top: 180px;
+	top: 205px;
 	border: 0px;
 	font-size: 16px;
 	color: #ffff;
@@ -109,11 +109,11 @@ body{
 
 .teamlist{
 	position: absolute;
-	width: 1050px;
+	width: 1080px;
 	height: 600px;
 	overflow: auto;
 	left: 218px;
-	top: 170px;
+	top: 200px;
 	background-color: #EAEAEA;
 }
 
@@ -183,15 +183,15 @@ td a:hover{
 
 .AddTeam_popup{
 	position: absolute;
-	font-family: Roboto;
-	left: 220px;
-	top: 300px;
-	width: 1040px;
-	overflow: auto;
-	height: 500px;
-	border: 1px solid #0075FF;
-	background: #D0E6FF;
-	border-radius: 20px;
+    font-family: Roboto;
+    left: 187px;
+    top: 243px;
+    width: 1167px;
+    overflow: auto;
+    height: 446px;
+    border: 1px solid #0075FF;
+    background: #D0E6FF;
+    border-radius: 20px;
 }
 
 #AddTeam_popup{
