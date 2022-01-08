@@ -6,7 +6,7 @@ const loading = {
   },
   stop: function() {
     let div = document.getElementById("loading");
-    if(!div) return;
+    if (!div) return;
     div.remove(div);
   }
 };
@@ -149,8 +149,9 @@ const monthNames = ["January", "February", "March", "April", "May", "June",
 ];
 
 async function loadWorkPage(workName) {
- const dateObj = new Date(getQuery('month'));
- document.getElementById('month').innerHTML = `${monthNames[dateObj.getMonth()]} ${dateObj.getFullYear()}`;
+  const m = getQuery('month');
+  const dateObj = new Date(m);
+  document.getElementById('month').innerHTML = `${monthNames[dateObj.getMonth()]} ${dateObj.getFullYear()}`;
   const header = "<tr><th>ID</th><th>Name</th></tr>";
   const table = document.getElementById("dataTable");
   const category = getQuery('category');
@@ -173,16 +174,16 @@ async function loadWorkPage(workName) {
   const work = works.find((item) => item.name == workName);
   if (!work) return alert(`Please create work ${workName} on backend before proceeding`);
   window.work = work;
-  for (const id of work.workers_44) {
+  for (const { month, member_id: id } of work.workers_44) {
     const member = members.find((item) => item.id == id);
-    if (member) {
+    if (month == m && member) {
       membersHtml += `<tr class="category44"><td>${member.id}</td><td>${member.name}</td></tr>`;
     };
 
   }
-  for (const id of work.workers_58) {
+  for (const { month, member_id: id } of work.workers_58) {
     const member = members.find((item) => item.id == id);
-    if (member) {
+    if (month == m && member) {
       membersHtml += `<tr class="category58"><td>${member.id}</td><td>${member.name}</td></tr>`;
     };
   };
@@ -205,14 +206,16 @@ function addTeam(e) {
 };
 
 function onTeamMemberClick(id, value) {
-  if (value == true && !window.ids.includes(id)) {
-    window.ids.push(id);
+  const month = getQuery('month');
+  if (value == true && !window.ids.some(e => e.month == month && e.member_id == id)) {
+    window.ids.push({ month, member_id: id });
   } else {
-    window.ids = window.ids.filter((item) => item != id);
+    window.ids = window.ids.filter((item) => item.month == month && item.member_id != id);
   };
 }
 
 function onTeamSubmit() {
+  const month = getQuery('month');
   const workId = getQuery('work_id');
   const category = getQuery('category')
   request.put(`/users/update_work/${workId}`, {
@@ -231,7 +234,7 @@ function loadTeamMembers() {
   request.get(`/users/get_team_members/${getQuery('team_id')}`)
     .then(({ teamMembers: data }) => {
       for (const team of data) {
-        const is = window.ids.includes(team.id);
+        const is = window.ids.some(e => e.month == getQuery('month') && e.member_id == team.id);
         html += `<tr><td><input id="${team.id}"  onclick="onTeamMemberClick(this.id, this.checked)" type="checkbox" ${is ? 'checked': 'null'}></td><td>${team.id}</td><td>${team.name}</td><td>${team.bank_account_info.bank_account_number}</td><td>${team.bank_account_info.bank_name}</td><td>${team.bank_account_info.bank_ifsc_code}</td><td>${team.bank_account_info.branch_name}</td></tr>`;
       };
       document.getElementById('dataTab').innerHTML = html;
@@ -245,7 +248,7 @@ function goToWorkPage(page, category) {
 
 function goToTeamList() {
   const category = document.getElementById('44').checked ? '44' : '58';
-  window.location.href = `teamlist.html?page=${window.location.pathname}&team_id=${getQuery('team_id')}&category=${category}&work_id=${work.id}&ids=${JSON.stringify(work[`workers_${category}`])}`;
+  window.location.href = `teamlist.html?page=${window.location.pathname}&team_id=${getQuery('team_id')}&category=${category}&work_id=${work.id}&ids=${JSON.stringify(work[`workers_${category}`])}&month=${getQuery('month')}`;
 }
 
 function setMargin(value) {
@@ -259,37 +262,41 @@ function setDivideds(value) {
 };
 
 async function loadMetrePage(id) {
+  const month = getQuery('month');
   window.category = getQuery('category');
   window.members = [];
   window.work = {};
   window.updates = {};
   window.marginValue = 0;
   window.dividendValue = 0;
-  
-  const [works, data] = await Promise.all([
+  window.v = {};
+
+  const [works, data, vv] = await Promise.all([
     request.get(`/users/get_works`)
     .then(q => q.works),
   request.get(`/users/get_team_members/${id}`)
-    .then(q => q.teamMembers)
+    .then(q => q.teamMembers),
+  request.get('/users/values')
   ]);
+  window.v = vv;
   window.work = works.find(e => getQuery('work').toLowerCase().includes(e.name));
   if (!work) return alert('Please create work before moving forward');
   const table = document.getElementById('dataTable');
   window.members = data.filter(e => {
-    if (category == '44' && work.workers_44.includes(e.id)) return true;
-    if (category == '58' && work.workers_58.includes(e.id)) return true;
+    if (category == '44' && work.workers_44.some(a => a.member_id == e.id && a.month == month)) return true;
+    if (category == '58' && work.workers_58.includes(a => a.member_id == e.id && a.month == month)) return true;
   });
-  
-  for (let i = 0; i < members.length; i++)  { 
+
+  for (let i = 0; i < members.length; i++) {
     const member = members[i];
-    const wage = member.wages.find((item) => item.monthYear === getQuery('month'));
+    const wage = member.wages.find((item) => item.monthYear === month);
     const tr = document.createElement('tr');
     tr.setAttribute('id', 'm' + member.id);
     const get = (key) => (wage && wage[work.name][category][key]) || 0;
     tr.innerHTML = `<td>${member.id}</td><td>${member.name}</td><td><input type="number" value="${get('input')}" onchange="onMetreChange('${member.id}', this.value, '${member.name}', ${!!wage})"></td><td data-id="${work.name}">${get(work.name.toLowerCase())}</td><td data-id="pf">${get('pf')}</td><td data-id="esi">${get('esi')}</td><td data-id="gt">${get('gratuity')}</td><td data-id="others">${get('others')}</td><td data-id="sum">${get('sum')}</td>${i == 0 ? `<td rowspan="${members.length}" data-id="margin">${get('margin')}</td>`: ""}<td data-id="mw">${get('mw')}</td><td data-id="mt">${get('mt')}</td>${i == 0 ? `<td rowspan="${members.length}" data-id="dividends">${get('dividends')}</td>` : ""}`;
     table.appendChild(tr);
   };
-  
+
   const tr = document.createElement('tr');
   tr.setAttribute('id', 'mtotal')
   tr.innerHTML = `<td colspan="2">Total</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>`;
@@ -315,11 +322,11 @@ function onMetreChange(id, value, name, exists) {
   setText(id, 'esi', values.esi);
   setText(id, 'gt', values.gratuity);
   setText(id, 'others', values.others);
- // setText(id, 'margin', values.margin);
+  // setText(id, 'margin', values.margin);
   setText(id, 'sum', values.sum);
   setText(id, 'mw', values.mw);
   setText(id, 'mt', values.mt);
- // setText(id, 'dividends', values.dividends);
+  // setText(id, 'dividends', values.dividends);
   setMargin(values.margin);
   setDivideds(values.dividends);
   window.marginValue = values.margin;
@@ -354,8 +361,8 @@ const formulas = {
 function setTotals() {
   const e = Object.values(updates).reduce((pre, cur) => {
     pre.size += 1;
-    for(const key in cur) {
-      if(!pre[key]) pre[key] = 0;
+    for (const key in cur) {
+      if (!pre[key]) pre[key] = 0;
       pre[key] += (Math.trunc((cur[key] || 0) * 100) / 100);
     };
     return pre;
@@ -372,6 +379,7 @@ function calculate(id, value) {
     return prev;
   }, [value, 0, 0]);
   totalMargin = totalMargin * 3.96;
+  const a = v[name.toLowerCase()][category];
   
   let values = {
     id,
@@ -393,11 +401,11 @@ function calculate(id, value) {
   };
 
 
-  values[name] += value * formulas[category][name];
-  values.pf += formulas[category].pf / 100 * values[name];
-  values.esi += formulas[category].esi / 100 * values[name];
-  values.gratuity += formulas[category].gratuity / 100 * values[name];
-  values.others += formulas[category].others / 100 * values[name];
+  values[name] += value * a.rate;
+  values.pf += a.pf / 100 * values[name];
+  values.esi += a.esi / 100 * values[name];
+  values.gratuity += a.gty / 100 * values[name];
+  values.others += a.others / 100 * values[name];
   values.sum += (values[name] + values.pf + values.esi + values.gratuity + values.others);
   if (name == 'weaving') {
     values.mw += value * 34;
@@ -416,7 +424,7 @@ async function onMetreSubmit() {
     category,
     data: Object.values(window.updates)
   });
-  exportToCsv();
+  // exportToCsv();
   toggleModal();
   goToNextPage();
 };
@@ -443,9 +451,12 @@ function goToNextPage() {
     case "joining":
       current = 'addToJoining.html'
   };
-  if (category == '44') return goToWorkPage(current, '58');
-  if (!next) return;
-  goToWorkPage(next, '44');
+
+  if (!next) {
+    exportToCsv()
+    return goToWorkPage('addToWeaving.html', category == '44' ? '58' : '44');
+  };
+  if (next) return goToWorkPage(next, category);
 };
 
 function searchTable(id, text, row = 0) {
@@ -499,3 +510,35 @@ function sortTable(id, row = 0) {
     }
   }
 }
+
+
+function onPriceChange(type, field, event) {
+  const category = document.getElementById('44').checked ? '44': '48';
+  window.updates[type][category][field] = Number(event.target.value) || 0;
+};
+
+async function loadPricing(v) {
+  window.updates = {};
+  const category = document.getElementById('44').checked ? '44' : '58';
+  onClick(category);
+  const data = await request.get('/users/values');
+  window.updates = data;
+  const list = ['weaving', 'winding', 'warping', 'joining'];
+  const table = document.getElementById('Team_table');
+  for (let i = 0; i < 4; i++) {
+    const name = list[i];
+    for (const key of [44, 58]) {
+      const value = data[name][key];
+      const tr = document.createElement('tr');
+      tr.setAttribute('class', `category${key}`);
+      tr.innerHTML = `<td>${i+1}</td>
+						<td>${list[i]}</td>
+						<td><input type="number" name="" value="${value.rate}" class="table_input" readonly onkeyup="onPriceChange('${name}', 'rate', event)"></td>
+						<td><input type="number" name="" value="${value.pf}" class="table_input" readonly onkeyup="onPriceChange('${name}', 'pf', event)"></td>
+						<td><input type="number" name="" value="${value.esi}" class="table_input" readonly onkeyup="onPriceChange('${name}', 'esi', event)"></td>
+						<td><input type="number" name="" value="${value.gty}" class="table_input" readonly onkeyup="onPriceChange('${name}', 'gty', event)"></td>
+						<td><input type="number" name="" value="${value.others}" class="table_input" readonly onkeyup="onPriceChange('${name}', 'others', event)"></td>`
+      table.appendChild(tr);
+    };
+  }
+};

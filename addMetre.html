@@ -52,7 +52,7 @@
           <i class="fas fa-long-arrow-alt-left"></i>
           <a class="dash" href="Staff_Dashboard.html"> Bact to Dashboard</a>
         </div>
-        <div class="right-dash">
+        <div id="nBtn" class="right-dash">
           <input onclick="toggleModal()" type="button" class="view-btns add-view" value="Submit">
         </div>
       </div>
@@ -68,6 +68,7 @@
   <script src="./js/api.js"></script>
   <script src="./js/app.js"></script>
   <script src="https://unpkg.com/papaparse@5.3.1/papaparse.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/exceljs@4.3.0/dist/exceljs.bare.js"></script>
   <script>
     window.members = [];
 
@@ -77,14 +78,23 @@
     };
 
     window.onload = function() {
-      document.getElementById('inch').innerHTML = getQuery('category');
+      const category = getQuery('category');
+      
+      document.getElementById('inch').innerHTML = category;
       document.getElementById('wName').textContent = getQuery('work').split('.')[0].slice(7);
       loadMetrePage(getQuery('team_id'));
     };
 
     function exportToCsv() {
+      alert('clicked')
+      const category = getQuery('category');
+      request.get(`/users/teams/${getQuery('team_id')}/csv?category=${category}&month=${getQuery('month')}`)
+      .then((data) => {
+        
+      });
+      return
       function goToMetre() {
-        window.location.href = `addMetre.html?team_id=${getQuery('team_id')}&category=${document.getElementById('44').checked ? '44' : '58'}`;
+        window.location.href = `addMetre.html?team_id=${getQuery('team_id')}&category=${document.getElementById('inch').checked ? '44' : '58'}`;
       };
       const data = window.members.map((item) => {
         let mData = window.updates[item.id] || item[work.name][category];

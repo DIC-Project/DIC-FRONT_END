@@ -21,10 +21,10 @@
 			<a href="Staff_Dashboard.html"><button id="dashboard_button">Dashboard</button></a>
 			<div class="radio">
 				<label class="radio-label">
-					<input type="radio" id="forty" name="size" value="44" checked="checked">44&#8243
+					<input type="radio" id="44" name="size" value="44" checked onclick="onClick(this.id)">44&#8243
 				</label>
 				<label class="radio-label">
-					<input type="radio" id="fifty" name="size" value="58">58&#8243
+					<input type="radio" id="58" name="size" value="58"onclick="onClick(this.id)">58&#8243
 				</label>
 			</div>
 			<div class="teamlist">
@@ -38,67 +38,37 @@
 						<th>Gty</th>
 						<th>Others</th>
 					</tr>
-					<tr>
-						<td>01</td>
-						<td>Weaving</td>
-						<td><input type="number" name="" value="56.98" class="table_input" readonly></td>
-						<td><input type="number" name="" value="12" class="table_input" readonly></td>
-						<td><input type="number" name="" value="3.25" class="table_input" readonly></td>
-						<td><input type="number" name="" value="7" class="table_input" readonly></td>
-						<td><input type="number" name="" value="20.33" class="table_input" readonly></td>
-					</tr>
-					<tr>
-						<td>02</td>
-						<td>Warping</td>
-						<td><input type="number" name="" value="7.81" class="table_input" readonly></td>
-						<td><input type="number" name="" value="12" class="table_input" readonly></td>
-						<td><input type="number" name="" value="3.25" class="table_input" readonly></td>
-						<td><input type="number" name="" value="7" class="table_input" readonly></td>
-						<td><input type="number" name="" value="20.33" class="table_input" readonly></td>
-					</tr>
-					<tr>
-						<td>03</td>
-						<td>Pern Winding</td>
-						<td><input type="number" name="" value="2.31" class="table_input" readonly></td>
-						<td><input type="number" name="" value="12" class="table_input" readonly></td>
-						<td><input type="number" name="" value="3.25" class="table_input" readonly></td>
-						<td><input type="number" name="" value="7" class="table_input" readonly></td>
-						<td><input type="number" name="" value="20.33" class="table_input" readonly></td>
-					</tr>
-					<tr>
-						<td>04</td>
-						<td>Joining</td>
-						<td><input type="number" name="" value="2.03" class="table_input" readonly></td>
-						<td><input type="number" name="" value="12" class="table_input" readonly></td>
-						<td><input type="number" name="" value="3.25" class="table_input" readonly></td>
-						<td><input type="number" name="" value="7" class="table_input" readonly></td>
-						<td><input type="number" name="" value="20.33" class="table_input" readonly></td>
-					</tr>
 				</table>
 			</div>
 			<div class="buttons">
 				<button id="Admin_edit" onclick="edit()">Edit</button>
 				<button id="Admin_Dashboard_save" onclick="save()">Save</button>
-				<button id="Admin_Dashboard_submit">Submit</button>
+				<button onclick="save()" id="Admin_Dashboard_submit">Submit</button>
 			</div>
 		</div>
 	</div>
-
+ <script src="js/api.js"></script>
 	<script>
+	  window.onload = function () {
+	    loadPricing();
+	  };
+	  
 		var x=document.getElementsByClassName("table_input")
 
 		function edit() {
-			for (i=0;i<20; i++){
+			for (i=0;i< x.length; i++){
 				x[i].readOnly = false;
 			}
 
 		}
 
 		function save() {
-			for (i=0;i<20; i++){
-				x[i].readOnly = true;
-			}
-		}
+		  request.put('/users/values', window.updates)
+		  .then(() => {
+		    alert('Price updated successfully');
+		  })
+		  .then(console.error);
+		};
 	</script>
 </body>
 
