@@ -107,11 +107,17 @@ const appendTeams = (teams) => {
     const row = table.insertRow();
     row.insertCell(0).innerHTML = team.team_id;
     row.insertCell(1).innerHTML = team.name;
-    row.insertCell(2).innerHTML = team.location;
-    row.insertCell(3).innerHTML = team.contact;
-    row.insertCell(4).innerHTML = `<input type="month" value="${window.currentMonth}" onchange="window.currentMonth=this.value">`;
+    row.insertCell(2).innerHTML = team.circle || '';
+    row.insertCell(3).innerHTML = team.location;
+    row.insertCell(4).innerHTML = team.contact;
+    row.insertCell(5).innerHTML = team.bank_account_info.bank_name;
+    row.insertCell(6).innerHTML = team.bank_account_info.branch_name;
+    row.insertCell(7).innerHTML = team.bank_account_info.bank_account_number;
+    row.insertCell(8).innerHTML = team.bank_account_info.bank_ifsc_code;
+    row.insertCell(9).innerHTML = team.secretary || '';
+    row.insertCell(10).innerHTML = `<input type="month" value="${window.currentMonth}" onchange="window.currentMonth=this.value">`;
     /**modify*/
-    row.insertCell(5).innerHTML = `<a onclick="onSelectTeam('${team.id}')">SELECT</a>`;
+    row.insertCell(11).innerHTML = `<a onclick="onSelectTeam('${team.id}')">SELECT</a>`;
   }
 };
 
@@ -121,7 +127,7 @@ function onSelectTeam(id) {
 
 function getTeams() {
   const date = new Date();
-  window.currentMonth = `${date.getFullYear()}-${date.getMonth()+1}`;
+  window.currentMonth = `${date.getFullYear()}-${("0" + (date.getMonth())+1).slice(-2)}`;
   request.get('/users/get_teams')
     .then((data) => {
       appendTeams(data.teams);
@@ -293,7 +299,7 @@ async function loadMetrePage(id) {
     const tr = document.createElement('tr');
     tr.setAttribute('id', 'm' + member.id);
     const get = (key) => (wage && wage[work.name][category][key]) || 0;
-    tr.innerHTML = `<td>${member.id}</td><td>${member.name}</td><td><input type="number" value="${get('input')}" onchange="onMetreChange('${member.id}', this.value, '${member.name}', ${!!wage})"></td><td data-id="${work.name}">${get(work.name.toLowerCase())}</td><td data-id="pf">${get('pf')}</td><td data-id="esi">${get('esi')}</td><td data-id="gt">${get('gratuity')}</td><td data-id="others">${get('others')}</td><td data-id="sum">${get('sum')}</td>${i == 0 ? `<td rowspan="${members.length}" data-id="margin">${get('margin')}</td>`: ""}<td data-id="mw">${get('mw')}</td><td data-id="mt">${get('mt')}</td>${i == 0 ? `<td rowspan="${members.length}" data-id="dividends">${get('dividends')}</td>` : ""}`;
+    tr.innerHTML = `<td>${member.id}</td><td>${member.name}</td><td><input type="number" value="${get('input')}" onchange="onMetreChange('${member.id}', this.value, '${member.name}', ${!!wage}, '${member.pf}', '${member.esi}')"></td><td data-id="${work.name}">${get(work.name.toLowerCase())}</td><td data-id="pf">${get('pf')}</td><td data-id="esi">${get('esi')}</td><td data-id="gt">${get('gratuity')}</td><td data-id="others">${get('others')}</td><td data-id="sum">${get('sum')}</td>${i == 0 ? `<td rowspan="${members.length}" data-id="margin">${get('margin')}</td>`: ""}<td data-id="mw">${get('mw')}</td><td data-id="mt">${get('mt')}</td>${i == 0 ? `<td rowspan="${members.length}" data-id="dividends">${get('dividends')}</td>` : ""}`;
     table.appendChild(tr);
   };
 
@@ -312,10 +318,10 @@ function round(e) {
   return (Math.trunc(e * 100) / 100);
 };
 
-function onMetreChange(id, value, name, exists) {
+function onMetreChange(id, value, name, exists, pf, esi) {
   value = Number(value);
   if (typeof value != 'number') return alert('Invalid number provided');
-  const values = calculate(id, value, name);
+  const values = calculate(id, value, pf, esi);
   values.exists = exists;
   setText(id, work.name, values[work.name]);
   setText(id, 'pf', values.pf);
@@ -370,7 +376,7 @@ function setTotals() {
   document.getElementById('mtotal').innerHTML = `<td colspan="2">Total</td><td>${e.input}</td><td>${e[work.name.toLowerCase()]}<td>${e.pf}</td><td>${e.esi}</td><td>${e.gratuity}</td><td>${e.others}</td><td>${e.sum}<td>${round(marginValue)}</td><td>${e.mw}</td><td>${e.mt}</td><td>${round(dividendValue)}`;
 };
 
-function calculate(id, value) {
+function calculate(id, value, pf, esi) {
   const name = window.work.name;
   let [totalMargin, totalSum, totalTeamSum] = Object.values(updates).filter(e => e.id !== id).reduce((prev, cur) => {
     prev[0] = prev[0] + cur.input;
@@ -402,8 +408,8 @@ function calculate(id, value) {
 
 
   values[name] += value * a.rate;
-  values.pf += a.pf / 100 * values[name];
-  values.esi += a.esi / 100 * values[name];
+  values.pf += (pf == 'true' ? (a.pf / 100 * values[name]) : 0);
+  values.esi += (esi == 'true' ? (a.esi / 100 * values[name]) : 0);
   values.gratuity += a.gty / 100 * values[name];
   values.others += a.others / 100 * values[name];
   values.sum += (values[name] + values.pf + values.esi + values.gratuity + values.others);

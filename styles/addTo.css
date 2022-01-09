@@ -6,11 +6,13 @@
 }
 
 .category44 {
-  display: var(--show44)
+  display: var(--show44);
+  text-align: center;
 }
 
 .category58 {
   display: var(--show58);
+  text-align: center;
 }
 
 *,html{
