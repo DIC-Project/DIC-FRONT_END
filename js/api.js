@@ -420,10 +420,10 @@ function calculate(id, value, pf, esi) {
   if (name == 'weaving') {
     values.mw += value * 34;
   };
-
+  
   totalSum += values.sum;
-  values.mt = totalSum - values.mw;
-  values.dividends = totalTeamSum + values.mt + totalMargin;
+  values.mt = values.sum - values.mw;
+  values.dividends = totalSum + totalTeamSum + values.mt;
   return values;
 };
 
