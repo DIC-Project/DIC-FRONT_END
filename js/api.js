@@ -573,22 +573,23 @@ async function excel(data) {
       name: work.name,
       ref: `A${r + 1}`,
       headerRow: true,
+      totalsRow: work.members.length && true,
       columns: [
-       { name: 'ID', key: 'id' },
-       { name: 'NAME', key: 'name' },
-       { name: 'METRE', key: 'input' },
-       { name: work.name.toUpperCase(), key: 'rate' },
-       { name: 'PF', key: 'key' },
-       { name: 'ESI', key: 'esi' },
-       { name: 'OTHERS' },
-       { name: 'TOTAL SUM' },
-       { name: 'MARGIN' },
-       { name: 'MONEY FOR WEAVERS' },
-       { name: 'MONEY FOR TEAM' },
-       { name: 'DIVIDENDS' }
+       { name: 'ID', totalsRowLabel: 'Total' },
+       { name: 'NAME', totalsRowFunction: 'none' },
+       { name: 'METRE', totalsRowFunction: 'sum' },
+       { name: work.name.toUpperCase(), totalsRowFunction: 'sum' },
+       { name: 'PF', totalsRowFunction: 'sum' },
+       { name: 'ESI', totalsRowFunction: 'sum' },
+       { name: 'OTHERS', totalsRowFunction: 'sum' },
+       { name: 'TOTAL SUM', totalsRowFunction: 'sum' },
+       { name: 'MARGIN', totalsRowFunction: 'max' },
+       { name: 'MONEY FOR WEAVERS', totalsRowFunction: 'sum' },
+       { name: 'MONEY FOR TEAM', totalsRowFunction: 'sum' },
+       { name: 'DIVIDENDS', totalsRowFunction: 'sum' }
       ],
       rows: work.members.map((e) => ([
-        e.id, e.name, e.input || 0, e.rate || 0, e.pf || 0, e.esi || 0, e.others || 0, e.ts || 0, e.margin || 0, e.mw || 0, e.mt || 0, e.dividends || 0
+        e.id, e.name, e.input || 0, e.rate || 0, e.pf || 0, e.esi || 0, e.others || 0, e.sum || 0, e.margin || 0, e.mw || 0, e.mt || 0, e.dividends || 0
       ]))
     });
     sheet.addRow([]);
