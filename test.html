@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title></title>
+</head>
+
+<body>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js" integrity="sha512-Qlv6VSKh1gDKGoJbnyA5RMXYcvnpIqhO++MhIM2fStMcGT9i2T//tSwYFlcyoRRDcDZ+TYHpH8azBBCyhpSeqw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-polyfill/6.26.0/polyfill.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/exceljs@4.3.0/dist/exceljs.bare.js"></script>
+  <script>
+    window.onload = function() {
+      const workbook = new ExcelJS.Workbook();
+      const sheet = workbook.addWorksheet('Sheet 1');
+      const data = [
+         1, 2, 3, 4, 6, 7, 8
+        ];
+     sheet.addTable({(
+  name: 'MyTable',
+  ref: 'A3',
+  headerRow: true,
+  totalsRow: true,
+  columns: [
+    {name: 'Date', totalsRowLabel: 'Totals:', filterButton: true},
+    {name: 'Amount', totalsRowFunction: 'sum', filterButton: false},
+  ],
+  rows: [
+    [new Date('2019-07-20'), 70.10],
+    [new Date('2019-07-21'), 70.60],
+    [new Date('2019-07-22'), 70.10],
+  ],
+});
+
+      workbook.xlsx.writeBuffer().then(function(data) {
+        var blob = new Blob([data], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
+        saveAs(blob, "fileName.xlsx");
+      });
+    };
+  </script>
+</body>
+
+</html>

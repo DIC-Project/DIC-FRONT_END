@@ -65,10 +65,11 @@
     </div>
   </main>
   <!-- Script -->
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js" integrity="sha512-Qlv6VSKh1gDKGoJbnyA5RMXYcvnpIqhO++MhIM2fStMcGT9i2T//tSwYFlcyoRRDcDZ+TYHpH8azBBCyhpSeqw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-polyfill/6.26.0/polyfill.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/exceljs@4.3.0/dist/exceljs.bare.js"></script>
   <script src="./js/api.js"></script>
   <script src="./js/app.js"></script>
-  <script src="https://unpkg.com/papaparse@5.3.1/papaparse.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/exceljs@4.3.0/dist/exceljs.bare.js"></script>
   <script>
     window.members = [];
 
@@ -84,36 +85,7 @@
       document.getElementById('wName').textContent = getQuery('work').split('.')[0].slice(7);
       loadMetrePage(getQuery('team_id'));
     };
-
-    function exportToCsv() {
-      alert('clicked')
-      const category = getQuery('category');
-      request.get(`/users/teams/${getQuery('team_id')}/csv?category=${category}&month=${getQuery('month')}`)
-      .then((data) => {
-        
-      });
-      return
-      function goToMetre() {
-        window.location.href = `addMetre.html?team_id=${getQuery('team_id')}&category=${document.getElementById('inch').checked ? '44' : '58'}`;
-      };
-      const data = window.members.map((item) => {
-        let mData = window.updates[item.id] || item[work.name][category];
-        mData.id = item.id;
-        mData.name = item.name;
-        mData.money_for_team = mData.mt;
-        mData.money_for_weaving = mData.mw;
-        return mData;
-      });
-      const csv = window.Papa.unparse(data, {
-        columns: ['id', 'name', work.name, 'pf', 'esi', 'gratuity', 'others', 'sum', 'margin', 'money_for_team', 'money_for_weaving', 'dividends']
-      });
-      const encodedUri = encodeURI("data:text/csv;charset=utf-8," + csv);
-      const link = document.createElement("a");
-      link.setAttribute("href", encodedUri);
-      link.setAttribute("download", `${work.name + category}.csv`);
-      document.body.appendChild(link);
-      link.click();
-    };
+    
   </script>
 </body>
 

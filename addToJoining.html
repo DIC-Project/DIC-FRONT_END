@@ -36,6 +36,10 @@
         <div class="team-data">
           <p class="team-detail">Month & Year&nbsp; : </p> <span id="month" class="team-month">...</span>
         </div>
+        <div class="team-data">
+          <p class="team-detail">Category&nbsp; :</p>
+          <span id="c">..</span>
+        </div>
         <br>
         
       </div>
@@ -68,10 +72,14 @@
       </div>
       <div class="right-dash">
           <input onclick="goToMetre()" type="button" class="view-btns add-view" value="Submit">
+          <input onclick="exportToCsv()" type="button" class="view-btns add-view" value="Download">
       </div>
     </div>
   </section>
   <!-- Script -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js" integrity="sha512-Qlv6VSKh1gDKGoJbnyA5RMXYcvnpIqhO++MhIM2fStMcGT9i2T//tSwYFlcyoRRDcDZ+TYHpH8azBBCyhpSeqw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-polyfill/6.26.0/polyfill.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/exceljs@4.3.0/dist/exceljs.bare.js"></script>
   <script src="./js/app.js"></script>
   <script src="./js/api.js"></script>
   <script>

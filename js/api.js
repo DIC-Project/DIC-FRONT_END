@@ -139,14 +139,17 @@ const onClick = (id) => {
   const c44 = document.getElementById("44");
   const c58 = document.getElementById("58");
   if (id == "44") {
-    c44.checked = true;
-    c58.checked = false;
+    window.category = "44";
+    if (c44) c44.checked = true;
+    if (c58) c58.checked = false;
   } else {
-    c58.checked = true;
-    c44.checked = false;
+    window.category = "58";
+    if (c58) c58.checked = true;
+    if (c44) c44.checked = false;
   };
-  document.documentElement.style.setProperty('--show44', c44.checked ? 'table-row' : 'none');
-  document.documentElement.style.setProperty('--show58', c58.checked ? 'table-row' : 'none');
+
+  document.documentElement.style.setProperty('--show44', category == '44' ? 'table-row' : 'none');
+  document.documentElement.style.setProperty('--show58', category == '58' ? 'table-row' : 'none');
 
 };
 
@@ -156,14 +159,16 @@ const monthNames = ["January", "February", "March", "April", "May", "June",
 
 async function loadWorkPage(workName) {
   const m = getQuery('month');
+  window.category = getQuery('category') || '44';
+  onClick(category)
   const dateObj = new Date(m);
   document.getElementById('month').innerHTML = `${monthNames[dateObj.getMonth()]} ${dateObj.getFullYear()}`;
+  const cDom = document.getElementById('c');
+  if(cDom) cDom.innerHTML = category;
   const header = "<tr><th>ID</th><th>Name</th></tr>";
   const table = document.getElementById("dataTable");
-  const category = getQuery('category');
   let membersHtml = header;
-  let current = category || "44";
-  onClick(current);
+
 
   const id = getQuery('team_id');
   request.get(`/users/get_one_team/${id}`)
@@ -194,7 +199,6 @@ async function loadWorkPage(workName) {
     };
   };
   table.innerHTML = membersHtml;
-  onClick(current);
 };
 
 function addTeam(e) {
@@ -247,14 +251,14 @@ function loadTeamMembers() {
     });
 }
 
-function goToWorkPage(page, category) {
-  category = category || (document.getElementById('44').checked ? '44' : '58');
-  window.location.href = `${page}?team_id=${getQuery('team_id')}&category=${category}&month=${getQuery('month')}`;
+function goToWorkPage(page, c) {
+  c = c || window.category;
+  window.location.href = `${page}?team_id=${getQuery('team_id')}&category=${c}&month=${getQuery('month')}`;
 };
 
 function goToTeamList() {
-  const category = document.getElementById('44').checked ? '44' : '58';
-  window.location.href = `teamlist.html?page=${window.location.pathname}&team_id=${getQuery('team_id')}&category=${category}&work_id=${work.id}&ids=${JSON.stringify(work[`workers_${category}`])}&month=${getQuery('month')}`;
+  const c = window.category;
+  window.location.href = `teamlist.html?page=${window.location.pathname}&team_id=${getQuery('team_id')}&category=${c}&work_id=${work.id}&ids=${JSON.stringify(work[`workers_${c}`])}&month=${getQuery('month')}`;
 }
 
 function setMargin(value) {
@@ -386,7 +390,7 @@ function calculate(id, value, pf, esi) {
   }, [value, 0, 0]);
   const a = v[name.toLowerCase()][category];
   totalMargin = totalMargin * a.margin;
-  
+
   let values = {
     id,
     name,
@@ -436,7 +440,7 @@ async function onMetreSubmit() {
 };
 
 function goToMetre() {
-  window.location.href = `addMetre.html?work="${window.location.pathname}&team_id=${getQuery('team_id')}&category=${document.getElementById('44').checked ? '44' : '58'}&month=${getQuery('month')}`;
+  window.location.href = `addMetre.html?work="${window.location.pathname}&team_id=${getQuery('team_id')}&category=${window.category}&month=${getQuery('month')}`;
 };
 
 function goToNextPage() {
@@ -519,7 +523,7 @@ function sortTable(id, row = 0) {
 
 
 function onPriceChange(type, field, event) {
-  const category = document.getElementById('44').checked ? '44': '48';
+  const category = document.getElementById('44').checked ? '44' : '48';
   window.updates[type][category][field] = Number(event.target.value) || 0;
 };
 
@@ -547,4 +551,104 @@ async function loadPricing(v) {
       table.appendChild(tr);
     };
   }
+};
+
+
+async function excel(data) {
+  const workbook = new ExcelJS.Workbook();
+  const sheet = workbook.addWorksheet('Sheet 1');
+  const alignment = {
+    horizontal: 'center',
+    vertical: 'middle'
+  };
+  
+  sheet.addRow([`PROFOMMA ${category}`]);
+  sheet.mergeCells('A1:L1');
+  sheet.getCell('A1').alignment = alignment;
+  let r = 2;
+  for(const work of data) {
+    sheet.addRow([work.name.toUpperCase()]);
+    sheet.mergeCells(`A${r}:B${r}`);
+    const table = sheet.addTable({
+      name: work.name,
+      ref: `A${r + 1}`,
+      headerRow: true,
+      columns: [
+       { name: 'ID', key: 'id' },
+       { name: 'NAME', key: 'name' },
+       { name: 'METRE', key: 'input' },
+       { name: work.name.toUpperCase(), key: 'rate' },
+       { name: 'PF', key: 'key' },
+       { name: 'ESI', key: 'esi' },
+       { name: 'OTHERS' },
+       { name: 'TOTAL SUM' },
+       { name: 'MARGIN' },
+       { name: 'MONEY FOR WEAVERS' },
+       { name: 'MONEY FOR TEAM' },
+       { name: 'DIVIDENDS' }
+      ],
+      rows: work.members.map((e) => ([
+        e.id, e.name, e.input || 0, e.rate || 0, e.pf || 0, e.esi || 0, e.others || 0, e.ts || 0, e.margin || 0, e.mw || 0, e.mt || 0, e.dividends || 0
+      ]))
+    });
+    sheet.addRow([]);
+    sheet.addRow([]);
+    r += (work.members.length + 4);
+  };
+  
+  const a = { horizontal: 'center', vertical: 'middle' };
+  
+  sheet.getColumn(1).width = 27;
+  sheet.getColumn(2).width = 22;
+  sheet.getColumn(3).alignment = a;
+  sheet.getColumn(4). alignment = a;
+  sheet.getColumn(4).width = 12;
+  sheet.getColumn(5).alignment = a;
+  sheet.getColumn(6).alignment = a;
+  sheet.getColumn(7).alignment = a;
+  sheet.getColumn(7).width = 12;
+  sheet.getColumn(8).alignment = a;
+  sheet.getColumn(8).width = 15;
+  sheet.getColumn(9).alignment = a;
+  sheet.getColumn(9).width = 12;
+  sheet.getColumn(10).alignment = a;
+  sheet.getColumn(10).width = 23;
+  sheet.getColumn(11).alignment = a;
+  sheet.getColumn(11).width = 20;
+  sheet.getColumn(12).alignment = a;
+  sheet.getColumn(12).width = 15;
+  
+  const buffer = await workbook.xlsx.writeBuffer();
+  const blob = new Blob([buffer], {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"});
+  saveAs(blob, "reports.xlsx");
+};
+
+function exportToCsv() {
+  const category = getQuery('category');
+  request.get(`/users/teams/${getQuery('team_id')}/csv?category=${category}&month=${getQuery('month')}`)
+    .then((data) => {
+      excel(data);
+    });
+  return;
+
+  function goToMetre() {
+    window.location.href = `addMetre.html?team_id=${getQuery('team_id')}&category=${document.getElementById('inch').checked ? '44' : '58'}`;
+  };
+  const data = window.members.map((item) => {
+    let mData = window.updates[item.id] || item[work.name][category];
+    mData.id = item.id;
+    mData.name = item.name;
+    mData.money_for_team = mData.mt;
+    mData.money_for_weaving = mData.mw;
+    return mData;
+  });
+  const csv = window.Papa.unparse(data, {
+    columns: ['id', 'name', work.name, 'pf', 'esi', 'gratuity', 'others', 'sum', 'margin', 'money_for_team', 'money_for_weaving', 'dividends']
+  });
+  const encodedUri = encodeURI("data:text/csv;charset=utf-8," + csv);
+  const link = document.createElement("a");
+  link.setAttribute("href", encodedUri);
+  link.setAttribute("download", `${work.name + category}.csv`);
+  document.body.appendChild(link);
+  link.click();
 };
