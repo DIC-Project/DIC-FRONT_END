@@ -258,7 +258,7 @@ function goToWorkPage(page, c) {
 
 function goToTeamList() {
   const c = window.category;
-  window.location.href = `teamlist.html?page=${window.location.pathname}&team_id=${getQuery('team_id')}&category=${c}&work_id=${work.id}&ids=${JSON.stringify(work[`workers_${c}`])}&month=${getQuery('month')}`;
+  window.location.href = `teamlist.html?page=${window.location.pathname}&team_id=${getQuery('team_id')}&category=${c}&work_id=${work._id}&ids=${JSON.stringify(work[`workers_${c}`])}&month=${getQuery('month')}`;
 }
 
 function setMargin(value) {
@@ -301,7 +301,7 @@ async function loadMetrePage(id) {
     const member = members[i];
     const wage = member.wages.find((item) => item.monthYear === month);
     const tr = document.createElement('tr');
-    tr.setAttribute('id', 'm' + member.id);
+    tr.setAttribute('id', `m${member.id}`);
     const get = (key) => (wage && wage[work.name][category][key]) || 0;
     tr.innerHTML = `<td>${member.id}</td><td>${member.name}</td><td><input type="number" value="${get('input')}" onchange="onMetreChange('${member.id}', this.value, '${member.name}', ${!!wage}, '${member.pf}', '${member.esi}')"></td><td data-id="${work.name}">${get(work.name.toLowerCase())}</td><td data-id="pf">${get('pf')}</td><td data-id="esi">${get('esi')}</td><td data-id="gt">${get('gratuity')}</td><td data-id="others">${get('others')}</td><td data-id="sum">${get('sum')}</td>${i == 0 ? `<td rowspan="${members.length}" data-id="margin">${get('margin')}</td>`: ""}<td data-id="mw">${get('mw')}</td><td data-id="mt">${get('mt')}</td>${i == 0 ? `<td rowspan="${members.length}" data-id="dividends">${get('dividends')}</td>` : ""}`;
     table.appendChild(tr);
