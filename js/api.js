@@ -294,7 +294,7 @@ async function loadMetrePage(id) {
   const table = document.getElementById('dataTable');
   window.members = data.filter(e => {
     if (category == '44' && work.workers_44.some(a => a.member_id == e.id && a.month == month)) return true;
-    if (category == '58' && work.workers_58.includes(a => a.member_id == e.id && a.month == month)) return true;
+    if (category == '58' && work.workers_58.some(a => a.member_id == e.id && a.month == month)) return true;
   });
 
   for (let i = 0; i < members.length; i++) {
