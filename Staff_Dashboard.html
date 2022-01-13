@@ -21,8 +21,8 @@
 		<div class="teamlist">
 			<table id="Team_table">
 				<tr>
-					<th>Team ID</th>
-					<th>Team Name</th>
+					<th>Society ID</th>
+					<th>Society Name</th>
 					<th>Circle</th>
 					<th>Location</th>
 					<th>Contact</th>
@@ -48,22 +48,21 @@
 		  <form onsubmit="addTeam(event)">
 			<table id="Popup_table">
 				<tr>
-					<th>Team ID</th>
-					<th>Team Name</th>
+					<th>Society ID</th>
+					<th>Society Name</th>
 					<th>Circle</th>
 					<th>Location</th>
 					<th>Contact</th>
-					<th>Bank Name</th>
 				</tr>
 				<tr>
 					<td><input type="text" name="id"></td>
 					<td><input type="text" name="name" required></td>
 					<td><input type="text" name="circle"></td>
 					<td><input type="text" name="location"></td>
-					<td><input type="text" name="contact"></td>
-					<td><input type="text" name="bank_name"></td>
+					<td><input type="text" name="contact"></td>					
 				</tr>
 				<tr>
+					<th>Bank Name</th>
 					<th>Branch Name</th>
 					<th>Account No</th>
 					<th>IFSC</th>
@@ -71,6 +70,7 @@
 				</tr>
 				
 				<tr>
+					<td><input type="text" name="bank_name"></td>
 					<td><input type="text" name="branch_name"></td>
 					<td><input type="text" name="bank_account_number"></td>
 					<td><input type="text" name="bank_ifsc_code"></td>

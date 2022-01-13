@@ -120,6 +120,9 @@ body{
 table{
 	padding: 30px;
 	font-family: 'Roboto', sans-serif;
+	position: relative;
+	border-collapse: collapse;
+	
 }
 
 table tr select{
@@ -139,11 +142,15 @@ th{
 	text-align: center;
 	line-height: 21px;
 	padding: 0px 20px 30px 3px ;
-	
+	position: sticky;
+	background-color: #D0E6FF;	
+	top: 0;
+	border: 1px solid #fff;
 }
 
 td{
 	padding: 0px 20px 15px 3px;
+	border: 1px solid #fff;
 }
 
 td a{
@@ -184,14 +191,16 @@ td a:hover{
 .AddTeam_popup{
 	position: absolute;
     font-family: Roboto;
-    left: 187px;
-    top: 243px;
-    width: 1167px;
+    left: 217px;
+    top: 323px;
+    width: 1067px;
     overflow: auto;
-    height: 446px;
+    height: 346px;
     border: 1px solid #0075FF;
     background: #D0E6FF;
     border-radius: 20px;
+	padding-top: 50px;
+	padding-left: 25px;
 }
 
 #AddTeam_popup{
@@ -207,13 +216,13 @@ td a:hover{
 	font-size: 16px;
 }
 
-.AddTeam_popup th{
+/* .AddTeam_popup th{
 	padding: 0px 35px 20px 5px;
 }
 
 .AddTeam_popup td{
 	padding: 0px 35px 20px 5px;
-}
+} */
 
 .AddTeam_popup input{
 	border-radius: 5px;
@@ -230,7 +239,7 @@ td a:hover{
 	width: 155px;
 	height: 40px;
 	left: 750px;
-	top: 390px;
+	top: 300px;
 	background: #0075FF;
 	border-radius: 10px;
 	color: #ffff;
@@ -248,7 +257,7 @@ td a:hover{
 	width: 155px;
 	height: 40px;
 	left: 550px;
-	top: 390px;
+	top: 300px;
 	background: #0075FF;
 	border-radius: 10px;
 	color: #ffff;
