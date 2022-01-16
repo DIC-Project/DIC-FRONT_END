@@ -116,8 +116,8 @@ const appendTeams = (teams) => {
     row.insertCell(8).innerHTML = team.secretary || '';
     row.insertCell(9).innerHTML = `<input type="month" value="${window.currentMonth}" onchange="window.currentMonth=this.value">`;
     /**modify*/
-    row.insertCell(10).innerHTML = `<a onclick="onSelectTeam('${team.id}')">SELECT</a>`;
-    row.insertCell(11).innerHTML = `<a onclick=""><i class="far fa-edit"></i><i class="far fa-trash-alt" style="margin-left:8px;"></i></a>`;
+    row.insertCell(10).innerHTML = `<a onclick="onSelectTeam('${team.id}')" style="cursor:pointer">SELECT</a>`;
+    row.insertCell(11).innerHTML = `<a onclick=""><i class="far fa-edit" style="cursor:pointer"></i><i class="far fa-trash-alt" style="margin-left:8px; cursor:pointer"></i></a>`;
   }
 };
 
@@ -175,7 +175,7 @@ async function loadWorkPage(workName) {
     .then(({ team: data }) => {
       document.getElementById('title').innerHTML = data.name;
       document.getElementById('team_id').innerHTML = data.team_id;
-      document.getElementById('location').innerHTML = data.location;
+      document.getElementById('location').innerHTML = data.circle;
       document.getElementById('contact').innerHTML = data.contact;
     });
   const [members, works] = await Promise.all([
