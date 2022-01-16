@@ -108,16 +108,16 @@ const appendTeams = (teams) => {
     row.insertCell(0).innerHTML = team.team_id;
     row.insertCell(1).innerHTML = team.name;
     row.insertCell(2).innerHTML = team.circle || '';
-    row.insertCell(3).innerHTML = team.location;
-    row.insertCell(4).innerHTML = team.contact;
-    row.insertCell(5).innerHTML = team.bank_account_info.bank_name;
-    row.insertCell(6).innerHTML = team.bank_account_info.branch_name;
-    row.insertCell(7).innerHTML = team.bank_account_info.bank_account_number;
-    row.insertCell(8).innerHTML = team.bank_account_info.bank_ifsc_code;
-    row.insertCell(9).innerHTML = team.secretary || '';
-    row.insertCell(10).innerHTML = `<input type="month" value="${window.currentMonth}" onchange="window.currentMonth=this.value">`;
+    row.insertCell(3).innerHTML = team.contact;
+    row.insertCell(4).innerHTML = team.bank_account_info.bank_name;
+    row.insertCell(5).innerHTML = team.bank_account_info.branch_name;
+    row.insertCell(6).innerHTML = team.bank_account_info.bank_account_number;
+    row.insertCell(7).innerHTML = team.bank_account_info.bank_ifsc_code;
+    row.insertCell(8).innerHTML = team.secretary || '';
+    row.insertCell(9).innerHTML = `<input type="month" value="${window.currentMonth}" onchange="window.currentMonth=this.value">`;
     /**modify*/
-    row.insertCell(11).innerHTML = `<a onclick="onSelectTeam('${team.id}')">SELECT</a>`;
+    row.insertCell(10).innerHTML = `<a onclick="onSelectTeam('${team.id}')">SELECT</a>`;
+    row.insertCell(11).innerHTML = `<a onclick=""><i class="far fa-edit"></i><i class="far fa-trash-alt" style="margin-left:8px;"></i></a>`;
   }
 };
 
@@ -211,7 +211,7 @@ function addTeam(e) {
     .then((data) => {
       appendTeams([data]);
       Hide();
-      alert('Team added successfully')
+      alert('Society added successfully')
     });
 };
 
@@ -232,7 +232,7 @@ function onTeamSubmit() {
     [`workers_${category}`]: window.ids
     })
     .then((data) => {
-      alert('Team members updated');
+      alert('Society members updated');
       goToWorkPage(getQuery('page'), category);
     });
 };
@@ -245,7 +245,7 @@ function loadTeamMembers() {
     .then(({ teamMembers: data }) => {
       for (const team of data) {
         const is = window.ids.some(e => e.month == getQuery('month') && e.member_id == team.id);
-        html += `<tr><td><input id="${team.id}"  onclick="onTeamMemberClick(this.id, this.checked)" type="checkbox" ${is ? 'checked': 'null'}></td><td>${team.id}</td><td>${team.name}</td><td>${team.bank_account_info.bank_account_number}</td><td>${team.bank_account_info.bank_name}</td><td>${team.bank_account_info.bank_ifsc_code}</td><td>${team.bank_account_info.branch_name}</td></tr>`;
+        html += `<tr><td><input id="${team.id}"  onclick="onTeamMemberClick(this.id, this.checked)" type="checkbox" ${is ? 'checked': 'null'}></td><td>${team.id}</td><td>${team.name}</td><td>${team.bank_account_info.bank_account_number}</td><td>${team.bank_account_info.bank_name}</td><td>${team.bank_account_info.bank_ifsc_code}</td><td>${team.bank_account_info.branch_name}</td><td><a onclick=""><i class="far fa-edit"></i><i class="far fa-trash-alt" style="margin-left:8px;"></i></a></td></tr>`;
       };
       document.getElementById('dataTab').innerHTML = html;
     });
@@ -562,7 +562,7 @@ async function excel(data) {
     vertical: 'middle'
   };
   
-  sheet.addRow([`PROFOMMA ${category}`]);
+  sheet.addRow([`PROFORMA ${category}`]);
   sheet.mergeCells('A1:L1');
   sheet.getCell('A1').alignment = alignment;
   let r = 2;
