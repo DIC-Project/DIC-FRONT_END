@@ -110,23 +110,16 @@ const appendTeams = (teams) => {
     const row = table.insertRow();
     row.insertCell(0).innerHTML = i + 1;
     row.insertCell(1).innerHTML = team.name;
-    row.insertCell(2).innerHTML = team.circle || "";
+    row.insertCell(2).innerHTML = team.circle || ''
     row.insertCell(3).innerHTML = team.contact;
     row.insertCell(4).innerHTML = team.bank_account_info.bank_name;
     row.insertCell(5).innerHTML = team.bank_account_info.branch_name;
     row.insertCell(6).innerHTML = team.bank_account_info.bank_account_number;
     row.insertCell(7).innerHTML = team.bank_account_info.bank_ifsc_code;
     row.insertCell(8).innerHTML = team.secretary || "";
-    row.insertCell(
-      9
-    ).innerHTML = `<input type="month" value="${window.currentMonth}" onchange="window.currentMonth=this.value">`;
-    /**modify*/
-    row.insertCell(
-      10
-    ).innerHTML = `<a onclick="onSelectTeam('${team.id}')">SELECT</a>`;
-    row.insertCell(
-      11
-    ).innerHTML = `<a><button onclick="renderEditForm('${team}')" class="view-btns">Edit</button><button onclick="deleteTeam(confirm('Are u sure want to delete society ${team.name} ?'))" class="view-btns">Delete</button></a>`;
+    row.insertCell(9).innerHTML = `<input type="month" value="${window.currentMonth}" onchange="window.currentMonth=this.value">`;
+    row.insertCell(10).innerHTML = `<a onclick="onSelectTeam('${team.id}')">SELECT</a>`;
+    row.insertCell(11).innerHTML = `<button onclick="renderEditForm('${team}')"><i class="far fa-edit"></i><i class="far fa-trash-alt" style="margin-left:8px;"></i></button><button onclick="deleteTeam(confirm('Are u sure want to delete society ${team.name} ?'))" class="view-btns">Delete</button>`;
   }
 };
 
@@ -278,15 +271,15 @@ function addTeam(e) {
   e.preventDefault();
   const body = {};
   for (let i = 0; i < e.target.elements.length; i++) {
-    body[e.target.elements[i].getAttribute("name")] =
-      e.target.elements[i].value;
-  }
-  request.post("/users/add_new_team", body).then((data) => {
-    appendTeams([data]);
-    Hide();
-    alert("Team added successfully");
-  });
-}
+    body[e.target.elements[i].getAttribute("name")] = e.target.elements[i].value;
+  };
+  request.post('/users/add_new_team', body)
+    .then((data) => {
+      appendTeams([data]);
+      Hide();
+      alert('Society added successfully')
+    });
+};
 
 function onTeamMemberClick(id, value) {
   const month = getQuery("month");
@@ -311,8 +304,8 @@ function onTeamSubmit() {
       [`workers_${category}`]: window.ids,
     })
     .then((data) => {
-      alert("Team members updated");
-      goToWorkPage(getQuery("page"), category);
+      alert('Society members updated');
+      goToWorkPage(getQuery('page'), category);
     });
 }
 
@@ -325,20 +318,10 @@ function loadTeamMembers() {
     .get(`/users/get_team_members/${getQuery("team_id")}`)
     .then(({ teamMembers: data }) => {
       for (const team of data) {
-        const is = window.ids.some(
-          (e) => e.month == getQuery("month") && e.member_id == team.id
-        );
-        html += `<tr><td><input id="${
-          team.id
-        }"  onclick="onTeamMemberClick(this.id, this.checked)" type="checkbox" ${
-          is ? "checked" : "null"
-        }></td><td>${team.id}</td><td>${team.name}</td><td>${
-          team.bank_account_info.bank_account_number
-        }</td><td>${team.bank_account_info.bank_name}</td><td>${
-          team.bank_account_info.bank_ifsc_code
-        }</td><td>${team.bank_account_info.branch_name}</td></tr>`;
-      }
-      document.getElementById("dataTab").innerHTML = html;
+        const is = window.ids.some(e => e.month == getQuery('month') && e.member_id == team.id);
+        html += `<tr><td><input id="${team.id}"  onclick="onTeamMemberClick(this.id, this.checked)" type="checkbox" ${is ? 'checked': 'null'}></td><td>${team.id}</td><td>${team.name}</td><td>${team.bank_account_info.bank_account_number}</td><td>${team.bank_account_info.bank_name}</td><td>${team.bank_account_info.bank_ifsc_code}</td><td>${team.bank_account_info.branch_name}</td><td><a onclick=""><i class="far fa-edit"></i><i class="far fa-trash-alt" style="margin-left:8px;"></i></a></td></tr>`;
+      };
+      document.getElementById('dataTab').innerHTML = html;
     });
 }
 
@@ -726,10 +709,10 @@ async function excel(data) {
     horizontal: "center",
     vertical: "middle",
   };
-
-  sheet.addRow([`PROFOMMA ${category}`]);
-  sheet.mergeCells("A1:L1");
-  sheet.getCell("A1").alignment = alignment;
+  
+  sheet.addRow([`PROFORMA ${category}`]);
+  sheet.mergeCells('A1:L1');
+  sheet.getCell('A1').alignment = alignment;
   let r = 2;
   for (const work of data) {
     sheet.addRow([work.name.toUpperCase()]);
@@ -814,40 +797,4 @@ function exportToCsv() {
       excel(data);
     });
   return;
-
-  function goToMetre() {
-    window.location.href = `addMetre.html?team_id=${getQuery(
-      "team_id"
-    )}&category=${document.getElementById("inch").checked ? "44" : "58"}`;
-  }
-  const data = window.members.map((item) => {
-    let mData = window.updates[item.id] || item[work.name][category];
-    mData.id = item.id;
-    mData.name = item.name;
-    mData.money_for_team = mData.mt;
-    mData.money_for_weaving = mData.mw;
-    return mData;
-  });
-  const csv = window.Papa.unparse(data, {
-    columns: [
-      "id",
-      "name",
-      work.name,
-      "pf",
-      "esi",
-      "gratuity",
-      "others",
-      "sum",
-      "margin",
-      "money_for_team",
-      "money_for_weaving",
-      "dividends",
-    ],
-  });
-  const encodedUri = encodeURI("data:text/csv;charset=utf-8," + csv);
-  const link = document.createElement("a");
-  link.setAttribute("href", encodedUri);
-  link.setAttribute("download", `${work.name + category}.csv`);
-  document.body.appendChild(link);
-  link.click();
 }
