@@ -105,19 +105,21 @@ const appendTeams = (teams) => {
   const table = document.getElementById('Team_table');
   for (const team of teams) {
     const row = table.insertRow();
-    row.insertCell(0).innerHTML = team.team_id;
-    row.insertCell(1).innerHTML = team.name;
-    row.insertCell(2).innerHTML = team.circle || '';
-    row.insertCell(3).innerHTML = team.contact;
-    row.insertCell(4).innerHTML = team.bank_account_info.bank_name;
-    row.insertCell(5).innerHTML = team.bank_account_info.branch_name;
-    row.insertCell(6).innerHTML = team.bank_account_info.bank_account_number;
-    row.insertCell(7).innerHTML = team.bank_account_info.bank_ifsc_code;
-    row.insertCell(8).innerHTML = team.secretary || '';
-    row.insertCell(9).innerHTML = `<input type="month" value="${window.currentMonth}" onchange="window.currentMonth=this.value">`;
+    // added serial number here
+    row.insertCell(0).innerHTML = teams.indexOf(team)+1;
+    row.insertCell(1).innerHTML = team.team_id;
+    row.insertCell(2).innerHTML = team.name;
+    row.insertCell(3).innerHTML = team.circle || '';
+    row.insertCell(4).innerHTML = team.contact;
+    row.insertCell(5).innerHTML = team.bank_account_info.bank_name;
+    row.insertCell(6).innerHTML = team.bank_account_info.branch_name;
+    row.insertCell(7).innerHTML = team.bank_account_info.bank_account_number;
+    row.insertCell(8).innerHTML = team.bank_account_info.bank_ifsc_code;
+    row.insertCell(9).innerHTML = team.secretary || '';
+    row.insertCell(10).innerHTML = `<input type="month" value="${window.currentMonth}" onchange="window.currentMonth=this.value">`;
     /**modify*/
-    row.insertCell(10).innerHTML = `<a onclick="onSelectTeam('${team.id}')" style="cursor:pointer">SELECT</a>`;
-    row.insertCell(11).innerHTML = `<a onclick=""><i class="far fa-edit" style="cursor:pointer"></i><i class="far fa-trash-alt" style="margin-left:8px; cursor:pointer"></i></a>`;
+    row.insertCell(11).innerHTML = `<a onclick="onSelectTeam('${team.id}')" style="cursor:pointer">SELECT</a>`;
+    row.insertCell(12).innerHTML = `<a onclick=""><i class="far fa-edit" style="cursor:pointer"></i><i class="far fa-trash-alt" style="margin-left:8px; cursor:pointer"></i></a>`;
   }
 };
 
