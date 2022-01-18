@@ -82,7 +82,7 @@
         <div class="bottom-nav">
             <div class="left-dash">
                 <i class="fas fa-long-arrow-alt-left"></i>
-                <a class="dash" href="window.history.back()"> Bact to Dashboard</a>
+                <a class="dash" onclick="window.history.back()"> Bact to Dashboard</a>
             </div>
             <div class="right-dash">
                 <input onClick="onTeamSubmit()" type="button" class="view-btns add-view" value="Submit">
@@ -125,7 +125,7 @@
         };
         request.post('/users/add_new_team_member', body)
         .then(() => {
-          alert('Team member added successfully');
+          alert('Society member added successfully');
           window.location.reload();
         });
       };

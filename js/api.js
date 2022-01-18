@@ -54,6 +54,7 @@ const request = {
   post: (...args) => callApi("post", ...args),
   patch: (...args) => callApi("patch", ...args),
   put: (...args) => callApi("put", ...args),
+  delete: (path) => callApi("delete", path),
 };
 
 function getQuery(name) {
@@ -110,31 +111,64 @@ const appendTeams = (teams) => {
     const row = table.insertRow();
     row.insertCell(0).innerHTML = i + 1;
     row.insertCell(1).innerHTML = team.name;
-    row.insertCell(2).innerHTML = team.circle || ''
+    row.insertCell(2).innerHTML = team.circle || "";
     row.insertCell(3).innerHTML = team.contact;
     row.insertCell(4).innerHTML = team.bank_account_info.bank_name;
     row.insertCell(5).innerHTML = team.bank_account_info.branch_name;
     row.insertCell(6).innerHTML = team.bank_account_info.bank_account_number;
     row.insertCell(7).innerHTML = team.bank_account_info.bank_ifsc_code;
     row.insertCell(8).innerHTML = team.secretary || "";
-    row.insertCell(9).innerHTML = `<input type="month" value="${window.currentMonth}" onchange="window.currentMonth=this.value">`;
-    row.insertCell(10).innerHTML = `<a onclick="onSelectTeam('${team.id}')">SELECT</a>`;
-    row.insertCell(11).innerHTML = `<button onclick="renderEditForm('${team}')"><i class="far fa-edit"></i><i class="far fa-trash-alt" style="margin-left:8px;"></i></button><button onclick="deleteTeam(confirm('Are u sure want to delete society ${team.name} ?'))" class="view-btns">Delete</button>`;
+    row.insertCell(
+      9
+    ).innerHTML = `<input type="month" value="${window.currentMonth}" onchange="window.currentMonth=this.value">`;
+    row.insertCell(
+      10
+    ).innerHTML = `<a onclick="onSelectTeam('${team.id}')">SELECT</a>`;
+    const obj = `renderEditForm('${team.id}', '${team.name}', '${team.secretary}', '${team.contact}', '${team.circle}', '${team.bank_account_info.bank_account_number}', '${team.bank_account_info.bank_name}', '${team.bank_account_info.branch_name}', '${team.bank_account_info.bank_ifsc_code}')`;
+    row.insertCell(
+      11
+    ).innerHTML = `<div style="display: inline-block"><a onclick="${obj}"><i class="far fa-edit"></i></a>&nbsp;&nbsp;&nbsp;<a onclick="deleteTeam(confirm('Are u sure want to delete society ${team.name} ?'), '${team.id}')" class="view-btns"><i class="far fa-trash-alt"></i></a></div>`;
   }
 };
 
-function deleteTeam(value) {
+async function deleteTeam(value, id) {
   if (!value) return;
+  await request.delete(`/users/teams/${id}`);
   alert("Society deleted successfully");
+  window.location.reload();
 }
 
-function renderEditForm(team) {
-  console.log(team)
-  const node = document.createElement('div');
-  node.setAttribute('id', 'EditTeam_popup');
-  node.setAt
-  document.body.appendChild(`<div id="EditTeam_popup" class="AddTeam_popup" style="display: block">
-  <form onsubmit="EditTeam(event)">
+async function editTeam(id, e) {
+  e.preventDefault();
+  const body = {};
+  for (let i = 0; i < e.target.elements.length; i++) {
+    let key = e.target.elements[i].getAttribute("name");
+    if (key && key.startsWith("b")) key = `bank_account_info.${key}`;
+    body[key] = e.target.elements[i].value || undefined;
+  }
+  await request.put(`/users/update_team/${id}`, body);
+  document.getElementById("EditTeam_popup").style.display = "none";
+  alert(`Society updated successfully`);
+  window.location.reload();
+}
+
+function renderEditForm(
+  id,
+  name,
+  secretary,
+  contact,
+  circle,
+  acno,
+  bankName,
+  branchName,
+  ifsc
+) {
+  const node = document.createElement("div");
+  node.setAttribute("id", "EditTeam_popup");
+  node.setAttribute("class", "AddTeam_popup");
+  node.style.display = "block";
+
+  node.innerHTML = `<form onsubmit="editTeam('${id}', event)">
   <table id="Popup_table">
     <tr>
       <th>Society Name</th>
@@ -142,9 +176,9 @@ function renderEditForm(team) {
       <th>Contact</th>
     </tr>
     <tr>
-      <td><input type="text" name="name" required></td>
-      <td><input type="text" name="circle"></td>
-      <td><input type="text" name="contact"></td>					
+      <td><input value="${name}" type="text" name="name" required></td>
+      <td><input value="${circle}" type="text" name="circle"></td>
+      <td><input value="${contact}" type="text" name="contact"></td>					
     </tr>
     <tr>
       <th>Bank Name</th>
@@ -155,18 +189,18 @@ function renderEditForm(team) {
     </tr>
     
     <tr>
-      <td><input type="text" name="bank_name"></td>
-      <td><input type="text" name="branch_name"></td>
-      <td><input type="text" name="bank_account_number"></td>
-      <td><input type="text" name="bank_ifsc_code"></td>
-      <td><input type="text" name="secretary"></td>
+      <td><input value="${bankName}" type="text" name="bank_name"></td>
+      <td><input value="${branchName}" type="text" name="branch_name"></td>
+      <td><input value="${acno}" type="text" name="bank_account_number"></td>
+      <td><input value="${ifsc}" type="text" name="bank_ifsc_code"></td>
+      <td><input value="${secretary}" type="text" name="secretary"></td>
     </tr>
   </table>
   <button type="submit" id="Popup_addteam">Edit Team</button>
   <button type="button" id="Popup_cancel" onclick="document.getElementById('EditTeam_popup').style.display = 'none'">Cancel</button>
-  </form>
-</div>`);
-document.getElementById('EditTeam_popup').style.display = 'block'
+  </form>`;
+
+  document.body.appendChild(node);
 }
 
 function onSelectTeam(id) {
@@ -271,15 +305,15 @@ function addTeam(e) {
   e.preventDefault();
   const body = {};
   for (let i = 0; i < e.target.elements.length; i++) {
-    body[e.target.elements[i].getAttribute("name")] = e.target.elements[i].value;
-  };
-  request.post('/users/add_new_team', body)
-    .then((data) => {
-      appendTeams([data]);
-      Hide();
-      alert('Society added successfully')
-    });
-};
+    body[e.target.elements[i].getAttribute("name")] =
+      e.target.elements[i].value;
+  }
+  request.post("/users/add_new_team", body).then((data) => {
+    appendTeams([data]);
+    Hide();
+    alert("Society added successfully");
+  });
+}
 
 function onTeamMemberClick(id, value) {
   const month = getQuery("month");
@@ -304,8 +338,8 @@ function onTeamSubmit() {
       [`workers_${category}`]: window.ids,
     })
     .then((data) => {
-      alert('Society members updated');
-      goToWorkPage(getQuery('page'), category);
+      alert("Society members updated");
+      goToWorkPage(getQuery("page"), category);
     });
 }
 
@@ -318,10 +352,22 @@ function loadTeamMembers() {
     .get(`/users/get_team_members/${getQuery("team_id")}`)
     .then(({ teamMembers: data }) => {
       for (const team of data) {
-        const is = window.ids.some(e => e.month == getQuery('month') && e.member_id == team.id);
-        html += `<tr><td><input id="${team.id}"  onclick="onTeamMemberClick(this.id, this.checked)" type="checkbox" ${is ? 'checked': 'null'}></td><td>${team.id}</td><td>${team.name}</td><td>${team.bank_account_info.bank_account_number}</td><td>${team.bank_account_info.bank_name}</td><td>${team.bank_account_info.bank_ifsc_code}</td><td>${team.bank_account_info.branch_name}</td><td><a onclick=""><i class="far fa-edit"></i><i class="far fa-trash-alt" style="margin-left:8px;"></i></a></td></tr>`;
-      };
-      document.getElementById('dataTab').innerHTML = html;
+        const is = window.ids.some(
+          (e) => e.month == getQuery("month") && e.member_id == team.id
+        );
+        html += `<tr><td><input id="${
+          team.id
+        }"  onclick="onTeamMemberClick(this.id, this.checked)" type="checkbox" ${
+          is ? "checked" : "null"
+        }></td><td>${team.id}</td><td>${team.name}</td><td>${
+          team.bank_account_info.bank_account_number
+        }</td><td>${team.bank_account_info.bank_name}</td><td>${
+          team.bank_account_info.bank_ifsc_code
+        }</td><td>${
+          team.bank_account_info.branch_name
+        }</td><td><a onclick=""><i class="far fa-edit"></i><i class="far fa-trash-alt" style="margin-left:8px;"></i></a></td></tr>`;
+      }
+      document.getElementById("dataTab").innerHTML = html;
     });
 }
 
@@ -388,6 +434,12 @@ async function loadMetrePage(id) {
   for (let i = 0; i < members.length; i++) {
     const member = members[i];
     const wage = member.wages.find((item) => item.monthYear === month);
+    updates[member.id] = {
+      id: member.id,
+      name: member.name,
+      exists: !!wage,
+      ...(wage && wage[work.name][category]),
+    };
     const tr = document.createElement("tr");
     tr.setAttribute("id", `m${member.id}`);
     const get = (key) => (wage && wage[work.name][category][key]) || 0;
@@ -425,6 +477,7 @@ async function loadMetrePage(id) {
   tr.setAttribute("id", "mtotal");
   tr.innerHTML = `<td colspan="2">Total</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>`;
   table.appendChild(tr);
+  setTotals();
 }
 
 function setText(id, dataId, value) {
@@ -483,26 +536,35 @@ const formulas = {
 };
 
 function setTotals() {
+  let m = 0;
+  const a = v[work.name.toLowerCase()][category];
   const e = Object.values(updates).reduce(
     (pre, cur) => {
       pre.size += 1;
+      m += cur.input;
       for (const key in cur) {
         if (!pre[key]) pre[key] = 0;
-        pre[key] += Math.trunc((cur[key] || 0) * 100) / 100;
+        pre[key] += cur[key];
       }
       return pre;
     },
     { size: 0 }
   );
+  window.marginValue = m * a.margin;
+  window.dividendValue = e.mt + e.sum;
+  setMargin(marginValue);
+  setDivideds(dividendValue);
   document.getElementById(
     "mtotal"
-  ).innerHTML = `<td colspan="2">Total</td><td>${e.input}</td><td>${
+  ).innerHTML = `<td colspan="2">Total</td><td>${e.input}</td><td>${round(
     e[work.name.toLowerCase()]
-  }<td>${e.pf}</td><td>${e.esi}</td><td>${e.gratuity}</td><td>${
-    e.others
-  }</td><td>${e.sum}<td>${round(marginValue)}</td><td>${e.mw}</td><td>${
-    e.mt
-  }</td><td>${round(dividendValue)}`;
+  )}<td>${round(e.pf)}</td><td>${round(e.esi)}</td><td>${round(
+    e.gratuity
+  )}</td><td>${round(e.others)}</td><td>${round(e.sum)}<td>${round(
+    marginValue
+  )}</td><td>${round(e.mw)}</td><td>${round(e.mt)}</td><td>${round(
+    dividendValue
+  )}`;
 }
 
 function calculate(id, value, pf, esi) {
@@ -562,7 +624,13 @@ async function onMetreSubmit() {
     work: work.name,
     monthYear: getQuery("month"),
     category,
-    data: Object.values(window.updates),
+    margin: marginValue,
+    dividends: dividendValue,
+    data: Object.values(window.updates).map((e) => ({
+      ...e,
+      margin: marginValue,
+      dividends: dividendValue,
+    })),
   });
   // exportToCsv();
   toggleModal();
@@ -703,16 +771,29 @@ async function loadPricing(v) {
 }
 
 async function excel(data) {
+  const total = {
+    input: 0,
+    rate: 0,
+    pf: 0,
+    esi: 0,
+    gty: 0,
+    sum: 0,
+    others: 0,
+    margin: 0,
+    dividends: 0,
+    mt: 0,
+    mw: 0,
+  };
   const workbook = new ExcelJS.Workbook();
   const sheet = workbook.addWorksheet("Sheet 1");
   const alignment = {
     horizontal: "center",
     vertical: "middle",
   };
-  
+
   sheet.addRow([`PROFORMA ${category}`]);
-  sheet.mergeCells('A1:L1');
-  sheet.getCell('A1').alignment = alignment;
+  sheet.mergeCells("A1:L1");
+  sheet.getCell("A1").alignment = alignment;
   let r = 2;
   for (const work of data) {
     sheet.addRow([work.name.toUpperCase()]);
@@ -729,33 +810,64 @@ async function excel(data) {
         { name: work.name.toUpperCase(), totalsRowFunction: "sum" },
         { name: "PF", totalsRowFunction: "sum" },
         { name: "ESI", totalsRowFunction: "sum" },
+        { name: "GRATUITY", totalsRowFunction: "sum" },
         { name: "OTHERS", totalsRowFunction: "sum" },
         { name: "TOTAL SUM", totalsRowFunction: "sum" },
         { name: "MARGIN", totalsRowFunction: "max" },
         { name: "MONEY FOR WEAVERS", totalsRowFunction: "sum" },
-        { name: "MONEY FOR TEAM", totalsRowFunction: "sum" },
-        { name: "DIVIDENDS", totalsRowFunction: "sum" },
+        { name: "MONEY FOR SOCIETY", totalsRowFunction: "sum" },
+        { name: "DIVIDENDS", totalsRowFunction: "max" },
       ],
-      rows: work.members.map((e) => [
-        e.id,
-        e.name,
-        e.input || 0,
-        e.rate || 0,
-        e.pf || 0,
-        e.esi || 0,
-        e.others || 0,
-        e.sum || 0,
-        e.margin || 0,
-        e.mw || 0,
-        e.mt || 0,
-        e.dividends || 0,
-      ]),
+      rows: work.members.map((e) => {
+        total.input += e.input;
+        total.rate += e.weaving + e.winding + e.warping + e.joining;
+        total.pf += e.pf;
+        total.sum += e.sum;
+        total.esi += e.esi;
+        total.others += e.others;
+        total.gty += e.gratuity;
+        total.mt += e.mt;
+        total.mw += e.mw;
+
+        return [
+          e.id,
+          e.name,
+          e.input || 0,
+          e.rate || e[work.name.toLowerCase()] || 0,
+          e.pf || 0,
+          e.esi || 0,
+          e.gratuity || 0,
+          e.others || 0,
+          e.sum || 0,
+          e.margin || 0,
+          e.mw || 0,
+          Number(e.mt) || 0,
+          e.dividends || 0,
+        ];
+      }),
     });
     sheet.addRow([]);
     sheet.addRow([]);
-    r += work.members.length + 4;
+    r += work.members.length + 5;
+    total.margin += (work.members[0] && work.members[0].margin) || 0;
+    total.dividends += (work.members[0] && work.members[0].dividends) || 0;
   }
 
+  sheet.addRow([
+    "GRAND TOTAL",
+    "",
+    total.input,
+    total.rate,
+    total.pf,
+    total.esi,
+    total.gty,
+    total.others,
+    total.sum,
+    total.margin,
+    total.mw,
+    total.mt,
+    total.dividends,
+  ]);
   const a = { horizontal: "center", vertical: "middle" };
 
   sheet.getColumn(1).width = 27;
@@ -770,14 +882,15 @@ async function excel(data) {
   sheet.getColumn(8).alignment = a;
   sheet.getColumn(8).width = 15;
   sheet.getColumn(9).alignment = a;
-  sheet.getColumn(9).width = 12;
+  sheet.getColumn(9).width = 15;
   sheet.getColumn(10).alignment = a;
-  sheet.getColumn(10).width = 23;
+  sheet.getColumn(10).width = 12;
   sheet.getColumn(11).alignment = a;
-  sheet.getColumn(11).width = 20;
+  sheet.getColumn(11).width = 23;
   sheet.getColumn(12).alignment = a;
-  sheet.getColumn(12).width = 15;
-
+  sheet.getColumn(12).width = 20;
+  sheet.getColumn(13).alignment = a;
+  sheet.getColumn(13).width = 15;
   const buffer = await workbook.xlsx.writeBuffer();
   const blob = new Blob([buffer], {
     type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
