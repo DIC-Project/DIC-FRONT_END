@@ -43,7 +43,7 @@
 			</div>
 			<div class="buttons">
 				<button id="Admin_edit" onclick="edit()">Edit</button>
-				<button id="Admin_Dashboard_save" onclick="save()">Save</button>
+				<button id="Admin_Dashboard_save" onclick="savePrice()">Save</button>
 				<button onclick="save()" id="Admin_Dashboard_submit">Submit</button>
 			</div>
 		</div>
@@ -61,6 +61,13 @@
 				x[i].readOnly = false;
 			}
 
+		}
+
+		function savePrice() {
+			for (i=0;i< x.length; i++){
+				x[i].readOnly = true;
+			}
+			window.alert("Saved! Press SUBMIT Button to confirm changes")
 		}
 
 		function save() {
