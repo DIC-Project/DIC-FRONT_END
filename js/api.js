@@ -46,6 +46,9 @@ async function callApi(method = 'get', path, data) {
   if (response.ok) return json;
 
   json.status = response.status;
+  if (json && json.errors && json.errors[0]) {
+    alert(json.errors[0].message.en);
+  }
   return Promise.reject(json);
 }
 
@@ -154,8 +157,22 @@ async function editTeam(id, e) {
     body[key] = e.target.elements[i].value || undefined;
   }
   await request.put(`/users/update_team/${id}`, body);
-  document.getElementById('EditTeam_popup').style.display = 'none';
+  document.getElementById(id).remove();
   alert(`Society updated successfully`);
+  window.location.reload();
+}
+
+async function editMember(id, e) {
+  e.preventDefault();
+  const body = {};
+  for (let i = 0; i < e.target.elements.length; i++) {
+    let key = e.target.elements[i].getAttribute('name');
+    if (key && key.startsWith('b')) key = `bank_account_info.${key}`;
+    body[key] = e.target.elements[i].value || undefined;
+  }
+  await request.put(`/users/update_team_member/${id}`, body);
+  document.getElementById(id).remove();
+  alert(`Society member updated successfully`);
   window.location.reload();
 }
 
@@ -171,7 +188,7 @@ function renderEditForm(
   ifsc
 ) {
   const node = document.createElement('div');
-  node.setAttribute('id', 'EditTeam_popup');
+  node.setAttribute('id', id);
   node.setAttribute('class', 'AddTeam_popup');
   node.style.display = 'block';
 
@@ -204,10 +221,50 @@ function renderEditForm(
     </tr>
   </table>
   <button type="submit" id="Popup_addteam">Edit Team</button>
-  <button type="button" id="Popup_cancel" onclick="document.getElementById('EditTeam_popup').style.display = 'none'">Cancel</button>
+  <button type="button" id="Popup_cancel" onclick="document.getElementById('${id}').remove()">Cancel</button>
   </form>`;
 
   document.body.appendChild(node);
+}
+
+function renderEditMember(id, name, ac, bank, ifsc, branch, pf, esi) {
+  const node = document.createElement('div');
+  node.setAttribute('id', id);
+  node.setAttribute('class', 'AddTeam_popup');
+  node.style.display = 'block';
+
+  node.innerHTML = `<form onsubmit="editMember('${id}', event)">
+                <div class="data-frame">
+                        <table id="dataTab" style="width:100%" class="data valueList">
+                        <tr>
+                            <th>Name</th>
+                            <th>Ac. No.</th>
+                            <th>Bank Name</th>
+                            <th>IFSC code</th>
+                            <th>Branch Name</th>
+                            <th>PF</th>
+                            <th>ESI</th>
+                        </tr>
+                        <tr>
+                            <td><input type="text" required name="name" id=""></td>
+                            <td><input type="text" name="bank_account_number" id=""></td>
+                            <td><input type="text" name="bank_name" id=""></td>
+                            <td><input  type="text" name="bank_ifsc_code" id=""></td>
+                            <td><input type="text" name="branch_name" id=""></td>
+                            <td><select  name="pf"><option value="true">Yes</option>
+                            <option value="false">No</option></select></td>
+                            <td><select  name="esi"><option value="true">Yes</option>
+                            <option value="false">No</option></select></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="" style="float: right; padding-right: 4em;">
+                    <input onclick="document.getElementById('${id}').remove()" type="button" class="view-btns add-view" value="Cancel">
+                    <button type="submit" class="view-btns add-view">Save</button>
+                </div>
+            </form>        
+        </div>`;
+  document.body.append(node);
 }
 
 function onSelectTeam(id) {
@@ -280,6 +337,8 @@ async function loadWorkPage(workName) {
 
   const id = getQuery('team_id');
   request.get(`/users/get_one_team/${id}`).then(({ team: data }) => {
+    window.teamName = data.name;
+    window.circleName = data.circle;
     document.getElementById('title').innerHTML = data.name;
     document.getElementById('team_id').innerHTML = data.team_id;
     document.getElementById('location').innerHTML = data.circle;
@@ -293,18 +352,25 @@ async function loadWorkPage(workName) {
   if (!work)
     return alert(`Please create work ${workName} on backend before proceeding`);
   window.work = work;
+  let c1 = 0,
+    c2 = 0;
   for (const { month, member_id: id } of work.workers_44) {
     const member = members.find((item) => item.id == id);
     if (month == m && member) {
+      c1++;
       membersHtml += `<tr class="category44"><td>${member.id}</td><td>${member.name}</td></tr>`;
     }
   }
   for (const { month, member_id: id } of work.workers_58) {
     const member = members.find((item) => item.id == id);
     if (month == m && member) {
+      c2++;
       membersHtml += `<tr class="category58"><td>${member.id}</td><td>${member.name}</td></tr>`;
     }
   }
+  document.getElementById('c1').innerHTML = c1;
+  document.getElementById('c2').innerHTML = c2;
+
   table.innerHTML = membersHtml;
 }
 
@@ -366,13 +432,19 @@ function loadTeamMembers() {
           team.id
         }"  onclick="onTeamMemberClick(this.id, this.checked)" type="checkbox" ${
           is ? 'checked' : 'null'
-        }></td><td>${team.id}</td><td>${team.name}</td><td>${
+        }></td><td>${data.indexOf(team) + 1}</td><td>${team.name}</td><td>${
           team.bank_account_info.bank_account_number
         }</td><td>${team.bank_account_info.bank_name}</td><td>${
           team.bank_account_info.bank_ifsc_code
         }</td><td>${
           team.bank_account_info.branch_name
-        }</td><td><a onclick=""><i class="far fa-edit"></i><i onclick="deleteTeamMember(confirm('Are u sure want to delete member ${
+        }</td><td><a onclick="renderEditMember('${team.id}', '${team.name}', '${
+          team.bank_account_info.bank_account_number
+        }', '${team.bank_account_info.bank_name}', '${
+          team.bank_account_info.bank_ifsc_code
+        }', '${team.bank_account_info.branch_name}', '${team.pf}', '${
+          team.esi
+        }')"><i class="far fa-edit"></i><i onclick="deleteTeamMember(confirm('Are u sure want to delete member ${
           team.name
         } ?'), '${
           team.id
@@ -561,21 +633,20 @@ function setTotals() {
     },
     { size: 0 }
   );
-  window.marginValue = m * a.margin;
-  window.dividendValue = e.mt + e.sum;
-  setMargin(marginValue);
+  window.marginValue = m * a.margin || 0;
+  window.dividendValue = e.mt + e.sum || 0;
   setDivideds(dividendValue);
   document.getElementById(
     'mtotal'
-  ).innerHTML = `<td colspan="2">Total</td><td>${e.input}</td><td>${round(
-    e[work.name.toLowerCase()]
-  )}<td>${round(e.pf)}</td><td>${round(e.esi)}</td><td>${round(
-    e.gratuity
-  )}</td><td>${round(e.others)}</td><td>${round(e.sum)}<td>${round(
-    marginValue
-  )}</td><td>${round(e.mw)}</td><td>${round(e.mt)}</td><td>${round(
-    dividendValue
-  )}`;
+  ).innerHTML = `<td colspan="2">Total</td><td>${e.input || 0}</td><td>${round(
+    e[work.name.toLowerCase()] || 0
+  )}<td>${round(e.pf) || 0}</td><td>${round(e.esi) || 0}</td><td>${
+    round(e.gratuity) || 0
+  }</td><td>${round(e.others) || 0}</td><td>${round(e.sum) || 0}<td>${
+    round(marginValue) || 0
+  }</td><td>${round(e.mw) || 0}</td><td>${round(e.mt) || 0}</td><td>${
+    round(dividendValue) || 0
+  }`;
 }
 
 function calculate(id, value, pf, esi) {
@@ -673,6 +744,7 @@ function goToNextPage() {
       next = 'addToJoining.html';
     case 'joining':
       current = 'addToJoining.html';
+      next = 'addToJoining.html';
   }
 
   if (!next) {
@@ -803,9 +875,16 @@ async function excel(data) {
   };
 
   sheet.addRow([`PROFORMA ${category}`]);
-  sheet.mergeCells('A1:L1');
+  sheet.addRow([
+    `TEAM NAME: ${teamName.toUpperCase()}  CIRCLE: ${circleName.toUpperCase()}`,
+  ]);
+  sheet.mergeCells('A1:M1');
+  sheet.mergeCells('A2:M2');
   sheet.getCell('A1').alignment = alignment;
-  let r = 2;
+  sheet.getCell('A1').font = { bold: true, size: 14 };
+  sheet.getCell('A2').alignment = alignment;
+  sheet.getCell('A2').font = { bold: true, size: 14 };
+  let r = 3;
   for (const work of data) {
     sheet.addRow([work.name.toUpperCase()]);
     sheet.mergeCells(`A${r}:B${r}`);
@@ -827,9 +906,9 @@ async function excel(data) {
         { name: 'MARGIN', totalsRowFunction: 'max' },
         { name: 'MONEY FOR WEAVERS', totalsRowFunction: 'sum' },
         { name: 'MONEY FOR SOCIETY', totalsRowFunction: 'sum' },
-        { name: 'DIVIDENDS', totalsRowFunction: 'max' },
+        { name: 'SOCIETY PORTION', totalsRowFunction: 'max' },
       ],
-      rows: work.members.map((e) => {
+      rows: work.members.map((e, i) => {
         total.input += e.input;
         total.rate += e.weaving + e.winding + e.warping + e.joining;
         total.pf += e.pf;
@@ -841,7 +920,7 @@ async function excel(data) {
         total.mw += e.mw;
 
         return [
-          e.id,
+          i + 1,
           e.name,
           e.input || 0,
           e.rate || e[work.name.toLowerCase()] || 0,
@@ -864,7 +943,7 @@ async function excel(data) {
     total.dividends += (work.members[0] && work.members[0].dividends) || 0;
   }
 
-  sheet.addRow([
+  const totalRow = sheet.addRow([
     'GRAND TOTAL',
     '',
     total.input,
@@ -879,6 +958,11 @@ async function excel(data) {
     total.mt,
     total.dividends,
   ]);
+  totalRow.eachCell((c) => {
+    c.font = {
+      bold: true,
+    };
+  });
   const a = { horizontal: 'center', vertical: 'middle' };
 
   sheet.getColumn(1).width = 27;
@@ -901,7 +985,7 @@ async function excel(data) {
   sheet.getColumn(12).alignment = a;
   sheet.getColumn(12).width = 20;
   sheet.getColumn(13).alignment = a;
-  sheet.getColumn(13).width = 15;
+  sheet.getColumn(13).width = 18;
   const buffer = await workbook.xlsx.writeBuffer();
   const blob = new Blob([buffer], {
     type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
