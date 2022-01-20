@@ -247,14 +247,14 @@ function renderEditMember(id, name, ac, bank, ifsc, branch, pf, esi) {
                             <th>ESI</th>
                         </tr>
                         <tr>
-                            <td><input type="text" required name="name" id=""></td>
-                            <td><input type="text" name="bank_account_number" id=""></td>
-                            <td><input type="text" name="bank_name" id=""></td>
-                            <td><input  type="text" name="bank_ifsc_code" id=""></td>
-                            <td><input type="text" name="branch_name" id=""></td>
-                            <td><select  name="pf"><option value="true">Yes</option>
+                            <td><input value="${name}" type="text" name="name" id=""></td>
+                            <td><input value="${ac}" type="text" name="bank_account_number" id=""></td>
+                            <td><input value="${bank}" type="text" name="bank_name" id=""></td>
+                            <td><input value="${ifsc}" type="text" name="bank_ifsc_code" id=""></td>
+                            <td><input value="${branch}" type="text" name="branch_name" id=""></td>
+                            <td><select value="${pf}" name="pf"><option value="true">Yes</option>
                             <option value="false">No</option></select></td>
-                            <td><select  name="esi"><option value="true">Yes</option>
+                            <td><select value="${esi}" name="esi"><option value="true">Yes</option>
                             <option value="false">No</option></select></td>
                         </tr>
                     </table>
@@ -877,7 +877,9 @@ async function excel(data) {
 
   sheet.addRow([`PROFORMA ${category}`]);
   sheet.addRow([
-    `TEAM NAME: ${teamName.toUpperCase()}  CIRCLE: ${circleName.toUpperCase()}`,
+    `TEAM NAME: ${teamName.toUpperCase()}    CIRCLE: ${circleName.toUpperCase()}    DATE: ${getQuery(
+      'month'
+    )}`,
   ]);
   sheet.mergeCells('A1:M1');
   sheet.mergeCells('A2:M2');
@@ -991,7 +993,7 @@ async function excel(data) {
   const blob = new Blob([buffer], {
     type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
   });
-  saveAs(blob, 'reports.xlsx');
+  saveAs(blob, `proforma${getQuery('category')}_${getQuery('month')}.xlsx`);
 }
 
 function exportToCsv() {
