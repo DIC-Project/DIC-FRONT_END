@@ -113,6 +113,7 @@ const appendTeams = (teams) => {
     const team = teams[i];
     const row = table.insertRow();
     row.insertCell(0).innerHTML = i + 1;
+
     row.insertCell(1).innerHTML = team.name;
     row.insertCell(2).innerHTML = team.circle || '';
     row.insertCell(3).innerHTML = team.contact;

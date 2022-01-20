@@ -15,7 +15,7 @@
     <header>
         <nav class="navbar">
             <img src="images/Logo.png" alt="HSU Wage Calculator" id="image">
-            <p class="user-signout">Welcome user, <span class="signout">sign out</span></p>
+            <p class="user-signout">Welcome user, <a onclick="goToWorkPage('index.html')" class="signout">Signout</a></p>
         </nav>
     </header>
     <main class="main-sec">
@@ -80,7 +80,9 @@
         <div class="bottom-nav">
             <div class="left-dash">
                 <i class="fas fa-long-arrow-alt-left"></i>
-                <a class="dash" onclick="window.history.back()"> Back to Dashboard</a>
+                <a class="dash" onclick="history.back()"> Back to Dashboard</a>
+                <!-- <a onclick="goToWorkPage('addToWeaving.html')" class="dash"> Back to Weaving</a> -->
+
             </div>
             <div class="right-dash">
                 <input onClick="onTeamSubmit()" type="button" class="view-btns add-view" value="Submit">
