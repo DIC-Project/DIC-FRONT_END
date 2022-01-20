@@ -19,7 +19,7 @@ let signout = document.querySelector(".signout");
 
 signout.addEventListener("click",(e)=>{
     e.preventDefault();
-    window.location.replace("../addMetre.html")
+    window.location.replace("../index.html")
 })
 
 
