@@ -1,0 +1,108 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap');
+
+body{
+	position: relative;
+	padding: 0px;
+	margin: 0px;
+	font-family: 'Roboto', sans-serif;
+}
+
+.nav{
+	min-height: 10vh;
+	border-bottom: 2px solid;
+	width: 100%;
+}
+
+
+.logo{
+	padding: 2px 0px 2px 20px;	
+	display: inline-block;
+
+}
+
+
+#image{
+	width: 300px;
+	height: 70px;
+}
+
+.welcome{
+	font-style: normal;
+	font-weight: 400;
+	font-size: 18px;
+	float: right;
+	padding-right: 15px;
+
+	margin-top: 20px;
+
+}
+
+.welcome #signout{
+	text-decoration: none;
+	color: #0075FF;
+}
+
+.welcome #signout:hover{
+	text-decoration: underline;
+	cursor: pointer;
+}
+
+.select-bank{
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+    margin-top: 30px;
+    margin-right: 30px;
+    
+}
+
+.select-bank select{
+    background-color: #C4C4C4;
+    font-size: 16px;
+    padding: 10px;
+
+}
+
+.bank-name{
+    text-align: center;
+}
+
+.table{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 20px;
+}
+
+.table table{
+    background-color: #D0E6FF;
+    padding: 15px;
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table table th{
+    border: 1px solid #E1E1E1;
+    padding: 10px;
+}
+
+.bottom-btn{
+    display: flex;
+    margin: 20px;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.bottom-btn button{
+    background-color: #C4C4C4;
+    font-size: 15px;
+    padding: 10px;
+    outline: none;
+    border: none;
+}
+
+@media only screen and (max-width: 1080px) {
+	.nav{
+		width: 84.2rem;
+	}	
+}
