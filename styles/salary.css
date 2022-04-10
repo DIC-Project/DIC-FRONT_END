@@ -11,13 +11,13 @@ body{
 	min-height: 10vh;
 	border-bottom: 2px solid;
 	width: 100%;
+    display: flex;
+    justify-content: space-between;
 }
 
 
 .logo{
-	padding: 2px 0px 2px 20px;	
-	display: inline-block;
-
+	padding: 2px 0px 2px 20px;
 }
 
 
@@ -30,7 +30,6 @@ body{
 	font-style: normal;
 	font-weight: 400;
 	font-size: 18px;
-	float: right;
 	padding-right: 15px;
 
 	margin-top: 20px;
@@ -49,7 +48,6 @@ body{
 
 .select-bank{
     display: flex;
-    align-items: flex-end;
     justify-content: flex-end;
     margin-top: 30px;
     margin-right: 30px;
@@ -58,9 +56,17 @@ body{
 
 .select-bank select{
     background-color: #C4C4C4;
+    outline: none;
+    border: none;
+    cursor: pointer;
     font-size: 16px;
     padding: 10px;
 
+}
+
+.select-bank select:focus{
+    outline: none;
+    border: none;
 }
 
 .bank-name{
@@ -93,16 +99,20 @@ body{
     align-items: flex-end;
 }
 
-.bottom-btn button{
+.bottom-btn .right-btn button{
     background-color: #C4C4C4;
-    font-size: 15px;
+    font-size: 16px;
     padding: 10px;
+    cursor: pointer;
     outline: none;
     border: none;
 }
 
-@media only screen and (max-width: 1080px) {
-	.nav{
-		width: 84.2rem;
-	}	
+.bottom-btn .left-btn button{
+    color: #0075FF;
+    font-size: 16px;
+    padding: 10px;
+    cursor: pointer;
+    outline: none;
+    border: none;
 }

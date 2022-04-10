@@ -5,7 +5,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./styles/salary.css">
-    <title>Bank Statement</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css" integrity="sha512-YWzhKL2whUzgiheMoBFwW8CKV4qpHQAEuvilg9FAn5VJUDwKZZxkJNuGM4XkWuk94WCrrwslk8yWNGmY1EduTA==" crossorigin="anonymous" referrerpolicy="no-referrer" />    <title>Bank Statement</title>
 </head>
 <body>
     <div class="main">
@@ -20,8 +21,8 @@
             <div class="select-bank">
                 <select onchange="" name="" class="view-btns add-view">
                     <option value="" selected disabled>--Select Bank--</option>
-                    <option value="">SBI</option>
-                    <option value="">Other Banks</option>
+                    <option value="sbi">SBI</option>
+                    <option value="other">Other Banks</option>
                   </select>
             </div>
         </section>
@@ -47,12 +48,12 @@
 
         <section>
            <div class="bottom-btn">
-            <div class="left-btn">
-                <button>Go to Dashboard</button>
-            </div>
-            <div class="right-btn">
-                <button>Download</button>
-            </div>
+                <div class="left-btn">
+                    <a href="./Staff_Dashboard.html"><button><i class="fas fa-long-arrow-alt-left"></i> Back to Dashboard</button></a>
+                </div>
+                <div class="right-btn">
+                    <button>Download</button>
+                </div>
            </div>
         </section>
     </div>
