@@ -492,6 +492,7 @@ function setDivideds(value) {
 
 async function loadMetrePage(id) {
   const month = getQuery('month');
+  const work_name = getQuery('work');
   window.category = getQuery('category');
   window.members = [];
   window.work = {};
@@ -499,7 +500,11 @@ async function loadMetrePage(id) {
   window.marginValue = 0;
   window.dividendValue = 0;
   window.v = {};
-
+  
+  if(work_name.toLowerCase() !== 'weaving') {
+    document.getElementById('marginId').style.display = 'none';
+  };
+  
   const [works, data, vv] = await Promise.all([
     request.get(`/users/get_works`).then((q) => q.works),
     request.get(`/users/get_team_members/${id}`).then((q) => q.teamMembers),
