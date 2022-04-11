@@ -471,6 +471,15 @@ function goToTeamList() {
   }&ids=${JSON.stringify(work[`workers_${c}`])}&month=${getQuery('month')}`;
 }
 
+function goToSalaryList() {
+  const c = window.category;
+  window.location.href = `salary.html?page=${
+    window.location.pathname
+  }&team_id=${getQuery('team_id')}&category=${c}&work_id=${
+    work._id
+  }&ids=${JSON.stringify(work[`workers_${c}`])}&month=${getQuery('month')}`;
+}
+
 function setMargin(value) {
   const el = document.querySelector('#dataTable > tr > td[data-id="margin"');
   el.textContent = Math.trunc(value * 100) / 100;
@@ -755,7 +764,7 @@ function goToNextPage() {
   if (next) return goToWorkPage(next, category);
 }
 
-function searchTable(id, text, row = 0) {
+function searchTable(id, text, row = 0, reverse = false) {
   const table = document.getElementById(id);
   if (!table) return;
   const tr = table.getElementsByTagName('tr');
@@ -768,9 +777,17 @@ function searchTable(id, text, row = 0) {
           .toLowerCase()
           .indexOf(text.toLowerCase()) > -1
       ) {
-        tr[i].style.display = '';
+       if(reverse) {
+         tr[i].style.display = 'none';
+         } else {
+           tr[i].style.display = '';
+         }
       } else {
+        if(reverse) {
+          tr[i].style.display = '';
+        } else {
         tr[i].style.display = 'none';
+        }
       }
     }
   }
