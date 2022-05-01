@@ -1,5 +1,5 @@
-// const base_url = 'https://random-api1.herokuapp.com/dic_2021/api';
-const base_url = 'http://localhost:3000/dic_2021/api';
+ const base_url = 'https://random-api1.herokuapp.com/dic_2021/api';
+// const base_url = 'http://localhost:3000/dic_2021/api';
 
 const loading = {
   start: function () {
