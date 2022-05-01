@@ -34,6 +34,15 @@
 
       <section>
         <div class="select-bank">
+          <input
+            id="month"
+            placeholder="Select month"
+            type="month"
+            class="view-btns add-view"
+            style="margin-right: 10px"
+            onchange="onMonthChange(event)"
+          />
+          <span></span>
           <select onchange="onSelect(event)" name="" class="view-btns add-view">
             <option value="" selected disabled>--Select Bank--</option>
             <option value="state bank">SBI</option>
@@ -50,12 +59,16 @@
           <table id="dataTab" class="data valueList">
             <tr>
               <th>Sl No.</th>
-              <th>Name of Employe</th>
+              <th>Society Name</th>
+              <th>Circle</th>
+              <th>Contact</th>
               <th>Bank</th>
               <th>IFSC</th>
               <th>Account No</th>
               <th>Branch</th>
+              <th>Secretary</th>
               <th>Amount</th>
+              <th>Action</th>
             </tr>
           </table>
         </div>
@@ -88,9 +101,20 @@
     <script src="./js/api.js"></script>
     <script>
       window.onload = function () {
-        window.currentData = [];
-        loadTeamMembers();
+        const date = new Date();
+        const month = date.getMonth() + 1;
+        window.currentMonth = `${date.getFullYear()}-${
+          month > 9 ? month : '0' + month
+        }`;
+        loadTeams(currentMonth);
+        document.getElementById('month').value = currentMonth;
       };
+
+      function onMonthChange(e) {
+        const month = e.target.value;
+        window.currentMonth = month;
+        loadTeams(month);
+      }
 
       function onSelect(e) {
         const h2 = document.getElementById('bank');
@@ -100,64 +124,44 @@
           (value) =>
             value.toLowerCase().includes('sbi') ||
             value.toLowerCase().includes('state bank'),
-          2,
+          4,
           e.target.value === '.' ? true : false
         );
       }
 
-      async function loadTeamMembers() {
-        const { work } = await request.get(
-          `/users/get_one_work/${getQuery('work_id')}`
-        );
+      async function loadTeams(monthYear) {
+        const element = document.getElementById('dataTab');
+        element.innerHTML = null;
         let html =
-          '<tr><th>Sl No.</th><th>Name of Employe</th><th>Bank</th><th>IFSC</th><th>Account No</th><th>Branch</th><th>Amount</th></tr>';
-        const month = getQuery('month');
-        const filter = (e) => e.month === getQuery('month');
-        const ids = work.workers_44
-          .filter(filter)
-          .concat(work.workers_58.filter(filter))
-          .map((e) => e.member_id);
-        const sort = (a, b) => {
-          if (a.bank_account_info.bank_name < b.bank_account_info.bank_name) {
-            return -1;
-          }
-          if (a.bank_account_info.bank_name > b.bank_account_info.bank_name) {
-            return 1;
-          }
-          return 0;
-        };
+          '<tr><th>Sl No.</th><th>Society Name</th><th>Circle</th><th>Contact</th><th>Bank</th><th>IFSC</th><th>Account No</th><th>Branch</th><th>Secretary</th><th>Amount</th><th>Action</th></tr>';
         request
-          .get(`/users/get_team_members/${getQuery('team_id')}`)
-          .then(({ teamMembers: data }) => {
-            for (const team of data.sort(sort)) {
-              if (!ids.includes(team.id)) continue;
-              const wage = team.wages.find((e) => e.monthYear === month);
-              const money_44 = Number((wage && wage.weaving[44].mw) || 0);
-              const money_58 = Number((wage && wage.weaving[58].mw) || 0);
+          .get(`/users/get_teams_with_salary?monthYear=${monthYear}`)
+          .then((data) => {
+            window.currentData = data;
+            for (const team of data) {
               html += `<tr><td>${data.indexOf(team) + 1}</td><td>${
                 team.name
-              }</td><td>${team.bank_account_info.bank_name}</td><td>${
-                team.bank_account_info.bank_ifsc_code
-              }</td><td>${team.bank_account_info.bank_account_number}</td><td>${
-                team.bank_account_info.branch_name
-              }</td><td>${money_44 + money_58}</td></tr>`;
-              window.currentData.push({
-                ...team,
-                money_44,
-                money_58,
-                total: money_44 + money_58,
-              });
+              }</td><td>${team.circle}</td><td>${team.contact}</td><td>${
+                team.bank_account_info.bank_name
+              }</td><td>${team.bank_account_info.bank_ifsc_code}</td><td>${
+                team.bank_account_info.bank_account_number
+              }</td><td>${team.bank_account_info.branch_name}</td><td>${
+                team.secretary
+              }</td><td>${
+                team.money_44 + team.money_58
+              }</td><td><div onclick="onSelectTeam('${
+                team._id
+              }')"><i class="far fa-eye"><i/></div></td></tr>`;
             }
-            document.getElementById('dataTab').innerHTML = html;
+            element.innerHTML = html;
           });
       }
 
       async function downloadExcell() {
-        const month = getQuery('month');
         const workbook = new ExcelJS.Workbook();
         const sheet = workbook.addWorksheet('Sheet 1');
 
-        sheet.addRow([`${getQuery('team_name')}-${month}`]);
+        sheet.addRow([`Report ${window.currentMonth}`]);
         sheet.mergeCells('A1:L1');
         sheet.getCell('A1').alignment = {
           horizontal: 'center',
@@ -172,11 +176,14 @@
           totalsRow: true,
           columns: [
             { name: 'ID', totalsRowLabel: 'Total' },
-            { name: 'Name of Employee' },
+            { name: 'Society Name' },
+            { name: 'Circle' },
+            { name: 'Contact' },
             { name: 'Bank' },
             { name: 'IFSC' },
             { name: 'Account No' },
             { name: 'Branch' },
+            { name: 'Secreatary' },
             { name: 'Category 44', totalsRowFunction: 'sum' },
             { name: 'Category 58', totalsRowFunction: 'sum' },
             { name: 'Total Amount', totalsRowFunction: 'sum' },
@@ -184,13 +191,16 @@
           rows: window.currentData.map((item, index) => [
             index + 1,
             item.name,
+            item.circle,
+            item.contact,
             item.bank_account_info.bank_name,
             item.bank_account_info.bank_ifsc_code,
             item.bank_account_info.bank_account_number,
             item.bank_account_info.branch_name,
-            item.money_44,
-            item.money_58,
-            item.total,
+            item.secretary,
+            Number(item.money_44),
+            Number(item.money_58),
+            Number(item.money_44 + item.money_58),
           ]),
         });
 
@@ -198,7 +208,7 @@
         const blob = new Blob([buffer], {
           type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
         });
-        saveAs(blob, `${getQuery('team_name')}_${month}.xlsx`);
+        saveAs(blob, `Team_report_${window.currentMonth}.xlsx`);
       }
     </script>
   </body>

@@ -1,4 +1,5 @@
-const base_url = 'https://random-api1.herokuapp.com/dic_2021/api';
+// const base_url = 'https://random-api1.herokuapp.com/dic_2021/api';
+const base_url = 'http://localhost:3000/dic_2021/api';
 
 const loading = {
   start: function () {
@@ -274,11 +275,10 @@ function onSelectTeam(id) {
 
 function getTeams() {
   const date = new Date();
-  window.currentMonth = `${date.getFullYear()}-${(
-    '0' +
-    date.getMonth() +
-    1
-  ).slice(-2)}`;
+  const month = date.getMonth() + 1;
+  window.currentMonth = `${date.getFullYear()}-${
+    month > 9 ? month : '0' + month
+  }`;
   request.get('/users/get_teams').then((data) => {
     appendTeams(data.teams);
   });
@@ -477,7 +477,7 @@ function goToSalaryList() {
     window.location.pathname
   }&team_id=${getQuery('team_id')}&category=${c}&work_id=${
     work._id
-  }&ids=${JSON.stringify(work[`workers_${c}`])}&month=${getQuery('month')}`;
+  }&month=${getQuery('month')}&team_name=${window.teamName}`;
 }
 
 function setMargin(value) {
@@ -500,11 +500,11 @@ async function loadMetrePage(id) {
   window.marginValue = 0;
   window.dividendValue = 0;
   window.v = {};
-  
-  if(work_name.toLowerCase() !== 'weaving') {
+
+  if (work_name.toLowerCase() !== 'weaving') {
     document.getElementById('marginId').style.display = 'none';
-  };
-  
+  }
+
   const [works, data, vv] = await Promise.all([
     request.get(`/users/get_works`).then((q) => q.works),
     request.get(`/users/get_team_members/${id}`).then((q) => q.teamMembers),
@@ -719,6 +719,7 @@ function calculate(id, value, pf, esi) {
 async function onMetreSubmit() {
   const data = await request.put(`/users/update_team_member_bulk`, {
     work: work.name,
+    teamId: getQuery('team_id'),
     monthYear: getQuery('month'),
     category,
     margin: marginValue,
@@ -778,20 +779,22 @@ function searchTable(id, text, row = 0, reverse = false) {
     let td = tr[i].getElementsByTagName('td')[row];
     if (td) {
       if (
-        (td.textContent || td.innerText)
-          .toLowerCase()
-          .indexOf(text.toLowerCase()) > -1
+        typeof text === 'string'
+          ? (td.textContent || td.innerText)
+              .toLowerCase()
+              .indexOf(text.toLowerCase()) > -1
+          : text(td.textContent || td.innerText)
       ) {
-       if(reverse) {
-         tr[i].style.display = 'none';
-         } else {
-           tr[i].style.display = '';
-         }
+        if (reverse) {
+          tr[i].style.display = 'none';
+        } else {
+          tr[i].style.display = '';
+        }
       } else {
-        if(reverse) {
+        if (reverse) {
           tr[i].style.display = '';
         } else {
-        tr[i].style.display = 'none';
+          tr[i].style.display = 'none';
         }
       }
     }

@@ -1,219 +1,232 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap');
 
-body{
-	position: relative;
-	padding: 0px;
-	margin: 0px;
-	font-family: 'Roboto', sans-serif;
+body {
+  position: relative;
+  padding: 0px;
+  margin: 0px;
+  font-family: 'Roboto', sans-serif;
 }
 
-.main{
-	font-family: 'Roboto', sans-serif;
+.main {
+  font-family: 'Roboto', sans-serif;
 }
 
-.nav{
-	min-height: 10vh;
-	border-bottom: 2px solid;
-	width: 100%;
-
+.nav {
+  min-height: 10vh;
+  border-bottom: 2px solid;
+  width: 100%;
 }
 
-.logo{
-	/* font-style: normal;
+.logo {
+  /* font-style: normal;
 	font-weight: bold;
 	font-size: 24px;
 	line-height: 28px;
 	width: auto; */
-	padding: 2px 0px 2px 20px;	
-	display: inline-block;
-
+  padding: 2px 0px 2px 20px;
+  display: inline-block;
 }
 
-#image{
-	width: 300px;
-	height: 70px;
+#image {
+  width: 300px;
+  height: 70px;
 }
 
-.welcome{
-	font-style: normal;
-	font-weight: 400;
-	font-size: 18px;
-	float: right;
-	padding-right: 15px;
+.welcome {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  float: right;
+  padding-right: 15px;
 
-	margin-top: 20px;
-
+  margin-top: 20px;
 }
 
-.welcome #signout{
-	text-decoration: none;
-	color: #0075FF;
+.welcome #signout {
+  text-decoration: none;
+  color: #0075ff;
 }
 
-.welcome #signout:hover{
-	text-decoration: underline;
-	cursor: pointer;
+.welcome #signout:hover {
+  text-decoration: underline;
+  cursor: pointer;
 }
 
-.content #searchbar{
-	position: absolute;
-	width: 260px;
-	height: 38px;
-	font-size: 16px;
-	left: 1035px;
-	top: 120px;
-	padding: 4px 0px 4px 8px;
-	color: #4D4D4D;
-	outline: none;
-
-	border: 0px;
-	background: #EAEAEA;
+.content #bankSorter {
+  position: absolute;
+  left: 905px;
+  top: 120px;
+  color: #4d4d4d;
+  outline: none;
+  border: 0px;
+  background: #eaeaea;
+  margin-bottom: 15px;
+  background: #d0e6ff;
+  padding: 10px;
+  font-weight: 600;
+  font-size: 16px;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  text-decoration: none;
 }
 
-#searchbar:focus{
-	box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.2), 0 4px 8px 0 rgba(0, 0, 0, 0.19);
+.content #searchbar {
+  position: absolute;
+  width: 260px;
+  height: 38px;
+  font-size: 16px;
+  left: 1035px;
+  top: 120px;
+  padding: 4px 0px 4px 8px;
+  color: #4d4d4d;
+  outline: none;
+
+  border: 0px;
+  background: #eaeaea;
 }
 
-.content #search{
-	position: absolute;
-	width: 20px;
-	height: 20px;
-	left: 1260px;
-	top: 130px;
-	color: #707070;
+#searchbar:focus {
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.2), 0 4px 8px 0 rgba(0, 0, 0, 0.19);
 }
 
-
-.content #dashboard_button{
-	position: absolute;
-	width: 110px;
-	height: 50px;
-	left: 50px;
-	top: 205px;
-	border: 0px;
-	font-size: 16px;
-	color: #ffff;
-	cursor: pointer;
-	
-	background: #0075FF;
-	border-radius: 10px;
+.content #search {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  left: 1260px;
+  top: 130px;
+  color: #707070;
 }
 
-.content #dashboard_button:hover{
-	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+.content #dashboard_button {
+  position: absolute;
+  width: 110px;
+  height: 50px;
+  left: 50px;
+  top: 205px;
+  border: 0px;
+  font-size: 16px;
+  color: #ffff;
+  cursor: pointer;
+
+  background: #0075ff;
+  border-radius: 10px;
 }
 
-.content #dashboard_button a{
-	text-decoration: none;
+.content #dashboard_button:hover {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
-.teamlist{
-	position: absolute;
-	width: 1080px;
-	height: 600px;
-	overflow: auto;
-	left: 218px;
-	top: 200px;
-	background-color: #EAEAEA;
+.content #dashboard_button a {
+  text-decoration: none;
 }
 
-table{
-	padding: 30px;
-	font-family: 'Roboto', sans-serif;
-	position: relative;
-	border-collapse: collapse;
-	
+.teamlist {
+  position: absolute;
+  width: 1080px;
+  height: 600px;
+  overflow: auto;
+  left: 218px;
+  top: 200px;
+  background-color: #eaeaea;
 }
 
-table tr select{
-	display: none;
+table {
+  padding: 30px;
+  font-family: 'Roboto', sans-serif;
+  position: relative;
+  border-collapse: collapse;
 }
 
-tr{
-	text-align: center;
-	font-size: 16px;
-	line-height: 20px;
-	font-style: normal;
-	font-weight: normal;
-	color: #4D4D4D;
+table tr select {
+  display: none;
 }
 
-th{
-	text-align: center;
-	line-height: 21px;
-	padding: 0px 20px 30px 3px ;
-	position: sticky;
-	background-color: #D0E6FF;	
-	top: 0;
-	border: 1px solid #fff;
+tr {
+  text-align: center;
+  font-size: 16px;
+  line-height: 20px;
+  font-style: normal;
+  font-weight: normal;
+  color: #4d4d4d;
 }
 
-td{
-	padding: 0px 20px 15px 3px;
-	border: 1px solid #fff;
+th {
+  text-align: center;
+  line-height: 21px;
+  padding: 0px 20px 30px 3px;
+  position: sticky;
+  background-color: #d0e6ff;
+  top: 0;
+  border: 1px solid #fff;
 }
 
-td a{
-	text-decoration: none;
-	color: #0075FF;
-	font-size: 16px;
+td {
+  padding: 0px 20px 15px 3px;
+  border: 1px solid #fff;
 }
 
-td a:hover{
-	text-decoration: underline;
+td a {
+  text-decoration: none;
+  color: #0075ff;
+  font-size: 16px;
 }
 
-#bottom-nav{
-	position: absolute;
-	height: 50px;
-	padding-bottom: 20px;
-	width: 79em;
-	top: 850px;
+td a:hover {
+  text-decoration: underline;
 }
 
-#addnew_team{
-	width: 175px;
-	height: 50px;
-	font-size: 16px;
-	background: #a9d0fc;
-	border-radius: 10px;
-	border: 0px;
-	color: #4D4D4D;
-	float: right;
+#bottom-nav {
+  position: absolute;
+  height: 50px;
+  padding-bottom: 20px;
+  width: 79em;
+  top: 850px;
 }
 
-#addnew_team:hover{
-	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-	cursor: pointer;
+#addnew_team {
+  width: 175px;
+  height: 50px;
+  font-size: 16px;
+  background: #a9d0fc;
+  border-radius: 10px;
+  border: 0px;
+  color: #4d4d4d;
+  float: right;
 }
 
-
-.AddTeam_popup{
-	position: absolute;
-    font-family: Roboto;
-    left: 217px;
-    top: 323px;
-    width: 1067px;
-    overflow: auto;
-    height: 346px;
-    border: 1px solid #0075FF;
-    background: #D0E6FF;
-    border-radius: 20px;
-	padding-top: 50px;
-	padding-left: 25px;
+#addnew_team:hover {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  cursor: pointer;
 }
 
-#AddTeam_popup{
-	display: none;
+.AddTeam_popup {
+  position: absolute;
+  font-family: Roboto;
+  left: 217px;
+  top: 323px;
+  width: 1067px;
+  overflow: auto;
+  height: 346px;
+  border: 1px solid #0075ff;
+  background: #d0e6ff;
+  border-radius: 20px;
+  padding-top: 50px;
+  padding-left: 25px;
 }
 
-.AddTeam_popup #Popup_table{
-	padding: 50px 0px 5px 70px;
+#AddTeam_popup {
+  display: none;
 }
 
-.AddTeam_popup tr{
-	text-align: center;
-	font-size: 16px;
+.AddTeam_popup #Popup_table {
+  padding: 50px 0px 5px 70px;
+}
+
+.AddTeam_popup tr {
+  text-align: center;
+  font-size: 16px;
 }
 
 /* .AddTeam_popup th{
@@ -224,55 +237,54 @@ td a:hover{
 	padding: 0px 35px 20px 5px;
 } */
 
-.AddTeam_popup input{
-	border-radius: 5px;
-	border: 1px solid #0075FF;
-	outline: none;
-	height: 25px;
-	padding-left: 7px;
-
-} 
-
-#Popup_addteam{
-	position: absolute;
-	font-size: 16px;
-	width: 155px;
-	height: 40px;
-	left: 750px;
-	top: 300px;
-	background: #0075FF;
-	border-radius: 10px;
-	color: #ffff;
-	border: 0px;
+.AddTeam_popup input {
+  border-radius: 5px;
+  border: 1px solid #0075ff;
+  outline: none;
+  height: 25px;
+  padding-left: 7px;
 }
 
-#Popup_addteam:hover{
-	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-	cursor: pointer;
+#Popup_addteam {
+  position: absolute;
+  font-size: 16px;
+  width: 155px;
+  height: 40px;
+  left: 750px;
+  top: 300px;
+  background: #0075ff;
+  border-radius: 10px;
+  color: #ffff;
+  border: 0px;
 }
 
-#Popup_cancel{
-	position: absolute;
-	font-size: 16px;
-	width: 155px;
-	height: 40px;
-	left: 550px;
-	top: 300px;
-	background: #0075FF;
-	border-radius: 10px;
-	color: #ffff;
-	border: 0px;
+#Popup_addteam:hover {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  cursor: pointer;
 }
 
-#Popup_cancel:hover{
-	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-	cursor: pointer;
+#Popup_cancel {
+  position: absolute;
+  font-size: 16px;
+  width: 155px;
+  height: 40px;
+  left: 550px;
+  top: 300px;
+  background: #0075ff;
+  border-radius: 10px;
+  color: #ffff;
+  border: 0px;
+}
+
+#Popup_cancel:hover {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  cursor: pointer;
 }
 
 @media only screen and (max-width: 1440px) {
-	.nav{
-		width: 84.2rem;
-	}	
+  .nav {
+    width: 84.2rem;
+  }
 }
 
 ::-ms-clear {
@@ -282,6 +294,6 @@ td a:hover{
 ::-webkit-search-decoration,
 ::-webkit-search-cancel-button,
 ::-webkit-search-results-button,
-::-webkit-search-results-decoration { 
-  display: none; 
+::-webkit-search-results-decoration {
+  display: none;
 }
