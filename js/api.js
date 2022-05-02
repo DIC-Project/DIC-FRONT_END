@@ -1,4 +1,4 @@
- const base_url = 'https://random-api1.herokuapp.com/dic_2021/api';
+const base_url = 'https://random-api1.herokuapp.com/dic_2021/api';
 // const base_url = 'http://localhost:3000/dic_2021/api';
 
 const loading = {
@@ -492,7 +492,7 @@ function setDivideds(value) {
 
 async function loadMetrePage(id) {
   const month = getQuery('month');
-  const work_name = getQuery('work');
+  const work_name = getQuery('workName');
   window.category = getQuery('category');
   window.members = [];
   window.work = {};
@@ -501,7 +501,9 @@ async function loadMetrePage(id) {
   window.dividendValue = 0;
   window.v = {};
 
-  if (work_name.toLowerCase() !== 'weaving') {
+  window.isWeaving = work_name.toLowerCase() === 'weaving';
+
+  if (!isWeaving) {
     document.getElementById('marginId').style.display = 'none';
   }
 
@@ -556,7 +558,7 @@ async function loadMetrePage(id) {
     )}</td><td data-id="others">${get('others')}</td><td data-id="sum">${get(
       'sum'
     )}</td>${
-      i == 0
+      i === 0 && isWeaving
         ? `<td rowspan="${members.length}" data-id="margin">${get(
             'margin'
           )}</td>`
@@ -573,7 +575,9 @@ async function loadMetrePage(id) {
 
   const tr = document.createElement('tr');
   tr.setAttribute('id', 'mtotal');
-  tr.innerHTML = `<td colspan="2">Total</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>`;
+  tr.innerHTML = `<td colspan="2">Total</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>${
+    isWeaving ? '<td>0</td>' : ''
+  }`;
   table.appendChild(tr);
   setTotals();
 }
@@ -657,9 +661,9 @@ function setTotals() {
     e[work.name.toLowerCase()] || 0
   )}<td>${round(e.pf) || 0}</td><td>${round(e.esi) || 0}</td><td>${
     round(e.gratuity) || 0
-  }</td><td>${round(e.others) || 0}</td><td>${round(e.sum) || 0}<td>${
-    round(marginValue) || 0
-  }</td><td>${round(e.mw) || 0}</td><td>${round(e.mt) || 0}</td><td>${
+  }</td><td>${round(e.others) || 0}</td><td>${round(e.sum) || 0}${
+    isWeaving ? '<td>' + (round(marginValue) || 0) + '</td>' : ''
+  }<td>${round(e.mw) || 0}</td><td>${round(e.mt) || 0}</td><td>${
     round(dividendValue) || 0
   }`;
 }
@@ -736,7 +740,7 @@ async function onMetreSubmit() {
 }
 
 function goToMetre() {
-  window.location.href = `addMetre.html?work="${
+  window.location.href = `addMetre.html?workName=${window.work.name}&work="${
     window.location.pathname
   }&team_id=${getQuery('team_id')}&category=${window.category}&month=${getQuery(
     'month'
@@ -931,11 +935,14 @@ async function excel(data) {
         { name: 'GRATUITY', totalsRowFunction: 'sum' },
         { name: 'OTHERS', totalsRowFunction: 'sum' },
         { name: 'TOTAL SUM', totalsRowFunction: 'sum' },
-        { name: 'MARGIN', totalsRowFunction: 'max' },
+        work.name.toLowerCase() === 'weaving' && {
+          name: 'MARGIN',
+          totalsRowFunction: 'max',
+        },
         { name: 'MONEY FOR WEAVERS', totalsRowFunction: 'sum' },
         { name: 'MONEY FOR SOCIETY', totalsRowFunction: 'sum' },
         { name: 'SOCIETY PORTION', totalsRowFunction: 'max' },
-      ],
+      ].filter(Boolean),
       rows: work.members.map((e, i) => {
         total.input += e.input;
         total.rate += e.weaving + e.winding + e.warping + e.joining;
@@ -957,11 +964,11 @@ async function excel(data) {
           e.gratuity || 0,
           e.others || 0,
           e.sum || 0,
-          e.margin || 0,
+          (work.name.toLowerCase() === 'weaving' && e.margin) || 0,
           e.mw || 0,
           Number(e.mt) || 0,
           e.dividends || 0,
-        ];
+        ].filter((e) => e !== false);
       }),
     });
     sheet.addRow([]);
