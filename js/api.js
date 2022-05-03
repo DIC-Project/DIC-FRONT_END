@@ -653,7 +653,7 @@ function setTotals() {
     { size: 0 }
   );
   window.marginValue = m * a.margin || 0;
-  window.dividendValue = e.mt + e.sum || 0;
+  window.dividendValue = e.mt + marginValue || 0;
   setDivideds(dividendValue);
   document.getElementById(
     'mtotal'
@@ -716,7 +716,7 @@ function calculate(id, value, pf, esi) {
 
   totalSum += values.sum;
   values.mt = values.sum - values.mw;
-  values.dividends = totalSum + totalTeamSum + values.mt;
+  values.dividends = totalMargin + totalTeamSum + values.mt;
   return values;
 }
 
