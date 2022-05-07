@@ -197,3 +197,6 @@ section{
     text-decoration: none;
 }
 
+.left-dash a {
+    cursor: pointer;
+}

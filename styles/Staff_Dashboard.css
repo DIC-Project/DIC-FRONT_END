@@ -15,6 +15,7 @@ body {
   min-height: 10vh;
   border-bottom: 2px solid;
   width: 100%;
+  position: relative;
 }
 
 .logo {
@@ -67,16 +68,19 @@ body {
   font-size: 16px;
   border: none;
   outline: none;
-  cursor: pointer;
   text-decoration: none;
 }
 
+#bankSorter:hover {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  cursor: pointer;
+}
 .content #searchbar {
   position: absolute;
   width: 260px;
   height: 38px;
   font-size: 16px;
-  left: 1035px;
+  left: 1015px;
   top: 120px;
   padding: 4px 0px 4px 8px;
   color: #4d4d4d;
@@ -94,7 +98,7 @@ body {
   position: absolute;
   width: 20px;
   height: 20px;
-  left: 1260px;
+  left: 1250px;
   top: 130px;
   color: #707070;
 }
@@ -124,10 +128,10 @@ body {
 
 .teamlist {
   position: absolute;
-  width: 1080px;
-  height: 600px;
-  overflow: auto;
-  left: 218px;
+  width: 1420px;
+  height: auto;
+  /* overflow: auto; */
+  left: 20px;
   top: 200px;
   background-color: #eaeaea;
 }
@@ -171,29 +175,29 @@ td a {
   text-decoration: none;
   color: #0075ff;
   font-size: 16px;
+  cursor: pointer;
 }
 
 td a:hover {
   text-decoration: underline;
 }
 
-#bottom-nav {
-  position: absolute;
-  height: 50px;
-  padding-bottom: 20px;
-  width: 79em;
-  top: 850px;
-}
-
 #addnew_team {
-  width: 175px;
-  height: 50px;
+  /* width: 125px; */
+  /* height: 50px; */
   font-size: 16px;
-  background: #a9d0fc;
-  border-radius: 10px;
+  /* background: #a9d0fc;
+   */
+  background: #d0e6ff;
+
+  /* border-radius: 10px; */
   border: 0px;
   color: #4d4d4d;
   float: right;
+  position: absolute;
+  right: 22px;
+  top: 120px;
+  padding: 10px;
 }
 
 #addnew_team:hover {
@@ -205,7 +209,7 @@ td a:hover {
   position: absolute;
   font-family: Roboto;
   left: 217px;
-  top: 323px;
+  top: 220px;
   width: 1067px;
   overflow: auto;
   height: 346px;

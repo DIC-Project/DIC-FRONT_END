@@ -10,10 +10,13 @@
 	<div class="main">
 		<div class="nav">
 			<div class="logo"><img src="images/Logo.png" alt="HSU Wage Calculator" id="image"></div>
-			<div class="welcome">Welcome User, <a onclick="goToWorkPage('index.html')" id="signout">Signout</a></div>					
+			<div class="welcome">Welcome User, <a onclick="goToWorkPage('index.html')" id="signout">Signout</a></div>
+			<div id="bottom-nav">
+				<button id="addnew_team" onclick="Show()"><span><i class="fal fa-users"></i></span>&nbsp; Add New Team</button>
+			</div>					
 		</div>
 		<div class="content">
-			<a href=""><button id="dashboard_button">Dashboard</button></a>
+			<!-- <a href=""><button id="dashboard_button">Dashboard</button></a> -->
 			<input onkeyup="searchTable('Team_table', this.value, 1)" onsearch="searchTable('Team_table', this.value, 1)" type="search" name="" placeholder="Search Team" id="searchbar">
 			
 			<i class="fas fa-search" id="search"></i>
@@ -41,9 +44,9 @@
 
 		<!--  Add Team is For Admin Only.-->
 
-		<div id="bottom-nav">
+		<!-- <div id="bottom-nav">
 			<button id="addnew_team" onclick="Show()"><span><i class="fal fa-users"></i></span>&nbsp; Add New Team</button>
-		</div>
+		</div> -->
 		
 		<div id="AddTeam_popup" class="AddTeam_popup">
 		  <form onsubmit="addTeam(event)">

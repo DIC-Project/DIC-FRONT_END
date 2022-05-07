@@ -23,3 +23,6 @@ tr td{
     color: black;
 }
 
+.left-dash a{
+    cursor: pointer;
+}
