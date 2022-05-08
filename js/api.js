@@ -482,6 +482,7 @@ function goToSalaryList() {
 
 function setMargin(value) {
   const el = document.querySelector('#dataTable > tr > td[data-id="margin"');
+  if (!el) return;
   el.textContent = Math.trunc(value * 100) / 100;
 }
 
@@ -661,7 +662,7 @@ function setTotals() {
     e[work.name.toLowerCase()] || 0
   )}<td>${round(e.pf) || 0}</td><td>${round(e.esi) || 0}</td><td>${
     round(e.gratuity) || 0
-  }</td><td>${round(e.others) || 0}</td><td>${round(e.sum) || 0}${
+  }</td><td>${round(e.others) || 0}</td><td>${round(e.sum) || 0}</td>${
     isWeaving ? '<td>' + (round(marginValue) || 0) + '</td>' : ''
   }<td>${round(e.mw) || 0}</td><td>${round(e.mt) || 0}</td><td>${
     round(dividendValue) || 0
@@ -918,13 +919,14 @@ async function excel(data) {
   sheet.getCell('A2').font = { bold: true, size: 14 };
   let r = 3;
   for (const work of data) {
+    console.log(r);
     sheet.addRow([work.name.toUpperCase()]);
     sheet.mergeCells(`A${r}:B${r}`);
     const table = sheet.addTable({
       name: work.name,
       ref: `A${r + 1}`,
       headerRow: true,
-      totalsRow: work.members.length && true,
+      totalsRow: true,
       columns: [
         { name: 'ID', totalsRowLabel: 'Total' },
         { name: 'NAME', totalsRowFunction: 'none' },
@@ -942,7 +944,7 @@ async function excel(data) {
         { name: 'MONEY FOR WEAVERS', totalsRowFunction: 'sum' },
         { name: 'MONEY FOR SOCIETY', totalsRowFunction: 'sum' },
         { name: 'SOCIETY PORTION', totalsRowFunction: 'max' },
-      ].filter(Boolean),
+      ].filter((e) => e),
       rows: work.members.map((e, i) => {
         total.input += e.input;
         total.rate += e.weaving + e.winding + e.warping + e.joining;

@@ -89,12 +89,16 @@
     <script>
       window.onload = function () {
         window.currentData = [];
+        window.currentBank = null;
         loadTeamMembers();
       };
 
       function onSelect(e) {
         const h2 = document.getElementById('bank');
-        if (h2) h2.innerHTML = e.target.value === '.' ? 'Other banks' : 'SBI';
+        if (h2) {
+          h2.innerHTML = e.target.value === '.' ? 'Other banks' : 'SBI';
+          window.currentBank = e.target.value;
+        }
         searchTable(
           'dataTab',
           (value) =>
@@ -129,25 +133,27 @@
         request
           .get(`/users/get_team_members/${getQuery('team_id')}`)
           .then(({ teamMembers: data }) => {
-            for (const team of data.sort(sort)) {
-              if (!ids.includes(team.id)) continue;
-              const wage = team.wages.find((e) => e.monthYear === month);
-              const money_44 = Number((wage && wage.weaving[44].mw) || 0);
-              const money_58 = Number((wage && wage.weaving[58].mw) || 0);
-              html += `<tr><td>${data.indexOf(team) + 1}</td><td>${
-                team.name
-              }</td><td>${team.bank_account_info.bank_name}</td><td>${
-                team.bank_account_info.bank_ifsc_code
-              }</td><td>${team.bank_account_info.bank_account_number}</td><td>${
-                team.bank_account_info.branch_name
-              }</td><td>${money_44 + money_58}</td></tr>`;
-              window.currentData.push({
-                ...team,
-                money_44,
-                money_58,
-                total: money_44 + money_58,
+            data
+              .filter((e) => ids.includes(e.id))
+              .sort(sort)
+              .forEach((team, index) => {
+                const wage = team.wages.find((e) => e.monthYear === month);
+                const money_44 = Number((wage && wage.weaving[44].mw) || 0);
+                const money_58 = Number((wage && wage.weaving[58].mw) || 0);
+                html += `<tr><td>${index + 1}</td><td>${team.name}</td><td>${
+                  team.bank_account_info.bank_name
+                }</td><td>${team.bank_account_info.bank_ifsc_code}</td><td>${
+                  team.bank_account_info.bank_account_number
+                }</td><td>${team.bank_account_info.branch_name}</td><td>${
+                  money_44 + money_58
+                }</td></tr>`;
+                window.currentData.push({
+                  ...team,
+                  money_44,
+                  money_58,
+                  total: money_44 + money_58,
+                });
               });
-            }
             document.getElementById('dataTab').innerHTML = html;
           });
       }
@@ -156,6 +162,17 @@
         const month = getQuery('month');
         const workbook = new ExcelJS.Workbook();
         const sheet = workbook.addWorksheet('Sheet 1');
+
+        const filter = (item) => {
+          const isSbi =
+            item.bank_account_info.bank_name.toLowerCase().includes('sbi') ||
+            item.bank_account_info.bank_name
+              .toLowerCase()
+              .includes('state bank');
+          if (currentBank === '.' && !isSbi) return true;
+          if (currentBank === 'state bank' && isSbi) return true;
+          if (currentBank == null) return true;
+        };
 
         sheet.addRow([`${getQuery('team_name')}-${month}`]);
         sheet.mergeCells('A1:L1');
@@ -181,17 +198,19 @@
             { name: 'Category 58', totalsRowFunction: 'sum' },
             { name: 'Total Amount', totalsRowFunction: 'sum' },
           ],
-          rows: window.currentData.map((item, index) => [
-            index + 1,
-            item.name,
-            item.bank_account_info.bank_name,
-            item.bank_account_info.bank_ifsc_code,
-            item.bank_account_info.bank_account_number,
-            item.bank_account_info.branch_name,
-            item.money_44,
-            item.money_58,
-            item.total,
-          ]),
+          rows: window.currentData
+            .filter(filter)
+            .map((item, index) => [
+              index + 1,
+              item.name,
+              item.bank_account_info.bank_name,
+              item.bank_account_info.bank_ifsc_code,
+              item.bank_account_info.bank_account_number,
+              item.bank_account_info.branch_name,
+              item.money_44,
+              item.money_58,
+              item.total,
+            ]),
         });
 
         const buffer = await workbook.xlsx.writeBuffer();
