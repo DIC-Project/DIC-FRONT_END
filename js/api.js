@@ -919,14 +919,13 @@ async function excel(data) {
   sheet.getCell('A2').font = { bold: true, size: 14 };
   let r = 3;
   for (const work of data) {
-    console.log(r);
     sheet.addRow([work.name.toUpperCase()]);
     sheet.mergeCells(`A${r}:B${r}`);
     const table = sheet.addTable({
       name: work.name,
       ref: `A${r + 1}`,
       headerRow: true,
-      totalsRow: true,
+      totalsRow: work.members.length ? true : false,
       columns: [
         { name: 'ID', totalsRowLabel: 'Total' },
         { name: 'NAME', totalsRowFunction: 'none' },
@@ -937,24 +936,24 @@ async function excel(data) {
         { name: 'GRATUITY', totalsRowFunction: 'sum' },
         { name: 'OTHERS', totalsRowFunction: 'sum' },
         { name: 'TOTAL SUM', totalsRowFunction: 'sum' },
-        work.name.toLowerCase() === 'weaving' && {
+        {
           name: 'MARGIN',
           totalsRowFunction: 'max',
         },
         { name: 'MONEY FOR WEAVERS', totalsRowFunction: 'sum' },
         { name: 'MONEY FOR SOCIETY', totalsRowFunction: 'sum' },
         { name: 'SOCIETY PORTION', totalsRowFunction: 'max' },
-      ].filter((e) => e),
+      ],
       rows: work.members.map((e, i) => {
-        total.input += e.input;
-        total.rate += e.weaving + e.winding + e.warping + e.joining;
-        total.pf += e.pf;
-        total.sum += e.sum;
-        total.esi += e.esi;
-        total.others += e.others;
-        total.gty += e.gratuity;
-        total.mt += e.mt;
-        total.mw += e.mw;
+        total.input += e.input || 0;
+        total.rate += e.weaving + e.winding + e.warping + e.joining || 0;
+        total.pf += e.pf || 0;
+        total.sum += e.sum || 0;
+        total.esi += e.esi || 0;
+        total.others += e.others || 0;
+        total.gty += e.gratuity || 0;
+        total.mt += e.mt || 0;
+        total.mw += e.mw || 0;
 
         return [
           i + 1,
@@ -966,16 +965,16 @@ async function excel(data) {
           e.gratuity || 0,
           e.others || 0,
           e.sum || 0,
-          (work.name.toLowerCase() === 'weaving' && e.margin) || 0,
+          (work.name.toLowerCase() === 'weaving' ? e.margin : 0) || 0,
           e.mw || 0,
           Number(e.mt) || 0,
           e.dividends || 0,
-        ].filter((e) => e !== false);
+        ];
       }),
     });
     sheet.addRow([]);
     sheet.addRow([]);
-    r += work.members.length + 5;
+    r += work.members.length + (work.members.length === 0 ? 4 : 5);
     total.margin += (work.members[0] && work.members[0].margin) || 0;
     total.dividends += (work.members[0] && work.members[0].dividends) || 0;
   }
